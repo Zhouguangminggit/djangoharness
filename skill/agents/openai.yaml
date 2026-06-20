@@ -1,0 +1,6 @@
+interface:
+  display_name: "DjangoHarness"
+  short_description: "按框架规范开发并验证 DjangoHarness 模块"
+  icon_small: "./assets/logo.png"
+  icon_large: "./assets/logo.png"
+  default_prompt: "使用 $djangoharness 实现并验证一个符合框架规范的 Django 业务变更。"
