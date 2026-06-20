@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="card">
+    <h2>登录</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="button" type="submit">登录</button>
+    </form>
+    <p class="helper">
+      <a href="{% url 'accounts:password_reset' %}">忘记密码</a>
+    </p>
+  </section>
+{% endblock %}

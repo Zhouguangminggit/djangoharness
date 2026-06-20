@@ -1,0 +1,90 @@
+name: djangoharness
+
+x-app: &app
+  image: ${DJANGOHARNESS_IMAGE:-djangoharness:local}
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile
+  env_file:
+    - ../.env
+  environment:
+    DB_ENGINE: mysql
+    DB_NAME: ${DB_NAME:-django_framework}
+    DB_USER: ${MYSQL_APP_USER:-django}
+    DB_PASSWORD: ${MYSQL_APP_PASSWORD:-django-local-password}
+    DB_HOST: mysql
+    DB_PORT: "3306"
+    CELERY_BROKER_URL: redis://redis:6379/0
+    CELERY_RESULT_BACKEND: redis://redis:6379/1
+  restart: unless-stopped
+
+services:
+  web:
+    <<: *app
+    command:
+      - /bin/sh
+      - -c
+      - python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn base_framework.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60 --access-logfile - --error-logfile -
+    ports:
+      - ${APP_PORT:-8000}:8000
+    volumes:
+      - static_data:/app/staticfiles
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8000/health/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  worker:
+    <<: *app
+    command: celery -A celery_app worker --loglevel=INFO --concurrency=2
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-django_framework}
+      MYSQL_USER: ${MYSQL_APP_USER:-django}
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:-django-local-password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root-local-password}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  mysql_data:
+  redis_data:
+  static_data:
+  media_data:

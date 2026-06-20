@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="card">
+    <h2>注册</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="button" type="submit">创建账号</button>
+    </form>
+  </section>
+{% endblock %}
