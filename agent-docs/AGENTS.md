@@ -14,6 +14,8 @@ DjangoHarness 是面向 AI 辅助开发的 Django 前后端不分离脚手架。
 - 测试、依赖、格式、类型或协作流程：阅读[工程质量规范](engineering-quality.md)。
 - Celery 或 Redis：阅读[异步任务规范](async-tasks.md)。
 - 模型、迁移或 SQL：阅读[数据库规范](database.md)。
+- 用户、登录保护或验证码：阅读[用户认证规范](authentication.md)。
+- 模板、页面布局或 CSS/JS：阅读[模板与样式架构](template-and-style.md)。
 
 ## 完成定义
 
@@ -34,3 +36,4 @@ make test
 - [第三批：项目文档](../docs/iterations/03-documentation.md)
 - [第四批：CI 与收口](../docs/iterations/04-ci-and-release.md)
 - [第五批：跨平台与容器部署](../docs/iterations/05-platform-and-deployment.md)
+- [第十批：认证验收](../docs/iterations/10-auth-acceptance.md)

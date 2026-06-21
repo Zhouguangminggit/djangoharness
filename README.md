@@ -26,7 +26,7 @@ DjangoHarness 是面向 AI 编程初学者的 Django 前后端不分离脚手架
 
 ## 为什么使用
 
-- 目前自带登录、注册、密码重置、Django Admin 和模板基础结构。
+- 自带用户名、邮箱、手机号统一登录，账号/手机注册、验证码密码重置和可配置品牌认证页面。
 - 用 uv、Ruff、mypy、pytest 和 mdformat 建立统一开发入口。
 - 提供 Celery + Redis 异步任务骨架，本地测试无需启动 Redis。
 - 使用渐进式 Agent 文档，减少重复提示和实现偏差，减少上下文信息。
@@ -54,6 +54,8 @@ uv run python manage.py runserver
 访问主页 <http://127.0.0.1:8000/>
 
 后台地址为 <http://127.0.0.1:8000/admin/>。
+
+本地认证默认使用固定短信验证码 `246810` 和邮箱验证码 `135790`，无需 Redis 或阿里云服务；生产配置见[上线配置说明](docs/%E4%B8%8A%E7%BA%BF%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.md)。
 
 ## 在 Codex 或 Claude Code 中使用项目 Skill
 

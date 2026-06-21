@@ -12,6 +12,7 @@
 - broker 和 result backend 通过 `CELERY_BROKER_URL`、`CELERY_RESULT_BACKEND` 配置。
 - 不在代码中写死生产地址或凭据；新增配置同步 `.env.example`。
 - 仅在确实读取结果时保留任务结果，避免无意义地占用 Redis。
+- 本地关闭第三方服务时，验证码与欢迎邮件流程不得投递 Celery 任务；开发验证码 cache 使用 `LocMemCache`，不连接 Redis。
 
 ## 失败与测试
 

@@ -1,0 +1,11 @@
+{% if messages %}
+  <div class="site-container messages" role="status" aria-live="polite">
+    {% for message in messages %}
+      <div class="message{% if message.tags %} message--{{ message.tags }}{% endif %}"
+           data-message{% if "success" in message.tags %} data-auto-dismiss="3000"{% endif %}>
+        <span>{{ message }}</span>
+        <button class="message__close" type="button" data-message-close aria-label="关闭提示">×</button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

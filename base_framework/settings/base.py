@@ -115,9 +115,57 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL = "accounts.User"
+AUTHENTICATION_BACKENDS = ["apps.accounts.backends.MultiIdentifierBackend"]
+
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "accounts:login"
+
+AUTH_STYLE = os.environ.get("AUTH_STYLE", "picture").lower()
+if AUTH_STYLE == "vedio":
+    AUTH_STYLE = "video"
+AUTH_MEDIA = {
+    "login": os.environ.get("AUTH_LOGIN_MEDIA", "accounts/media/djangoharness.png"),
+    "register": os.environ.get(
+        "AUTH_REGISTER_MEDIA", "accounts/media/djangoharness.png"
+    ),
+    "password_reset": os.environ.get(
+        "AUTH_PASSWORD_RESET_MEDIA", "accounts/media/djangoharness.png"
+    ),
+}
+AUTH_REMEMBER_SECONDS = int(os.environ.get("AUTH_REMEMBER_SECONDS", "2592000"))
+AUTH_RESET_GRANT_SECONDS = int(os.environ.get("AUTH_RESET_GRANT_SECONDS", "600"))
+AUTH_CODE_TTL = int(os.environ.get("AUTH_CODE_TTL", "300"))
+AUTH_CODE_COOLDOWN = int(os.environ.get("AUTH_CODE_COOLDOWN", "60"))
+AUTH_CODE_MAX_ATTEMPTS = int(os.environ.get("AUTH_CODE_MAX_ATTEMPTS", "5"))
+USE_THIRD_PARTY_SERVICES = get_env_bool(
+    "USE_THIRD_PARTY_SERVICES", get_env_bool("USE_THREE_SERIVCE", False)
+)
+AUTH_FIXED_SMS_CODE = os.environ.get("AUTH_FIXED_SMS_CODE", "246810")
+AUTH_FIXED_EMAIL_CODE = os.environ.get("AUTH_FIXED_EMAIL_CODE", "135790")
+AUTH_VERIFICATION_REDIS_URL = os.environ.get(
+    "AUTH_VERIFICATION_REDIS_URL", "redis://localhost:6379/2"
+)
+CACHES = {
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+    # Environment-specific settings opt in to Redis. The shared default must
+    # never make local development depend on an external cache.
+    "verification": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+}
+
+ALIYUN_ACCESS_KEY_ID = os.environ.get("ALIYUN_ACCESS_KEY_ID", "")
+ALIYUN_ACCESS_KEY_SECRET = os.environ.get("ALIYUN_ACCESS_KEY_SECRET", "")
+ALIYUN_REQUEST_TIMEOUT = int(os.environ.get("ALIYUN_REQUEST_TIMEOUT", "10"))
+ALIYUN_SMS_ENDPOINT = os.environ.get(
+    "ALIYUN_SMS_ENDPOINT", "https://dysmsapi.aliyuncs.com/"
+)
+ALIYUN_SMS_SIGN_NAME = os.environ.get("ALIYUN_SMS_SIGN_NAME", "")
+ALIYUN_SMS_TEMPLATE_CODE = os.environ.get("ALIYUN_SMS_TEMPLATE_CODE", "")
+ALIYUN_EMAIL_ENDPOINT = os.environ.get(
+    "ALIYUN_EMAIL_ENDPOINT", "https://dm.aliyuncs.com/"
+)
+ALIYUN_EMAIL_ACCOUNT_NAME = os.environ.get("ALIYUN_EMAIL_ACCOUNT_NAME", "")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -156,3 +204,5 @@ LOGGING: dict[str, Any] = {
         "level": "INFO",
     },
 }
+
+from .admin import *

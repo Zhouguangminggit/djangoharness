@@ -5,7 +5,9 @@
 - `apps/`：业务 Django app；通用能力放 `apps/core/`。
 - `base_framework/`：URL、ASGI、WSGI 和分环境 settings。
 - `celery_app/`：Celery 实例与自动发现配置。
-- `templates/`、`static/`：项目级模板与静态资源；app 专属模板放入 app。
+- `templates/layouts/`、`templates/components/`：项目级布局与共享片段；禁止使用会覆盖第三方 app 的全局通用模板名。
+- `apps/<app>/templates/<app>/`：业务模板命名空间；`static/<app>/`：业务页面样式与脚本。
+- `static/css/`、`static/js/`：全站基础样式、共享组件和全站脚本。
 - `tests/`：跨模块和验收测试；简单单元测试也可放对应 app 的 `tests/`。
 - `db/`：业务模型对应的 MySQL 8 SQL 参考定义。
 - `docs/`：用户、工具和批次文档；`agent-docs/` 只存 Agent 规范。

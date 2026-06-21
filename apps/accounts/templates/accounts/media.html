@@ -1,0 +1,8 @@
+{% load static %}
+{% if auth_style == "video" %}
+  <video autoplay muted loop playsinline>
+    <source src="{% static media_path %}">
+  </video>
+{% else %}
+  <img src="{% static media_path %}" alt="DjangoHarness 认证页面品牌图">
+{% endif %}

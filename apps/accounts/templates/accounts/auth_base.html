@@ -1,0 +1,34 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}账户 · {{ site_name }}{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block site_header %}{% endblock %}
+{% block main_class %}auth-main{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">{% endblock %}
+{% block extra_js %}<script defer src="{% static 'accounts/js/auth.js' %}"></script>{% endblock %}
+
+{% block content %}
+  <section class="auth-shell">
+    <div class="auth-visual" aria-label="DjangoHarness 品牌展示">
+      {% if media_page == "register" %}
+        {% with media_path=auth_media.register %}{% include "accounts/media.html" %}{% endwith %}
+      {% elif media_page == "password_reset" %}
+        {% with media_path=auth_media.password_reset %}{% include "accounts/media.html" %}{% endwith %}
+      {% else %}
+        {% with media_path=auth_media.login %}{% include "accounts/media.html" %}{% endwith %}
+      {% endif %}
+      <div class="auth-visual-copy">
+        <span>DJANGOHARNESS</span>
+        <h1>让每一次构建，都有可靠的工程底座。</h1>
+      </div>
+    </div>
+    <div class="auth-panel">
+      <a class="auth-brand" href="{% url 'home' %}">
+        <img src="{% static 'accounts/brand/logo.png' %}" alt="DjangoHarness">
+        <span>DjangoHarness</span>
+      </a>
+      <div class="auth-form-wrap">{% block auth_content %}{% endblock %}</div>
+    </div>
+  </section>
+{% endblock %}
