@@ -17,6 +17,7 @@ DjangoHarness 是面向 AI 辅助开发的 Django 前后端不分离脚手架。
 - 用户、登录保护或验证码：阅读[用户认证规范](authentication.md)。
 - 模板、页面布局或 CSS/JS：阅读[模板与样式架构](template-and-style.md)。
 - Django Admin、SimpleUI、后台菜单或管理操作：阅读[后台管理规范](admin.md)。
+- 日志、异常诊断或运行排查：阅读 [Loguru 日志规范](logging.md)。
 
 ## 完成定义
 

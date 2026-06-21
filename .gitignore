@@ -6,6 +6,7 @@ __pycache__/
 *$py.class
 *.pyc
 *.log
+logs/
 *.sqlite3
 *.db
 .DS_Store
@@ -23,4 +24,3 @@ env/
 .uv-cache/
 .coverage
 htmlcov/
-
