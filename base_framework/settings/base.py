@@ -44,6 +44,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.core.middleware.RequestLoggingMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -183,25 +184,71 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
+DJANGO_AUTORELOAD_LOG_LEVEL = os.environ.get(
+    "DJANGO_AUTORELOAD_LOG_LEVEL", "INFO"
+).upper()
+LOG_COLORIZE = get_env_bool("LOG_COLORIZE", False)
+LOG_FILE_ENABLED = get_env_bool("LOG_FILE_ENABLED", False)
+LOG_FILE_PATH = Path(os.environ.get("LOG_FILE_PATH", BASE_DIR / "logs/app.log"))
+if not LOG_FILE_PATH.is_absolute():
+    LOG_FILE_PATH = BASE_DIR / LOG_FILE_PATH
+LOG_ASYNC_FILE_PATH = Path(
+    os.environ.get("LOG_ASYNC_FILE_PATH", BASE_DIR / "logs/async.log")
+)
+if not LOG_ASYNC_FILE_PATH.is_absolute():
+    LOG_ASYNC_FILE_PATH = BASE_DIR / LOG_ASYNC_FILE_PATH
+LOG_ERROR_FILE_PATH = Path(
+    os.environ.get("LOG_ERROR_FILE_PATH", BASE_DIR / "logs/error.log")
+)
+if not LOG_ERROR_FILE_PATH.is_absolute():
+    LOG_ERROR_FILE_PATH = BASE_DIR / LOG_ERROR_FILE_PATH
+LOG_ROTATION = os.environ.get("LOG_ROTATION", "100 MB")
+LOG_RETENTION = os.environ.get("LOG_RETENTION", "14 days")
+LOG_COMPRESSION = os.environ.get("LOG_COMPRESSION", "gz")
+LOG_BACKTRACE = get_env_bool("LOG_BACKTRACE", False)
+LOG_DIAGNOSE = get_env_bool("LOG_DIAGNOSE", False)
 
 LOGGING: dict[str, Any] = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {name} {message}",
-            "style": "{",
-        }
-    },
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
+        "loguru": {
+            "class": "base_framework.logging.InterceptHandler",
         }
     },
     "root": {
-        "handlers": ["console"],
-        "level": "INFO",
+        "handlers": ["loguru"],
+        "level": LOG_LEVEL,
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["loguru"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["loguru"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.utils.autoreload": {
+            "handlers": ["loguru"],
+            "level": DJANGO_AUTORELOAD_LOG_LEVEL,
+            "propagate": False,
+        },
+        "gunicorn.error": {
+            "handlers": ["loguru"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "gunicorn.access": {
+            "handlers": ["loguru"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
     },
 }
 

@@ -1,3 +1,5 @@
+from base_framework.logging import configure_logging
+
 from .base import *
 
 DEBUG = False
@@ -20,3 +22,18 @@ if USE_THIRD_PARTY_SERVICES:
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": AUTH_VERIFICATION_REDIS_URL,
     }
+
+LOG_COLORIZE = get_env_bool("LOG_COLORIZE", True)
+configure_logging(
+    level=LOG_LEVEL,
+    colorize=LOG_COLORIZE,
+    file_enabled=LOG_FILE_ENABLED,
+    app_file_path=LOG_FILE_PATH,
+    async_file_path=LOG_ASYNC_FILE_PATH,
+    error_file_path=LOG_ERROR_FILE_PATH,
+    rotation=LOG_ROTATION,
+    retention=LOG_RETENTION,
+    compression=LOG_COMPRESSION,
+    backtrace=LOG_BACKTRACE,
+    diagnose=LOG_DIAGNOSE,
+)

@@ -15,6 +15,7 @@ ______________________________________________________________________
    - Models, migrations, schema, indexes, or SQL: also read [database.md](references/database.md).
    - Celery tasks, retries, brokers, results, or Redis: read [async-tasks.md](references/async-tasks.md).
    - Dependencies, formatting, typing, tests, or delivery: read [engineering-quality.md](references/engineering-quality.md).
+   - Logging, exception diagnostics, or runtime troubleshooting: read [logging.md](references/logging.md).
 1. Trace existing patterns before implementing. Keep the change scoped to the requested business domain.
 1. Implement the smallest complete change, including tests and synchronized artifacts required by the references.
 1. Run focused checks during development, then run the completion checks.
