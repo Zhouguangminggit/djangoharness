@@ -22,15 +22,7 @@
 
 # DjangoHarness
 
-DjangoHarness is a server-rendered Django scaffold for developers getting started with AI-assisted programming. Project structure, engineering tools, and agent rules live together so tools such as Codex can extend the application with consistent, testable changes.
-
-## Why DjangoHarness
-
-- Includes authentication pages, Django Admin, and a reusable template structure.
-- Standardizes development with uv, Ruff, mypy, pytest, and mdformat.
-- Provides a Celery and Redis task skeleton without requiring Redis in local tests.
-- Uses progressive agent documentation to reduce prompt repetition and implementation drift.
-- Defines how Django migrations and reviewable MySQL 8 SQL stay aligned.
+DjangoHarness can be simply understood as a framework built based on the Django framework and the harness engineering specification. Its original intention was to construct a base framework for AI and agents, enabling the rapid development of different business-related systems.
 
 ## Quick start
 
