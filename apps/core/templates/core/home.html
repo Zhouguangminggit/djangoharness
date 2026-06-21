@@ -7,48 +7,162 @@
 
 {% block content %}
   <section class="home-hero">
+    <div class="home-hero__bg-glow"></div>
     <div class="site-container home-hero__grid">
-      <div class="home-hero__copy">
-        <p class="section-kicker">DJANGO 4.2 · AI-READY HARNESS</p>
-        <h1>把业务想法，落到可靠的工程底座上。</h1>
-        <p class="home-hero__lead">DjangoHarness 将认证、异步任务、数据规范与质量检查组织成清晰边界，让开发者和 AI 在同一套规则里持续交付。</p>
+      <div class="home-hero__copy reveal fade-up">
+        <p class="section-kicker">THE FUTURE OF DEVELOPMENT</p>
+        <h1>DjangoHarness是一个 AI 的底座框架<br>能够快速构建其他<span class="text-glow">业务主题系统</span></h1>
+        <p class="home-hero__lead">DjangoHarness的命名初心是想打造一个基于 Django 框架和 harness 模式的的 AI 协作的工程底座, 能够帮助您快速构建其他业务主题的系统。</p>
+        
         <div class="home-hero__actions">
           {% if user.is_authenticated %}
             {% if user.is_staff %}<a class="action action--primary" href="{% url 'admin:index' %}">进入管理后台</a>{% endif %}
             <a class="home-hero__welcome" href="{% url 'accounts:profile' %}">欢迎回来，{{ user.display_name }}</a>
           {% else %}
-            <a class="action action--primary" href="{% url 'accounts:register' %}">创建账号</a>
-            <a class="action action--quiet" href="{% url 'accounts:login' %}">已有账号，直接登录</a>
+            <a class="action action--primary" href="{% url 'accounts:register' %}">开始使用</a>
+            <a class="action action--quiet" href="{% url 'accounts:login' %}">开发者入口 ↗</a>
           {% endif %}
         </div>
-        <dl class="home-stats" aria-label="项目能力摘要">
-          <div><dt>3</dt><dd>统一登录标识</dd></div>
-          <div><dt>5</dt><dd>质量检查入口</dd></div>
-          <div><dt>0</dt><dd>本地外部依赖</dd></div>
-        </dl>
-      </div>
-      <div class="home-hero__art" aria-hidden="true">
-        <span class="orbit orbit--one"></span>
-        <span class="orbit orbit--two"></span>
-        <div class="home-mark">
-          <img src="{% static 'accounts/brand/logo.png' %}" alt="">
-          <span>harness</span>
+        
+        <div class="home-stats">
+          <div><dt class="counter-animate">0<span>+</span></dt><dd>涵盖不同业务主题内容</dd></div>
         </div>
-        <p>DESIGN / BUILD / VERIFY</p>
+      </div>
+      
+      <div class="home-hero__art reveal fade-left" aria-hidden="true">
+        <div class="art-card glass-panel">
+          <div class="art-header">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="art-title">DjangoHarness AI Engine</div>
+          </div>
+          <div class="art-body">
+            <div class="code-line"><span>></span> <span>Generating schema...</span></div>
+            <div class="code-line"><span>></span> <span class="highlight">git init</span> <span>initialized.</span></div>
+            <div class="code-line"><span>></span> <span class="highlight">git add .</span> <span>initialized.</span></div>
+            <div class="code-line"><span>></span> <span class="highlight">git commit -m "今天构建点什么？🤔"</span> <span>initialized.</span></div>
+            <div class="code-line cursor">_</div>
+          </div>
+        </div>
+        <div class="art-card-blur blur-1"></div>
+        <div class="art-card-blur blur-2"></div>
       </div>
     </div>
   </section>
 
-  <section class="site-container home-capabilities" aria-labelledby="capability-title">
-    <header class="section-heading">
-      <p class="section-kicker">BUILT-IN CAPABILITIES</p>
-      <h2 id="capability-title">从第一天就保持清晰。</h2>
-    </header>
-    <div class="capability-grid">
-      <article><span>01</span><h3>身份与权限</h3><p>用户名、邮箱、手机号统一认证，验证码流程和登录保护具备明确边界。</p></article>
-      <article><span>02</span><h3>异步任务</h3><p>Celery 与 Redis 遵循可重试、可测试和小参数传递原则。</p></article>
-      <article><span>03</span><h3>数据演进</h3><p>Django migration 是执行源，MySQL 参考 SQL 与模型同步审查。</p></article>
-      <article><span>04</span><h3>工程验收</h3><p>Ruff、mypy、pytest 和 Django check 汇聚为统一交付门槛。</p></article>
+  <!-- AI Skills Section -->
+  <section class="site-container home-ai-ecosystem reveal fade-up">
+    <div class="ecosystem-banner glass-panel">
+      <div class="ecosystem-content">
+        <h2>深度集成大模型工具链</h2>
+        <p>DjangoHarness 不仅是一个后端框架，更是一套可被大语言模型直接理解的<strong>规范上下文</strong>。目前原生集成了丰富的 <strong>Skill</strong>，您可以直接将本框架应用到 <span class="highlight-tag">Claude Code</span>、<span class="highlight-tag">Codex</span> 以及各类自主智能体工具流中，让 AI 按照项目工程标准为您自动编写业务代码。</p>
+      </div>
+      <div class="ecosystem-visual">
+        <div class="ai-node">Claude Code</div>
+        <div class="ai-node center-node">Harness Skill</div>
+        <div class="ai-node">OpenAI Codex</div>
+        <div class="connection-lines"></div>
+      </div>
     </div>
   </section>
+
+  <!-- Product Showcase Section -->
+  <section class="home-product-showcase">
+    <div class="site-container showcase-grid">
+      <div class="showcase-info reveal fade-right">
+        <p class="section-kicker">REAL WORLD APPLICATION</p>
+        <h2>流浪动物救助平台</h2>
+        <p class="showcase-desc">右侧展示了一个基于 DjangoHarness 的流浪动物救助平台，它集成了动物救助、领养审核、志愿者、用户管理、捐赠系统等功能。</p>
+        <ul class="feature-ticks">
+          <li>✓ 动物救助流程</li>
+          <li>✓ 领养审核流程</li>
+          <li>✓ 志愿者管理</li>
+          <li>✓ 用户管理</li>
+          <li>✓ 捐赠系统</li>
+          <li>✓ 地图定位</li>
+          <li>✓ 自动化多级审核与状态流转</li>
+           <li>✓ 。。。。。。。。。。。。。。。</li>
+        </ul>
+      </div>
+      <div class="showcase-poster reveal fade-left">
+        <img src="{% static 'core/img/poster.png' %}" alt="流浪动物救助平台高保真 UI">
+        <div class="poster-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities Section -->
+  <section class="site-container home-capabilities" aria-labelledby="capability-title">
+    <header class="section-heading reveal fade-up">
+      <p class="section-kicker">BUILT FOR EVERY DOMAIN</p>
+      <h2 id="capability-title">一套底座，涵盖万千主题。</h2>
+    </header>
+    <div class="capability-grid">
+      <article class="glass-panel reveal fade-up" style="transition-delay: 0ms;">
+        <div class="icon-glow">🎓</div>
+        <h3>校园二手系统</h3>
+        <p>包含商品发布、交易撮合、安全认证等完整闭环，快速落地二手流转业务。</p>
+      </article>
+      <article class="glass-panel reveal fade-up" style="transition-delay: 100ms;">
+        <div class="icon-glow">🐾</div>
+        <h3>流浪动物救助</h3>
+        <p>支持志愿者管理、救助追踪、领养审核流程，用技术传递温度。</p>
+      </article>
+      <article class="glass-panel reveal fade-up" style="transition-delay: 200ms;">
+        <div class="icon-glow">📚</div>
+        <h3>学生信息管理</h3>
+        <p>多维数据图表、角色权限隔离、教务系统标准对接。</p>
+      </article>
+      <article class="glass-panel reveal fade-up" style="transition-delay: 300ms;">
+        <div class="icon-glow">🚀</div>
+        <h3>几千个更多主题</h3>
+        <p>依托标准化工程规范，AI 能理解您的意图并瞬间生成对应的模型与接口。</p>
+      </article>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const counter = document.querySelector('.counter-animate');
+    let counted = false;
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          
+          if (entry.target.classList.contains('home-hero__copy') && !counted) {
+            counted = true;
+            let count = 0;
+            const target = 3000;
+            const duration = 2000;
+            const steps = 60;
+            const increment = target / steps;
+            
+            const timer = setInterval(() => {
+              count += increment;
+              if (count >= target) {
+                clearInterval(timer);
+                counter.innerHTML = '3,000<span>+</span>';
+              } else {
+                counter.innerHTML = Math.floor(count).toLocaleString() + '<span>+</span>';
+              }
+            }, duration / steps);
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      observer.observe(el);
+    });
+  });
+</script>
 {% endblock %}

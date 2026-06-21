@@ -1,16 +1,16 @@
 :root {
-  --brand-brown: #80541f;
-  --brand-brown-deep: #4f3312;
-  --brand-olive: #66793a;
-  --brand-lime: #9aba55;
-  --ink: #24261f;
-  --muted: #6d7165;
-  --line: #dedfd3;
-  --paper: #fbfbf6;
-  --paper-deep: #f0f1e8;
+  --brand-brown: #00E58F;
+  --brand-brown-deep: #ffffff;
+  --brand-olive: #00E58F;
+  --brand-lime: #00E58F;
+  --ink: #f4f5ee;
+  --muted: #959e84;
+  --line: #1e2417;
+  --paper: #090a07;
+  --paper-deep: #12140d;
   --white: #fff;
-  --danger: #a33d2d;
-  --shadow: 0 24px 64px rgba(47, 48, 35, 0.12);
+  --danger: #ff5f56;
+  --shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
   --font-display: Georgia, "Times New Roman", serif;
   --font-body: "Avenir Next", "Noto Sans SC", "PingFang SC", sans-serif;
 }
@@ -20,7 +20,7 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 

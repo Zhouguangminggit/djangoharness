@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/css/accounts-admin.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="accounts-import">
+    <div class="accounts-import__intro">
+      <span class="accounts-import__eyebrow">BULK CREATE</span>
+      <h1>批量新增用户</h1>
+      <p>上传 CSV 后会先完整校验；任意一行有误时不会写入任何用户。</p>
+    </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="errornote">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="accounts-import__dropzone">
+        {{ form.csv_file.errors }}
+        {{ form.csv_file.label_tag }}
+        {{ form.csv_file }}
+        <p>{{ form.csv_file.help_text }}</p>
+      </div>
+      <div class="accounts-import__example">
+        <h2>CSV 示例</h2>
+        <code>username,email,password,nickname,phone,is_staff,is_active<br>zhangsan,zhangsan@example.com,StrongPass-2026,张三,13800138000,false,true</code>
+      </div>
+      <div class="submit-row">
+        <a class="el-button el-button--default el-button--small" href="{% url 'admin:accounts_user_changelist' %}">取消</a>
+        <button class="el-button el-button--primary el-button--small" type="submit">校验并新增</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
