@@ -1,0 +1,46 @@
+{% extends "admin/index.html" %}
+{% load static admin_dashboard %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
+{% endblock %}
+
+{% block home_content %}
+  {% user_dashboard_data as dashboard %}
+  {{ dashboard|json_script:"admin-dashboard-data" }}
+  <div id="dashboard" class="dashboard-shell">
+    <div class="dashboard-heading">
+      <div>
+        <span class="dashboard-eyebrow">OVERVIEW</span>
+        <h1>用户数据概览</h1>
+        <p>集中查看账号规模、活跃状态和近期增长趋势。</p>
+      </div>
+      <a class="dashboard-primary" href="{% url 'admin:accounts_user_add' %}">
+        <i class="fas fa-user-plus"></i> 新增用户
+      </a>
+    </div>
+    <div class="dashboard-metrics">
+      <article><span>用户总数</span><strong>{{ dashboard.summary.total }}</strong><small>全部注册账号</small></article>
+      <article><span>正常用户</span><strong>{{ dashboard.summary.active }}</strong><small>当前可登录账号</small></article>
+      <article><span>后台人员</span><strong>{{ dashboard.summary.staff }}</strong><small>拥有后台访问权限</small></article>
+      <article><span>近 7 天新增</span><strong>{{ dashboard.summary.new_7_days }}</strong><small>近期注册增长</small></article>
+    </div>
+    <div class="dashboard-grid">
+      <section class="dashboard-panel dashboard-panel--wide">
+        <header><div><h2>用户增长趋势</h2><p>最近 6 个月新增账号</p></div></header>
+        <div id="user-growth-chart" class="dashboard-chart" aria-label="用户增长趋势图"></div>
+      </section>
+      <section class="dashboard-panel">
+        <header><div><h2>账号状态</h2><p>正常与停用账号占比</p></div></header>
+        <div id="user-status-chart" class="dashboard-chart" aria-label="账号状态占比图"></div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  {{ block.super }}
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script src="{% static 'admin/js/dashboard.js' %}"></script>
+{% endblock %}
