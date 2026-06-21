@@ -1,12 +1,17 @@
-{% extends "base.html" %}
+{% extends "accounts/auth_base.html" %}
 
-{% block content %}
-  <section class="card">
-    <h2>注册</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button class="button" type="submit">创建账号</button>
-    </form>
-  </section>
+{% block auth_content %}
+  <p class="eyebrow">加入 DjangoHarness</p>
+  <h2>创建新账号</h2>
+  <div class="auth-tabs" role="tablist">
+    <a class="{% if mode != 'phone' %}active{% endif %}" href="{% url 'accounts:register' %}?mode=account">账号注册</a>
+    <a class="{% if mode == 'phone' %}active{% endif %}" href="{% url 'accounts:register' %}?mode=phone">手机注册</a>
+  </div>
+  <form method="post" class="auth-form">
+    {% csrf_token %}
+    <input type="hidden" name="mode" value="{{ mode }}">
+    {% include "accounts/form_fields.html" %}
+    <button class="button button-wide" type="submit">创建账号</button>
+  </form>
+  <p class="auth-switch">已有账号？<a href="{% url 'accounts:login' %}">返回登录</a></p>
 {% endblock %}

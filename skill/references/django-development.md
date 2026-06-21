@@ -15,9 +15,10 @@
 
 ## 模板与静态资源
 
-- 页面继承项目级 `templates/base.html`；app 模板使用 `<app_name>/` 命名空间。
+- 页面继承 `templates/layouts/application.html`；app 模板使用 `<app_name>/` 命名空间。
+- 项目级模板只使用 `layouts/` 和 `components/` 语义命名空间，不创建 `base.html`、`home.html` 等会抢占第三方模板的通用文件。
 - 模板只做展示和轻量条件判断，业务数据在视图中准备。
-- 样式和脚本放入 `static/css`、`static/js` 或 app 静态目录，不在模板中堆积内联实现。
+- 基础、共享组件、业务页面样式分层存放；业务 CSS/JS 通过 `extra_css`、`extra_js` 按需加载，不在模板中堆积内联实现。
 
 ## 兼容性
 

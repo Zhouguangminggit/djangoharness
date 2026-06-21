@@ -30,6 +30,8 @@ docker compose -f deploy/docker-compose.yml down
 
 数据存储在 Compose volumes。普通更新不要执行 `down -v`，该参数会删除 MySQL、Redis、静态和媒体数据卷。
 
+用户头像保存在 `media_data` 持久卷。生产反向代理需要将 `/media/` 映射到该卷，或将 Django 存储后端替换为对象存储；不要通过 Gunicorn 长期直接提供媒体文件。
+
 ## 使用已发布镜像
 
 ```bash

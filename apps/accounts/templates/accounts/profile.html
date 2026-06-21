@@ -1,0 +1,64 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}个人中心 · {{ site_name }}{% endblock %}
+{% block body_class %}site-page profile-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">{% endblock %}
+
+{% block content %}
+  <section class="site-container profile-shell">
+    <aside class="profile-summary">
+      <p class="section-kicker">PERSONAL SPACE</p>
+      <div class="profile-avatar" aria-hidden="true">
+        {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1"|upper }}{% endif %}
+      </div>
+      <h1>{{ user.display_name }}</h1>
+      <p>维护你的头像、公开称呼与登录资料。昵称会显示在导航栏和欢迎信息中。</p>
+      <dl>
+        <div><dt>账号状态</dt><dd>{% if user.is_active %}正常{% else %}已停用{% endif %}</dd></div>
+        <div><dt>加入时间</dt><dd>{{ user.date_joined|date:"Y-m-d" }}</dd></div>
+        <div><dt>最近登录</dt><dd>{{ user.last_login|date:"Y-m-d H:i"|default:"首次登录" }}</dd></div>
+      </dl>
+    </aside>
+
+    <div class="profile-content">
+      <section class="profile-editor" aria-labelledby="profile-details-title">
+        <header>
+          <p class="section-kicker">PROFILE DETAILS</p>
+          <h2 id="profile-details-title">个人信息</h2>
+          <p>修改后立即用于导航显示和后续登录。</p>
+        </header>
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="profile">
+          <div class="avatar-field{% if profile_form.avatar.errors %} field-error{% endif %}">
+            <label for="{{ profile_form.avatar.id_for_label }}">更换头像</label>
+            {{ profile_form.avatar }}
+            <small>{{ profile_form.avatar.help_text }}</small>
+            {{ profile_form.avatar.errors }}
+          </div>
+          {% include "accounts/form_fields.html" with form=profile_form exclude_field="avatar" %}
+          <div class="profile-actions">
+            <button class="profile-save" type="submit">保存个人信息</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="password-editor" aria-labelledby="password-change-title">
+        <header>
+          <p class="section-kicker">ACCOUNT SECURITY</p>
+          <h2 id="password-change-title">修改登录密码</h2>
+          <p>必须先验证当前旧密码。修改成功后本设备保持登录。</p>
+        </header>
+        <form method="post" class="password-form">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="password">
+          {% include "accounts/form_fields.html" with form=password_form %}
+          <div class="profile-actions">
+            <button class="profile-save" type="submit">确认修改密码</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </section>
+{% endblock %}

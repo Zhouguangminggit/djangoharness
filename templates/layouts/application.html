@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#66793a">
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/site-shell.css' %}">
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body class="{% block body_class %}site-page{% endblock %}">
+    {% block site_header %}{% include "components/site_header.html" %}{% endblock %}
+    <main class="{% block main_class %}site-main{% endblock %}">
+      {% include "components/messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+    <script defer src="{% static 'js/core.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

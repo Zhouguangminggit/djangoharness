@@ -1,23 +1,24 @@
----
-name: djangoharness
-description: Implement, modify, review, and verify DjangoHarness modules using the repository's Django 4.2, Python 3.10+, Celery, Redis, pytest-django, Ruff, mypy, uv, MySQL 8 reference SQL, and AI-oriented engineering conventions. Use for DjangoHarness work involving apps, models, migrations, SQL, views, forms, URLs, templates, static assets, settings, permissions, authentication, asynchronous tasks, dependencies, tests, deployment-adjacent configuration, iteration notes, or acceptance fixes.
----
+______________________________________________________________________
+
+## name: djangoharness description: Implement, modify, review, and verify DjangoHarness modules using the repository's Django 4.2, Python 3.10+, Celery, Redis, pytest-django, Ruff, mypy, uv, MySQL 8 reference SQL, and AI-oriented engineering conventions. Use for DjangoHarness work involving apps, models, migrations, SQL, views, forms, URLs, templates, static assets, settings, permissions, authentication, asynchronous tasks, dependencies, tests, deployment-adjacent configuration, iteration notes, or acceptance fixes.
 
 # DjangoHarness
 
 ## Execute the workflow
 
 1. Inspect the repository and preserve unrelated user changes.
-2. Read [project-structure.md](references/project-structure.md) before changing code.
-3. Load only the task-specific references:
+1. Read [project-structure.md](references/project-structure.md) before changing code.
+1. Load only the task-specific references:
    - Django apps, models, views, forms, URLs, templates, or static assets: read [django-development.md](references/django-development.md).
+   - Template layout, CSS/JS organization, or frontend modules: also read [template-and-style.md](references/template-and-style.md).
+   - Users, login protection, profiles, or verification codes: also read [authentication.md](references/authentication.md).
    - Models, migrations, schema, indexes, or SQL: also read [database.md](references/database.md).
    - Celery tasks, retries, brokers, results, or Redis: read [async-tasks.md](references/async-tasks.md).
    - Dependencies, formatting, typing, tests, or delivery: read [engineering-quality.md](references/engineering-quality.md).
-4. Trace existing patterns before implementing. Keep the change scoped to the requested business domain.
-5. Implement the smallest complete change, including tests and synchronized artifacts required by the references.
-6. Run focused checks during development, then run the completion checks.
-7. Update or add the relevant record under `docs/iterations/` with the actual changes, verification results, and remaining issues.
+1. Trace existing patterns before implementing. Keep the change scoped to the requested business domain.
+1. Implement the smallest complete change, including tests and synchronized artifacts required by the references.
+1. Run focused checks during development, then run the completion checks.
+1. Update or add the relevant record under `docs/iterations/` with the actual changes, verification results, and remaining issues.
 
 ## Apply architectural boundaries
 
@@ -33,9 +34,9 @@ description: Implement, modify, review, and verify DjangoHarness modules using t
 For a business model change, always keep these artifacts aligned:
 
 1. Django model definition.
-2. Django migration generated with `uv run python manage.py makemigrations`.
-3. Matching MySQL 8 reference definition in `db/*.sql`.
-4. Model and behavior tests.
+1. Django migration generated with `uv run python manage.py makemigrations`.
+1. Matching MySQL 8 reference definition in `db/*.sql`.
+1. Model and behavior tests.
 
 Treat migrations as the only executable schema source. Treat `db/*.sql` as review and non-Django deployment references, never as a replacement for migrations.
 

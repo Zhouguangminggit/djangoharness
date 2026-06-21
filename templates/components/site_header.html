@@ -1,0 +1,28 @@
+{% load static %}
+<header class="site-header">
+  <div class="site-container site-header__inner">
+    <a class="site-brand" href="{% url 'home' %}" aria-label="返回 DjangoHarness 首页">
+      <img src="{% static 'accounts/brand/logo.png' %}" alt="" width="40" height="40">
+      <span>{{ site_name }}</span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="{% url 'home' %}">首页</a>
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}">管理后台</a>{% endif %}
+        <a class="site-nav__user" href="{% url 'accounts:profile' %}" aria-label="进入个人中心">
+          <span class="site-nav__avatar" aria-hidden="true">
+            {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1"|upper }}{% endif %}
+          </span>
+          <span>{{ user.display_name }}</span>
+        </a>
+        <form method="post" action="{% url 'accounts:logout' %}">
+          {% csrf_token %}
+          <button type="submit">退出</button>
+        </form>
+      {% else %}
+        <a href="{% url 'accounts:login' %}">登录</a>
+        <a class="site-nav__primary" href="{% url 'accounts:register' %}">开始使用</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
