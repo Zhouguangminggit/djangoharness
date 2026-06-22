@@ -74,13 +74,12 @@ make check   # lint + test
 ## Documentation
 
 - [Agent development rules](agent-docs/AGENTS.md)
-- [Local setup (Chinese)](docs/%E7%B3%BB%E7%BB%9F%E5%90%AF%E7%94%A8%E8%AF%B4%E6%98%8E.md)
 - [macOS setup (Chinese)](docs/macos/README.md)
 - [Windows setup (Chinese)](docs/windows/README.md)
 - [Celery guide (Chinese)](docs/celery/README.md)
 - [Docker deployment (Chinese)](deploy/README.md)
 - [Tooling guide (Chinese)](docs/makefile/README.md)
-- [Production settings (Chinese)](docs/%E4%B8%8A%E7%BA%BF%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.md)
+- [Production settings (Chinese)](docs/deploy.md)
 
 ## Contributing
 
