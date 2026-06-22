@@ -91,13 +91,12 @@ make check   # lint + test
 ## 文档导航
 
 - [Agent 开发规范](agent-docs/AGENTS.md)
-- [系统启用](docs/%E7%B3%BB%E7%BB%9F%E5%90%AF%E7%94%A8%E8%AF%B4%E6%98%8E.md)
 - [macOS 使用说明](docs/macos/README.md)
 - [Windows 使用说明](docs/windows/README.md)
 - [Celery 使用](docs/celery/README.md)
 - [Docker 部署](deploy/README.md)
 - [工具文档](docs/makefile/README.md)
-- [生产配置](docs/%E4%B8%8A%E7%BA%BF%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.md)
+- [生产配置](docs/deploy.md)
 
 
 
