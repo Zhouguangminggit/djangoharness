@@ -3,7 +3,7 @@ name = "djangoharness"
 version = "0.1.0"
 description = "A Django scaffold designed for consistent AI-assisted development."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.14"
 license = { text = "MIT" }
 dependencies = [
     "celery>=5.3,<6.0",
@@ -26,6 +26,13 @@ dev = [
     "pytest-django>=4.8,<5.0",
     "ruff>=0.11,<1.0",
 ]
+
+# Use a mainland China mirror by default. uv records this index in uv.lock, so
+# package metadata and distributions are fetched from the same source.
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
 
 [tool.ruff]
 target-version = "py310"
