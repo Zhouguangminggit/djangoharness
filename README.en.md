@@ -5,7 +5,7 @@
 <p align="center"><strong>Build consistent Django features with AI agents</strong></p>
 
 <p align="center">
-  <img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10%2B-3776AB">
+  <img alt="Python 3.10-3.13" src="https://img.shields.io/badge/Python-3.10--3.13-3776AB">
   <img alt="Django 4.2" src="https://img.shields.io/badge/Django-4.2-0C4B33">
   <img alt="Celery 5" src="https://img.shields.io/badge/Celery-5-37814A">
   <img alt="Redis 6+" src="https://img.shields.io/badge/Redis-6%2B-DC382D">
@@ -26,14 +26,20 @@ DjangoHarness can be simply understood as a framework built based on the Django 
 
 ## Quick start
 
-Requirements: Python 3.10+ and uv. Production uses MySQL 8.x and Redis 6+; local development defaults to SQLite, and Redis is only required when running a Celery worker.
+Requirements: Python 3.10 through 3.13 and uv. Production uses MySQL 8.x and Redis
+6+; local development defaults to SQLite, and Redis is only required when running a
+Celery worker. Dependencies use the Tsinghua PyPI mirror by default.
 
 ```bash
 # Install uv if needed
 python -m pip install uv
 
-# Install locked dependencies
-uv sync --all-groups
+# Install and select a supported Python (3.10, 3.11, 3.12, or 3.13)
+uv python install 3.10
+uv python pin 3.10
+
+# Install runtime and development dependencies from the lockfile
+uv sync --all-groups --locked
 
 # Prepare configuration and database
 cp .env.example .env

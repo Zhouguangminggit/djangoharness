@@ -6,7 +6,7 @@ PYTHON_PATHS := apps base_framework celery_app tests manage.py
 MARKDOWN_PATHS := README.md README.en.md agent-docs docs deploy/README.md skill
 
 sync:
-	uv sync --all-groups
+	uv sync --all-groups --locked
 
 format:
 	uv run --no-sync ruff format $(PYTHON_PATHS)
