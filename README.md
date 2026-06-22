@@ -47,6 +47,13 @@ uv sync --all-groups --locked
 
 # 准备配置与数据库
 cp .env.example .env
+
+# 激活项目环境
+
+mac执行命令： source .venv/bin/activate
+windows执行命令： .venv\Scripts\activate
+
+# 执行数据迁移
 uv run python manage.py migrate
 
 # 启动开发服务
