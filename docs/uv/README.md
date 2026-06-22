@@ -49,3 +49,8 @@ UV_DEFAULT_INDEX=https://pypi.org/simple uv sync --all-groups --locked
 3. 报错 URL 是否来自 `pypi.tuna.tsinghua.edu.cn`。
 4. macOS 安装 `mysqlclient` 失败时，是否已按 `docs/macos/README.md` 安装 MySQL
    客户端编译依赖。
+
+
+## 常见问题
+
+1. 安装依赖失败或者太慢时，检查网络连接，如果有开vpn，需要关闭vpn重试。
