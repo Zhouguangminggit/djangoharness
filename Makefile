@@ -1,4 +1,4 @@
-.PHONY: sync format lint test check
+.PHONY: sync format lint test check docs-serve docs-build
 
 export UV_CACHE_DIR := .uv-cache
 
@@ -24,3 +24,9 @@ test:
 	uv run --no-sync pytest
 
 check: lint test
+
+docs-serve:
+	uv run --no-sync mkdocs serve --dev-addr 127.0.0.1:8001
+
+docs-build:
+	uv run --no-sync mkdocs build --strict

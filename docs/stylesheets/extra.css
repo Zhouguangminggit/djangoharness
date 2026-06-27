@@ -1,0 +1,45 @@
+:root {
+  --md-primary-fg-color: #00796b;
+  --md-accent-fg-color: #00a896;
+}
+
+.hero {
+  margin: 0 0 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid color-mix(in srgb, var(--md-primary-fg-color) 25%, transparent);
+  border-radius: 1rem;
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      color-mix(in srgb, var(--md-accent-fg-color) 22%, transparent),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--md-primary-fg-color) 10%, transparent),
+      transparent 60%
+    );
+}
+
+.hero h2 {
+  max-width: 17em;
+  margin-top: 0;
+  font-weight: 700;
+}
+
+.hero p {
+  max-width: 48rem;
+}
+
+.md-typeset .grid.cards > ul > li {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 8%);
+  transform: translateY(-2px);
+}

@@ -95,4 +95,4 @@ docker compose -f deploy/docker-compose.yml restart worker
 - 任务重复执行：将业务操作设计为幂等，并为外部写入增加唯一键或状态检查。
 - Windows Worker 异常：使用 `--pool=solo`，或改用 Docker Desktop/WSL。
 
-任务参数、重试、幂等性与日志规则见 [异步任务规范](../../agent-docs/async-tasks.md)。
+任务参数、重试、幂等性与日志规则见 [异步任务规范](https://github.com/Zhouguangminggit/djangoharness/blob/main/agent-docs/async-tasks.md)。

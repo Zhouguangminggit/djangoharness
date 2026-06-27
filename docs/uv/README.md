@@ -45,11 +45,10 @@ UV_DEFAULT_INDEX=https://pypi.org/simple uv sync --all-groups --locked
 恢复清华镜像时执行 `uv lock`，再同步并提交更新后的 `uv.lock`。安装失败时依次检查：
 
 1. `uv run python --version` 是否在 3.10～3.13 范围内。
-2. `uv lock --check` 是否通过。
-3. 报错 URL 是否来自 `pypi.tuna.tsinghua.edu.cn`。
-4. macOS 安装 `mysqlclient` 失败时，是否已按 `docs/macos/README.md` 安装 MySQL
+1. `uv lock --check` 是否通过。
+1. 报错 URL 是否来自 `pypi.tuna.tsinghua.edu.cn`。
+1. macOS 安装 `mysqlclient` 失败时，是否已按 `docs/macos/README.md` 安装 MySQL
    客户端编译依赖。
-
 
 ## 常见问题
 
