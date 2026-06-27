@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DjangoHarness — 面向 AI 的工程化底座</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Section 1: Hero -->
+  <section class="hero">
+    <h1>不写一行代码<br><span>让 AI交付企业级业务系统</span></h1>
+    <p class="quote">一套面向 AI 和 Agent 的底座框架，重塑开发体验。</p>
+    <p class="hero-desc">
+      受openai Harness 工程规范启发，本人的初心是想构建一个基于 Django框架 和 Harness 工程规范构建的现代框架。让大模型（如 Codex, Claude）在统一的规则下，直接产出高质量、可维护、符合工程标准的生产级代码。
+    </p>
+
+    <div class="hero-scene">
+      <img src="../assets/djangoharness.png" alt="DjangoHarness Architecture" onerror="this.src='https://via.placeholder.com/600x300/0c4b33/ffffff?text=DjangoHarness+Architecture'">
+    </div>
+
+    <div class="scroll-hint">
+      <span>向下滚动</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- Section 2: Struggles -->
+  <section class="struggles">
+    <div class="container">
+      <div class="animate-on-scroll">
+        <span class="section-label">AI 编程的困境</span>
+        <h2 class="section-title">我们用 AI 写代码，却常在维护中迷失</h2>
+        <p class="section-subtitle">这不是模型不够聪明，而是缺乏统一的标准与语境。</p>
+      </div>
+
+      <div class="struggle-item animate-on-scroll delay-1">
+        <div class="struggle-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="struggle-text">
+          <h3>生成代码质量参差不齐</h3>
+          <p>大模型每次生成的代码风格都不一样。今天用函数式编程，明天用面向对象，没有统一的规范。代码虽然能跑，但团队其他人接手时，像在看一本风格混乱的拼凑之作。</p>
+        </div>
+      </div>
+
+      <div class="struggle-item animate-on-scroll delay-2">
+        <div class="struggle-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="struggle-text">
+          <h3>每次都需要漫长的前置沟通</h3>
+          <p>每次开启新会话，都要反复告诉 AI："我们用 Django 4.2，用 Celery 处理异步任务，要加类型提示……" 这些重复的前置沟通消耗了大量精力，稍微漏掉一点，生成的代码就无法直接集成。</p>
+        </div>
+      </div>
+
+      <div class="struggle-item animate-on-scroll delay-3">
+        <div class="struggle-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg>
+        </div>
+        <div class="struggle-text">
+          <h3>复杂业务缺乏架构指引</h3>
+          <p>面对简单的 CRUD，AI 应对自如。但一到复杂的业务逻辑、跨系统的调度，或者高并发的数据处理，缺乏底层架构规范的 AI 往往会给出脆弱的玩具代码，难以走向生产环境。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Tools -->
+  <section class="tools">
+    <div class="container-wide">
+      <div class="animate-on-scroll" style="text-align: center; margin-bottom: 60px;">
+        <span class="section-label">核心特性</span>
+        <h2 class="section-title">坚实底座，开箱即用</h2>
+        <p class="section-subtitle" style="max-width: 600px; margin-left: auto; margin-right: auto;">整合现代 Python 最佳实践，为生产环境准备就绪。</p>
+      </div>
+
+      <div class="tools-grid">
+        <div class="tool-card animate-on-scroll delay-1">
+          <div class="tool-icon" style="background: #E8F5E9;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0C4B33" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3>Django 4.2</h3>
+          <p>基于成熟稳健的 Django 4.2 长期支持版本构建。拥有庞大的生态系统和完善的安全性，是快速构建复杂 Web 应用的黄金标准。</p>
+          <span class="tool-tag">Web 框架基石</span>
+        </div>
+
+        <div class="tool-card animate-on-scroll delay-2">
+          <div class="tool-icon" style="background: #E0F2FE;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3776AB" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <h3>现代 Python 栈</h3>
+          <p>全面支持 Python 3.10 至 3.13。采用 uv 作为极速依赖管理工具，让本地开发和 CI/CD 构建速度提升数倍。</p>
+          <span class="tool-tag">Python 3.10+ / uv</span>
+        </div>
+
+        <div class="tool-card animate-on-scroll delay-3">
+          <div class="tool-icon" style="background: #FEF3C7;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>强大的异步任务</h3>
+          <p>内置 Celery 5 和 Redis 6+ 的集成方案。从后台报表生成到定时数据同步，轻松应对各种长耗时、高并发的异步处理场景。</p>
+          <span class="tool-tag">Celery / Redis</span>
+        </div>
+
+        <div class="tool-card animate-on-scroll delay-1">
+          <div class="tool-icon" style="background: #FCE7F3;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#DC382D" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3>生产级数据存储</h3>
+          <p>默认集成 MySQL 8 的生产配置，同时支持本地 SQLite 的极速开发模式。合理的数据库分层设计，满足不同阶段的数据需求。</p>
+          <span class="tool-tag">MySQL 8 / SQLite</span>
+        </div>
+
+        <div class="tool-card animate-on-scroll delay-2">
+          <div class="tool-icon" style="background: #E0E7FF;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3>严格的工程质量</h3>
+          <p>预置了 Ruff、mypy、mdformat 等 Lint 工具链，以及完整的 pytest 测试方案，更有 Quality CI 保证代码入库质量。</p>
+          <span class="tool-tag">Lint / Pytest / CI</span>
+        </div>
+
+        <div class="tool-card animate-on-scroll delay-3">
+          <div class="tool-icon" style="background: #CFFAFE;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          </div>
+          <h3>云原生就绪</h3>
+          <p>提供完整的 Docker 部署支持，跨平台兼容 macOS 和 Windows。无论是本地开发还是云端部署，环境始终如一。</p>
+          <span class="tool-tag">Docker Ready</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Stories (Scenarios) -->
+  <section class="stories">
+    <div class="container-wide">
+      <div class="animate-on-scroll" style="text-align: center; margin-bottom: 60px;">
+        <span class="section-label">应用场景</span>
+        <h2 class="section-title">基于底座，快速构建不同业务</h2>
+        <p class="section-subtitle" style="max-width: 600px; margin-left: auto; margin-right: auto;">统一的工程规范，带来的是效率的跃升。</p>
+      </div>
+
+      <div class="stories-grid">
+        <div class="story-card story-1 animate-on-scroll delay-1">
+          <div class="story-avatar">创</div>
+          <h3>从 0 到 1 验证想法</h3>
+          <p class="story-role">MVP 快速开发</p>
+          <p class="story-desc">面对新的业务点子，无需再耗费时间搭建基础架构。直接让 AI 读取项目 Skill，几句话描述业务需求，就能迅速生成包含数据模型、API 和后台管理的可用系统。</p>
+          <div class="story-quote">"以前搭环境要半天，现在喝杯咖啡的功夫，后台已经跑起来了。"</div>
+          <p class="story-result">效率提升：极速构建业务模型</p>
+        </div>
+
+        <div class="story-card story-2 animate-on-scroll delay-2">
+          <div class="story-avatar">企</div>
+          <h3>企业级内部系统</h3>
+          <p class="story-role">后台管理与工作流</p>
+          <p class="story-desc">利用 Django 强大的 Admin 特性和内置的规范，快速产出企业级 CRM、ERP 或是各类管理后台。权限管理、数据审计开箱即用，代码规整，利于二次开发。</p>
+          <div class="story-quote">"让 AI 按规范生成 Admin 配置，比手写快几十倍，而且不会出错。"</div>
+          <p class="story-result">稳定交付：高质量的企业应用</p>
+        </div>
+
+        <div class="story-card story-3 animate-on-scroll delay-3">
+          <div class="story-avatar">数</div>
+          <h3>数据处理流水线</h3>
+          <p class="story-role">异步任务与定时调度</p>
+          <p class="story-desc">面对需要定时爬取数据、批量生成报表或集成外部系统的场景。基于内置的 Celery + Redis 架构，AI 能够直接为你编写可靠的异步任务和定时器。</p>
+          <div class="story-quote">"复杂的异步逻辑交由框架底层兜底，AI 只需要专注业务逻辑。"</div>
+          <p class="story-result">高可靠性：从容应对复杂调度</p>
+        </div>
+
+        <div class="story-card story-4 animate-on-scroll delay-1">
+          <div class="story-avatar">智</div>
+          <h3>Agent 智能体中枢</h3>
+          <p class="story-role">AI 应用后端</p>
+          <p class="story-desc">DjangoHarness 的初心便是构建面向 AI 和 Agent 的底座。它非常适合作为 AI 应用的后端，管理对话历史、调度不同工具、存储知识库，为上层智能体提供坚实支撑。</p>
+          <div class="story-quote">"它是大脑的躯干，为智能体提供行动的执行力。"</div>
+          <p class="story-result">面向未来：AI 时代的系统底座</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: AI Skill Integration -->
+  <section class="agents">
+    <div class="container">
+      <div class="animate-on-scroll" style="text-align: center; margin-bottom: 48px;">
+        <span class="section-label">Agent 开发规范</span>
+        <h2 class="section-title">内置 Skill，与大模型无缝对话</h2>
+      </div>
+
+      <p class="agent-intro animate-on-scroll">
+        我们在仓库中内置了由 DjangoHarness Agent 规范整理而成的完整项目 Skill（<code>skill/</code> 目录）。将它导入 Codex 或 Claude Code，AI 就如同进入了你的开发团队，完全遵循你的工程规范。
+      </p>
+
+      <div class="chat-container">
+        <!-- Chat 1 -->
+        <div class="chat-bubble user animate-on-scroll">
+          <div class="chat-avatar">开</div>
+          <div class="chat-content">
+            <div class="agent-name">开发者</div>
+            请加载 DjangoHarness Skill。接下来我们要开发一个商品管理模块，包含商品名称、价格和库存。
+          </div>
+        </div>
+        <div class="chat-bubble ai animate-on-scroll">
+          <div class="chat-avatar">AI</div>
+          <div class="chat-content">
+            <div class="agent-name">Claude Code / Codex</div>
+            已读取 DjangoHarness 规范。我将使用 Django 4.2 语法，在 <code>models.py</code> 中创建 <code>Product</code> 模型，添加对应的 <code>admin.py</code> 配置。我会遵守类型提示规范，并为你生成数据库迁移文件。需要我立即开始编写代码吗？
+          </div>
+        </div>
+        <p class="agent-note">AI 会自动对齐技术栈和代码风格</p>
+
+        <!-- Chat 2 -->
+        <div class="chat-bubble user animate-on-scroll">
+          <div class="chat-avatar">开</div>
+          <div class="chat-content">
+            <div class="agent-name">开发者</div>
+            我们需要一个每天凌晨 2 点自动统计总库存的任务。
+          </div>
+        </div>
+        <div class="chat-bubble ai animate-on-scroll">
+          <div class="chat-avatar">AI</div>
+          <div class="chat-content">
+            <div class="agent-name">Claude Code / Codex</div>
+            明白。根据项目规范，我将在 <code>tasks.py</code> 中编写一个 Celery 异步任务，并在配置中添加 <code>crontab</code> 调度计划。同时，我会确保代码通过 <code>make lint</code> 检查。
+          </div>
+        </div>
+        <p class="agent-note">复杂的架构决策（如使用 Celery），由框架底层规范指导</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Future -->
+  <section class="future">
+    <div class="container-wide">
+      <div class="animate-on-scroll" style="text-align: center; margin-bottom: 48px;">
+        <span class="section-label">愿景</span>
+        <h2 class="section-title">从单兵作战到 AI 协同开发</h2>
+        <p class="section-subtitle" style="max-width: 600px; margin-left: auto; margin-right: auto;">规范与工具的结合，释放真正的生产力。</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item animate-on-scroll delay-1">
+          <div class="timeline-dot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h4>基础框架</h4>
+          <p>整合最好用的 Python 工具链（uv, ruff, pytest）和 Django 最佳实践，提供一个极其稳健的项目起点。</p>
+        </div>
+
+        <div class="timeline-item animate-on-scroll delay-2">
+          <div class="timeline-dot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+          </div>
+          <h4>规范工程化</h4>
+          <p>不仅是代码模板，更是将团队协作规范、API 规范、测试规范等文档化、工具化，通过 Makefile 一键执行。</p>
+        </div>
+
+        <div class="timeline-item animate-on-scroll delay-3">
+          <div class="timeline-dot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <h4>AI 原生对接</h4>
+          <p>通过内置的 `skill` 系统，向 AI 提供结构化的上下文。让大模型从"实习生"直接变为熟悉团队规范的"高级工程师"。</p>
+        </div>
+
+        <div class="timeline-item future-phase animate-on-scroll delay-4">
+          <div class="timeline-dot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/><path d="M16 12h-4"/></svg>
+          </div>
+          <h4>全自动交付流水线</h4>
+          <p>未来，你只需要在 README 中描述业务需求。AI Agent 将自主完成从数据建模、接口开发到测试部署的全生命周期交付。</p>
+        </div>
+      </div>
+
+      <div class="future-vision animate-on-scroll">
+        <p>软件开发的范式正在发生改变。<br>我们不再是逐行编写代码，而是设计系统架构、制定工程规范，<br>然后交由 AI 去完成海量的细节实现。<br>DjangoHarness 就是为了这一天而生。<br><strong>让 AI 按统一规范，交付高质量业务代码。</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Footer -->
+  <footer class="footer">
+    <h2><span>DjangoHarness</span></h2>
+    <p>开源框架 · 面向 AI 和 Agent 的底座</p>
+    <div class="footer-divider"></div>
+    <p class="footer-info">遵循 MIT License 协议</p>
+    <p class="footer-info">
+      <a href="https://github.com/hellowac/djangoharness" style="color: inherit; text-decoration: none;">GitHub</a> | 
+      <a href="http://127.0.0.1:8001/" style="color: inherit; text-decoration: none;">文档导航</a>
+    </p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

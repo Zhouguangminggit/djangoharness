@@ -12,6 +12,7 @@ logs/
 .DS_Store
 media/
 staticfiles/
+site/
 venv/
 .venv/
 env/

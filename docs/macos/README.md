@@ -48,3 +48,4 @@ docker compose -f deploy/docker-compose.yml up --build
 ```
 
 停止容器使用 `docker compose -f deploy/docker-compose.yml down`；不要添加 `-v`，除非确定要删除本地数据库数据。
+

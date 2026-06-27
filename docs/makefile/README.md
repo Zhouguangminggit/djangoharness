@@ -17,3 +17,5 @@ make check   # lint + test
 ```
 
 若提示找不到 `uv`，先执行 `python -m pip install uv`。
+
+<video width="100%" controls>   <source src="../assets/video/video.mov" type="video/mp4">   您的浏览器不支持视频播放。 </video>

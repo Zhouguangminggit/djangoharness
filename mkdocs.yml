@@ -1,0 +1,106 @@
+site_name: DjangoHarness 文档
+site_description: 面向 AI 和 Agent 的 Django 业务开发框架文档
+site_url: https://zhouguangminggit.github.io/djangoharness/
+repo_url: https://github.com/Zhouguangminggit/djangoharness
+repo_name: Zhouguangminggit/djangoharness
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: zh
+  icon:
+    logo: material/application-braces-outline
+    repo: fontawesome/brands/github
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.path
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+
+nav:
+  - 首页: index.md
+  - 文档站:
+      - 概览: mkdocs/index.md
+      - MkDocs + Material: mkdocs/guide.md
+      - 生产配置: deploy.md
+  - 开发环境:
+      - 概览: environments/index.md
+      - macOS: macos/README.md
+      - Windows: windows/README.md
+  - 开发工具:
+      - 概览: tools/index.md
+      - uv: uv/README.md
+      - Makefile: makefile/README.md
+      - Ruff: ruff/README.md
+      - mypy: mypy/README.md
+      - pytest: pytest/README.md
+      - mdformat: mdformat/README.md
+  - 框架能力:
+      - 概览: framework/index.md
+      - Celery: celery/README.md
+      - SimpleUI:
+          - 模板: simpleui/template.md
+          - 菜单: simpleui/menus.md
+          - Action: simpleui/action.md
+  - 迭代记录:
+      - 概览: iterations/index.md
+      - MkDocs + Material 集成: iterations/18-mkdocs-material.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Zhouguangminggit/djangoharness
+      name: DjangoHarness on GitHub
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+strict: true

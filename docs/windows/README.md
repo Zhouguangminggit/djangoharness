@@ -48,4 +48,4 @@ uv run celery -A celery_app worker --loglevel=INFO --pool=solo
 docker compose -f deploy/docker-compose.yml up --build
 ```
 
-Docker Desktop 必须切换到 Linux containers。详细命令见 [Celery 使用说明](../celery/README.md)和 [Docker 部署说明](../../deploy/README.md)。
+Docker Desktop 必须切换到 Linux containers。详细命令见 [Celery 使用说明](../celery/README.md)和 [Docker 部署说明](https://github.com/Zhouguangminggit/djangoharness/blob/main/deploy/README.md)。

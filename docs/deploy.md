@@ -21,7 +21,7 @@ DJANGO_SETTINGS_MODULE=base_framework.settings.prod uv run python manage.py migr
 DJANGO_SETTINGS_MODULE=base_framework.settings.prod uv run python manage.py collectstatic --noinput
 ```
 
-生产 WSGI 入口为 `base_framework.wsgi:application`。容器部署使用 `deploy/Dockerfile` 和 `deploy/docker-compose.yml`，健康检查地址为 `/health/`，详细步骤见 [Docker 部署说明](../deploy/README.md)。HTTPS、媒体对象存储、日志采集和备份仍由部署环境负责。
+生产 WSGI 入口为 `base_framework.wsgi:application`。容器部署使用 `deploy/Dockerfile` 和 `deploy/docker-compose.yml`，健康检查地址为 `/health/`，详细步骤见 [Docker 部署说明](https://github.com/Zhouguangminggit/djangoharness/blob/main/deploy/README.md)。HTTPS、媒体对象存储、日志采集和备份仍由部署环境负责。
 
 生产环境不应关闭第三方验证码服务；若因受控验收临时关闭，必须同步限制站点访问范围并及时恢复。
 

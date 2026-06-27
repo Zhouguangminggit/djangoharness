@@ -11,8 +11,7 @@
 
 - `UV_CACHE_DIR=.uv-cache uv lock --check --offline`：通过，解析 50 个包，锁文件与
   `pyproject.toml` 一致。
-- Python 3.10、3.11、3.13 分别执行 `uv sync --all-groups --locked --dry-run
-  --offline --python <version>`：通过，均能从同一锁文件选择对应依赖。
+- Python 3.10、3.11、3.13 分别执行 `uv sync --all-groups --locked --dry-run --offline --python <version>`：通过，均能从同一锁文件选择对应依赖。
 - 锁文件包含 mypy 1.20.2 对 Python 3.10、3.11、3.12、3.13 的 macOS ARM64 wheel，
   下载域名均为 `pypi.tuna.tsinghua.edu.cn`。
 - `git diff --check`：通过。
