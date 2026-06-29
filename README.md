@@ -52,6 +52,9 @@ windows执行命令： .venv\Scripts\activate
 # 执行数据迁移
 uv run python manage.py migrate
 
+# 创建超级管理员用户
+uv run python manage.py createsuperuser
+
 # 启动开发服务
 uv run python manage.py runserver
 
