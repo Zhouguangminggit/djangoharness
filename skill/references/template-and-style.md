@@ -4,7 +4,7 @@
 
 - `templates/layouts/` 放项目页面骨架，`templates/components/` 放跨业务共享片段。
 - 业务页面放在 `apps/<app>/templates/<app>/`，引用时使用完整 `<app>/<page>.html`。
-- 禁止在项目级模板目录创建 `base.html`、`home.html`、`login.html` 等全局通用名，避免覆盖 Admin、SimpleUI 和第三方 app。
+- 禁止在项目级模板目录创建 `base.html`、`home.html`、`login.html` 等全局通用名，避免覆盖 Admin、Unfold 和第三方 app。
 - 业务页面默认继承 `layouts/application.html`；独立页面壳使用带业务语义的布局名。
 
 ## 静态资源分层

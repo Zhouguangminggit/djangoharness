@@ -18,7 +18,7 @@ DjangoHarness 是面向 AI 辅助开发的 Django 前后端不分离脚手架。
 - 模型、迁移或 SQL：阅读[数据库规范](database.md)。
 - 用户、登录保护或验证码：阅读[用户认证规范](authentication.md)。
 - 模板、页面布局或 CSS/JS：阅读[模板与样式架构](template-and-style.md)。
-- Django Admin、SimpleUI、后台菜单或管理操作：阅读[后台管理规范](admin.md)。
+- Django Admin、Unfold、后台菜单或管理操作：阅读[后台管理规范](admin.md)。
 - 站内通知、后台发布或业务通知触发：阅读[消息通知开发规范](notifications.md)。
 - 日志、异常诊断或运行排查：阅读 [Loguru 日志规范](logging.md)。
 
@@ -46,3 +46,4 @@ make docs-build
 - [第十批：认证验收](../docs/iterations/10-auth-acceptance.md)
 - [第十八批：MkDocs + Material 文档站](../docs/iterations/18-mkdocs-material.md)
 - [第二十三批：消息通知中心](../docs/iterations/23-notifications-center.md)
+- [第二十四批：Unfold 后台迁移](../docs/iterations/24-unfold-admin.md)

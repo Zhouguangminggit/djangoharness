@@ -17,6 +17,13 @@ def admin_user(db):
     )
 
 
+def test_admin_dashboard_requires_login(client: Client) -> None:
+    response = client.get(reverse("admin:index"))
+
+    assert response.status_code == 302
+    assert response.headers["Location"].startswith(reverse("admin:login"))
+
+
 @pytest.mark.django_db
 def test_admin_dashboard_shows_user_metrics(admin_user, client: Client) -> None:
     User.objects.create_user(
@@ -35,6 +42,10 @@ def test_admin_dashboard_shows_user_metrics(admin_user, client: Client) -> None:
     assert "user-growth-chart" in content
     assert '"total": 2' in content
     assert '"inactive": 1' in content
+    assert reverse("admin:accounts_user_bulk_add") in content
+    assert "DjangoHarness" in content
+    assert "管理后台" in content
+    assert "admin/css/theme.css" in content
 
 
 @pytest.mark.django_db
@@ -61,6 +72,16 @@ def test_admin_user_crud_pages_are_available(admin_user, client: Client) -> None
     ).content.decode()
     assert "重要日期" in change_content
     assert "控制后台访问、角色分组和细粒度权限" in change_content
+
+
+@pytest.mark.django_db
+def test_group_admin_uses_unfold(admin_user, client: Client) -> None:
+    client.force_login(admin_user)
+
+    response = client.get(reverse("admin:auth_group_changelist"))
+
+    assert response.status_code == 200
+    assert "unfold/css/styles.css" in response.content.decode()
 
 
 @pytest.mark.django_db
@@ -118,3 +139,49 @@ def test_bulk_user_import_requires_add_permission(client: Client) -> None:
     response = client.get(reverse("admin:accounts_user_bulk_add"))
 
     assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_admin_user_actions_preserve_current_account(
+    admin_user, client: Client
+) -> None:
+    inactive = User.objects.create_user(
+        username="inactive-action",
+        email="inactive-action@example.com",
+        password=PASSWORD,
+        is_active=False,
+    )
+    active = User.objects.create_user(
+        username="active-action",
+        email="active-action@example.com",
+        password=PASSWORD,
+        is_active=True,
+    )
+    client.force_login(admin_user)
+    changelist = reverse("admin:accounts_user_changelist")
+
+    response = client.post(
+        changelist,
+        {
+            "action": "activate_users",
+            "_selected_action": [inactive.pk],
+        },
+        follow=True,
+    )
+    assert response.status_code == 200
+    inactive.refresh_from_db()
+    assert inactive.is_active is True
+
+    response = client.post(
+        changelist,
+        {
+            "action": "deactivate_users",
+            "_selected_action": [admin_user.pk, active.pk],
+        },
+        follow=True,
+    )
+    assert response.status_code == 200
+    admin_user.refresh_from_db()
+    active.refresh_from_db()
+    assert admin_user.is_active is True
+    assert active.is_active is False

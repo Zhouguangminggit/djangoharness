@@ -38,7 +38,7 @@ DjangoHarness 是面向 AI 和 Agent 的 Django 业务开发框架。本站集�
 
   ______________________________________________________________________
 
-  配置 Celery、SimpleUI 和 DjangoHarness 内置能力。
+  配置 Celery、Unfold 和 DjangoHarness 内置能力。
 
   [:octicons-arrow-right-24: 浏览能力](framework/index.md)
 

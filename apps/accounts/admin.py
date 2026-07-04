@@ -1,33 +1,39 @@
-from typing import Any
-
 from django.contrib import admin, messages
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.urls import path, reverse
+from django.urls import reverse
 from django.utils.html import format_html
+from unfold.admin import ModelAdmin
+from unfold.decorators import action
+from unfold.enums import ActionVariant
+from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 from .admin_forms import BulkUserImportForm
 from .models import User
 
-admin.site.index_template = "admin/dashboard.html"
 admin.site.site_header = "DjangoHarness 管理后台"
 admin.site.site_title = "DjangoHarness 后台"
 admin.site.index_title = "数据概览"
 
+if admin.site.is_registered(Group):
+    admin.site.unregister(Group)
 
-def configure_simpleui_action(
-    action: Any, *, icon: str, action_type: str, confirm: str
-) -> None:
-    action.icon = icon
-    action.type = action_type
-    action.confirm = confirm
+
+@admin.register(Group)
+class AccountsGroupAdmin(BaseGroupAdmin, ModelAdmin):
+    list_fullwidth = True
+    search_fields = ("name",)
 
 
 @admin.register(User)
-class AccountsUserAdmin(UserAdmin):
-    change_list_template = "admin/accounts/user/change_list.html"
+class AccountsUserAdmin(BaseUserAdmin, ModelAdmin):
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = AdminPasswordChangeForm
     fieldsets = (
         (
             "基本信息",
@@ -120,7 +126,10 @@ class AccountsUserAdmin(UserAdmin):
     list_filter = ("is_active", "is_staff", "is_superuser", "date_joined")
     ordering = ("-date_joined",)
     list_per_page = 20
+    list_filter_submit = True
+    list_fullwidth = True
     actions = ("activate_users", "deactivate_users")
+    actions_list = ("bulk_add",)
     readonly_fields = ("last_login", "date_joined")
 
     class Media:
@@ -135,19 +144,20 @@ class AccountsUserAdmin(UserAdmin):
         initial = (obj.display_name or "U")[0].upper()
         return format_html('<span class="accounts-avatar-fallback">{}</span>', initial)
 
-    @admin.action(description="启用所选用户")
+    @action(
+        description="启用所选用户",
+        icon="person_check",
+        variant=ActionVariant.SUCCESS,
+    )
     def activate_users(self, request: HttpRequest, queryset) -> None:
         updated = queryset.update(is_active=True)
         self.message_user(request, f"已启用 {updated} 个用户。", messages.SUCCESS)
 
-    configure_simpleui_action(
-        activate_users,
-        icon="fas fa-user-check",
-        action_type="success",
-        confirm="确定启用所选用户吗？",
+    @action(
+        description="停用所选用户",
+        icon="person_off",
+        variant=ActionVariant.WARNING,
     )
-
-    @admin.action(description="停用所选用户")
     def deactivate_users(self, request: HttpRequest, queryset) -> None:
         updated = queryset.exclude(pk=request.user.pk).update(is_active=False)
         self.message_user(
@@ -156,23 +166,16 @@ class AccountsUserAdmin(UserAdmin):
             messages.WARNING,
         )
 
-    configure_simpleui_action(
-        deactivate_users,
-        icon="fas fa-user-slash",
-        action_type="warning",
-        confirm="确定停用所选用户吗？",
+    def has_bulk_add_permission(self, request: HttpRequest) -> bool:
+        return self.has_add_permission(request)
+
+    @action(
+        description="批量新增",
+        icon="group_add",
+        permissions=("bulk_add",),
+        url_path="bulk-add",
     )
-
-    def get_urls(self):
-        return [
-            path(
-                "bulk-add/",
-                self.admin_site.admin_view(self.bulk_add_view),
-                name="accounts_user_bulk_add",
-            )
-        ] + super().get_urls()
-
-    def bulk_add_view(self, request: HttpRequest) -> HttpResponse:
+    def bulk_add(self, request: HttpRequest) -> HttpResponse:
         if not self.has_add_permission(request):
             from django.core.exceptions import PermissionDenied
 

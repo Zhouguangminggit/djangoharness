@@ -55,7 +55,7 @@ def test_project_templates_are_namespaced() -> None:
     admin_base = cast(Any, get_template("admin/base.html"))
     assert application.origin.name.endswith("templates/layouts/application.html")
     assert home.origin.name.endswith("apps/core/templates/core/home.html")
-    assert "simpleui/templates/admin/base.html" in admin_base.origin.name
+    assert "unfold/templates/admin/base.html" in admin_base.origin.name
     with pytest.raises(TemplateDoesNotExist):
         get_template("base.html")
 

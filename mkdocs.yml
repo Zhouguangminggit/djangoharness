@@ -64,10 +64,7 @@ nav:
       - 用户认证: authentication.md
       - 消息通知: notifications.md
       - Celery: celery/README.md
-      - SimpleUI:
-          - 模板: simpleui/template.md
-          - 菜单: simpleui/menus.md
-          - Action: simpleui/action.md
+      - Unfold 后台管理: unfold/README.md
   - 迭代记录:
       - 概览: iterations/index.md
       - allauth 基础与迁移: iterations/19-allauth-foundation.md
@@ -75,6 +72,7 @@ nav:
       - allauth 注册验证: iterations/21-allauth-signup.md
       - allauth 密码与文档: iterations/22-allauth-password-docs.md
       - 消息通知中心: iterations/23-notifications-center.md
+      - Unfold 后台迁移: iterations/24-unfold-admin.md
       - MkDocs + Material 集成: iterations/18-mkdocs-material.md
 
 extra:

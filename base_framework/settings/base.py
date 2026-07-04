@@ -27,7 +27,7 @@ DEBUG = get_env_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 
 INSTALLED_APPS = [
-    "simpleui",
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -197,12 +197,6 @@ ALIYUN_EMAIL_ENDPOINT = os.environ.get(
 ALIYUN_EMAIL_ACCOUNT_NAME = os.environ.get("ALIYUN_EMAIL_ACCOUNT_NAME", "")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-SIMPLEUI_CONFIG = {
-    "system_keep": False,
-    "menu_display": ["用户管理"],
-    "dynamic": False,
-}
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get(

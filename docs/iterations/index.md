@@ -10,6 +10,7 @@
 - [第二十一批：allauth 注册验证](21-allauth-signup.md)
 - [第二十二批：allauth 密码与文档](22-allauth-password-docs.md)
 - [第二十三批：消息通知中心](23-notifications-center.md)
+- [第二十四批：Unfold 后台迁移](24-unfold-admin.md)
 - [第十八批：MkDocs + Material 文档站](18-mkdocs-material.md)
 
 ## 阅读原则

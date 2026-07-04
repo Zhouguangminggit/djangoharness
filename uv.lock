@@ -279,15 +279,6 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/36/18/1b42038963d8b0aeeb380a24ff86a650067833cf6d2d87b678be2d27c609/django-notifications-hq-1.8.3.tar.gz", hash = "sha256:0f4b216bb382b7c7c4eef273eb211e59c1c6a0ea38cba6077415ac031d330725", size = 32238, upload-time = "2023-10-19T00:03:42.703Z" }
 
 [[package]]
-name = "django-simpleui"
-version = "2026.1.13"
-source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/f4/c2/b94aec95e96a74b9b075baa3d70a5600d2f56136b051999076136564677c/django_simpleui-2026.1.13.tar.gz", hash = "sha256:c417bc462020c5d05ddd518593b3d6fd1191d226c3b14a9593f3d654a12d2fbe", size = 6483742, upload-time = "2026-01-13T06:28:46.694Z" }
-
-[[package]]
 name = "django-stubs"
 version = "5.2.9"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -317,6 +308,18 @@ wheels = [
 ]
 
 [[package]]
+name = "django-unfold"
+version = "0.74.1"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/78/88/d98c21ed315e5cb025f45aaea1e95d35c0fd11fb9123cb4c1278c33e70ad/django_unfold-0.74.1.tar.gz", hash = "sha256:573f793f975b9dbe324859121a179ae3f4d600d580e28e038736d7a2696e86dc", size = 1103394, upload-time = "2025-12-15T17:06:36Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/2d/21/1c5482019bf2b454ac3e67cf0de456eb3dccc2f478a865a2f8a4fba28ef7/django_unfold-0.74.1-py3-none-any.whl", hash = "sha256:0b0a4b13c568309f3bb0a14d5bd7353b47b676d97695954d9631245df84e18f3", size = 1217338, upload-time = "2025-12-15T17:06:34.418Z" },
+]
+
+[[package]]
 name = "djangoharness"
 version = "0.1.0"
 source = { editable = "." }
@@ -325,7 +328,7 @@ dependencies = [
     { name = "django" },
     { name = "django-allauth" },
     { name = "django-notifications-hq" },
-    { name = "django-simpleui" },
+    { name = "django-unfold" },
     { name = "gunicorn" },
     { name = "loguru" },
     { name = "mysqlclient" },
@@ -351,7 +354,7 @@ requires-dist = [
     { name = "django", specifier = ">=4.2,<5.0" },
     { name = "django-allauth", specifier = ">=65.18,<66" },
     { name = "django-notifications-hq", specifier = ">=1.8.3,<2.0" },
-    { name = "django-simpleui", specifier = ">=2024.8" },
+    { name = "django-unfold", specifier = ">=0.74,<0.75" },
     { name = "gunicorn", specifier = ">=22.0,<24.0" },
     { name = "loguru", specifier = ">=0.7,<1.0" },
     { name = "mysqlclient", specifier = ">=2.2,<3.0" },

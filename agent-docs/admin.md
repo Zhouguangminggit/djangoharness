@@ -2,19 +2,23 @@
 
 ## 配置边界
 
-- SimpleUI 的品牌、菜单、首页和交互开关统一写在
+- Unfold 的品牌、菜单、首页和主题配置统一写在
   `base_framework/settings/admin.py`，业务后台注册写在对应 app 的 `admin.py`。
+- `unfold` 必须位于 `django.contrib.admin` 之前，项目内模型后台必须继承
+  `unfold.admin.ModelAdmin`。自定义用户后台同时继承 Django `UserAdmin`。
 - 禁止在后台配置中写死外部业务地址、密钥或环境相关域名。
 - 自定义菜单必须使用稳定的 Admin URL，并保持模块名称与 app 的 `verbose_name`
-  一致。菜单项本身不提供权限隔离，后端视图仍必须检查 Django Admin 权限。
+  一致。菜单使用权限回调控制可见性，后端视图仍必须检查 Django Admin 权限。
 
 ## 页面与数据
 
-- 后台首页模板使用 `templates/admin/dashboard.html`，数据聚合放在 Python
-  层，模板只负责展示；图表数据必须通过 `json_script` 安全传给 JavaScript。
+- 后台首页模板使用 `templates/admin/index.html`，数据通过 Unfold
+  `DASHBOARD_CALLBACK` 聚合，模板只负责展示；图表数据必须通过 `json_script`
+  安全传给 JavaScript。
 - Admin 专属静态资源放在 `static/admin/css/` 和 `static/admin/js/`，禁止在模板中堆积大段样式或业务脚本。
-- 列表页应提供必要的搜索、筛选、排序和分页；新增自定义入口时使用
-  `ModelAdmin.get_urls()` 和 `admin_site.admin_view()`，不得绕过登录、CSRF 和权限校验。
+- 列表页应提供必要的搜索、筛选、排序和分页；新增自定义入口时使用 Unfold
+  `actions_list`，或使用 `ModelAdmin.get_urls()` 和 `admin_site.admin_view()`，
+  不得绕过登录、CSRF 和权限校验。
 
 ## 用户管理
 

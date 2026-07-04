@@ -4,6 +4,7 @@ from django.db import transaction
 from django.http import HttpRequest
 from django.utils import timezone
 from notifications.models import Notification
+from unfold.admin import ModelAdmin
 
 from .forms import NotificationPublicationAdminForm
 from .models import NotificationPublication
@@ -16,7 +17,7 @@ if admin.site.is_registered(Notification):
 
 
 @admin.register(NotificationPublication)
-class NotificationPublicationAdmin(admin.ModelAdmin):
+class NotificationPublicationAdmin(ModelAdmin):
     form = NotificationPublicationAdminForm
     list_display = (
         "title",
@@ -31,6 +32,8 @@ class NotificationPublicationAdmin(admin.ModelAdmin):
     filter_horizontal = ("recipients",)
     ordering = ("-created_at",)
     list_per_page = 20
+    list_filter_submit = True
+    list_fullwidth = True
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.published_at:

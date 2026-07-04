@@ -5,7 +5,7 @@
 - `templates/layouts/` 只放项目级页面骨架，例如 `layouts/application.html`。
 - `templates/components/` 只放跨业务共享的无业务状态片段，例如导航和消息提示。
 - 业务页面放在 `apps/<app>/templates/<app>/`，引用时必须使用 `<app>/<page>.html`。
-- 禁止在项目级 `templates/` 新增 `base.html`、`home.html`、`login.html` 等通用名称，避免优先级高于 Django Admin、SimpleUI 或第三方 app 的同名模板。
+- 禁止在项目级 `templates/` 新增 `base.html`、`home.html`、`login.html` 等通用名称，避免优先级高于 Django Admin、Unfold 或第三方 app 的同名模板。
 - 业务模板继承 `layouts/application.html`；需要完全不同页面壳时建立带语义的布局名，不复用通用 `base.html`。
 
 ## 样式分层

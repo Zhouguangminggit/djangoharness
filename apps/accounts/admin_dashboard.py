@@ -1,17 +1,15 @@
 from datetime import timedelta
+from typing import Any
 
-from django import template
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
+from django.http import HttpRequest
 from django.utils import timezone
 
 from apps.accounts.models import User
 
-register = template.Library()
 
-
-@register.simple_tag
-def user_dashboard_data() -> dict[str, object]:
+def get_dashboard_data() -> dict[str, object]:
     now = timezone.now()
     month_start = (now.replace(day=1) - timedelta(days=155)).replace(day=1)
     monthly_rows = (
@@ -45,3 +43,8 @@ def user_dashboard_data() -> dict[str, object]:
         },
         "status": {"active": active, "inactive": total - active},
     }
+
+
+def dashboard_callback(request: HttpRequest, context: dict[str, Any]) -> dict[str, Any]:
+    context["dashboard"] = get_dashboard_data()
+    return context

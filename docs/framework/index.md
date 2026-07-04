@@ -11,12 +11,11 @@
 
   [查看 Celery 指南](../celery/README.md)
 
-- :material-view-dashboard-outline: **SimpleUI**
+- :material-view-dashboard-outline: **Unfold**
 
-  定制后台模板、菜单和批量操作。
+  提供现代化后台主题、权限感知菜单、数据看板和批量操作。
 
-  [模板](../simpleui/template.md) · [菜单](../simpleui/menus.md) ·
-  [Action](../simpleui/action.md)
+  [查看 Unfold 后台管理指南](../unfold/README.md)
 
 - :material-account-key-outline: **用户认证**
 
