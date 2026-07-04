@@ -328,6 +328,19 @@ def test_login_remember_me_and_logout_require_post(user, client: Client) -> None
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize("identifier", ["member", "member@example.com", "13800138000"])
+def test_allauth_login_accepts_every_supported_identifier(
+    user, client: Client, identifier: str
+) -> None:
+    response = client.post(
+        reverse("account_login"),
+        {"login": identifier, "password": PASSWORD},
+    )
+    assert response.status_code == 302
+    assert client.session["_auth_user_id"] == str(user.pk)
+
+
+@pytest.mark.django_db
 def test_login_rejects_external_next(user, client: Client) -> None:
     response = client.post(
         f"{reverse('accounts:login')}?next=https://evil.example/",

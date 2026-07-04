@@ -9,6 +9,12 @@
       <a href="{% url 'home' %}">首页</a>
       {% if user.is_authenticated %}
         {% if user.is_staff %}<a href="{% url 'admin:index' %}">管理后台</a>{% endif %}
+        <a class="site-nav__notifications" href="{% url 'notifications_center:list' %}">
+          消息
+          {% if notification_unread_count %}
+            <span class="site-nav__badge" aria-label="{{ notification_unread_count }} 条未读消息">{{ notification_unread_count }}</span>
+          {% endif %}
+        </a>
         <a class="site-nav__user" href="{% url 'accounts:profile' %}" aria-label="进入个人中心">
           <span class="site-nav__avatar" aria-hidden="true">
             {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1"|upper }}{% endif %}

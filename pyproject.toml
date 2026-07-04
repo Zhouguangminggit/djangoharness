@@ -9,6 +9,7 @@ dependencies = [
     "celery>=5.3,<6.0",
     "django>=4.2,<5.0",
     "django-allauth>=65.18,<66",
+    "django-notifications-hq>=1.8.3,<2.0",
     "django-simpleui>=2024.8",
     "gunicorn>=22.0,<24.0",
     "loguru>=0.7,<1.0",

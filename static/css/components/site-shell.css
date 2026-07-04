@@ -57,6 +57,25 @@
   display: contents;
 }
 
+.site-nav__notifications {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.site-nav__badge {
+  display: inline-grid;
+  min-width: 20px;
+  min-height: 20px;
+  padding: 0 6px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--danger);
+  color: var(--white);
+  font-size: 11px;
+  line-height: 1;
+}
+
 .site-nav .site-nav__primary {
   padding: 9px 15px;
   border-radius: 999px;

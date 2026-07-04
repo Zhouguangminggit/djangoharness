@@ -1,6 +1,6 @@
 SIMPLEUI_CONFIG = {
     "system_keep": False,
-    "menu_display": ["用户管理"],
+    "menu_display": ["用户管理", "消息通知"],
     "dynamic": False,
     "menus": [
         {
@@ -24,7 +24,24 @@ SIMPLEUI_CONFIG = {
                     "url": "accounts/user/bulk-add/",
                 },
             ],
-        }
+        },
+        {
+            "app": "notifications_center",
+            "name": "消息通知",
+            "icon": "fas fa-bell",
+            "models": [
+                {
+                    "name": "发布通知",
+                    "icon": "fas fa-paper-plane",
+                    "url": "notifications_center/notificationpublication/add/",
+                },
+                {
+                    "name": "发布记录",
+                    "icon": "fas fa-list",
+                    "url": "notifications_center/notificationpublication/",
+                },
+            ],
+        },
     ],
 }
 

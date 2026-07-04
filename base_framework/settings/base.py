@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "apps.core",
+    "apps.notifications_center.apps.NotificationsCenterConfig",
+    "notifications",
 ]
 
 MIDDLEWARE = [
@@ -147,6 +149,10 @@ ACCOUNT_USER_DISPLAY = "apps.accounts.adapters.user_display"
 ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
 ACCOUNT_PASSWORD_RESET_BY_CODE_TIMEOUT = AUTH_RESET_GRANT_SECONDS
 ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS = AUTH_CODE_MAX_ATTEMPTS
+
+DJANGO_NOTIFICATIONS_CONFIG = {
+    "USE_JSONFIELD": True,
+}
 
 AUTH_STYLE = os.environ.get("AUTH_STYLE", "picture").lower()
 if AUTH_STYLE == "vedio":

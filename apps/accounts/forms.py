@@ -33,6 +33,14 @@ class AllauthLoginForm(AllauthBaseLoginForm):
         self.fields["password"].label = "密码"
         self.fields["remember"].label = "保持登录"
 
+    def user_credentials(self) -> dict[str, str]:
+        """Delegate every identifier format to MultiIdentifierBackend."""
+        credentials = {"username": self.cleaned_data["login"].strip()}
+        password = self.cleaned_data.get("password")
+        if password:
+            credentials["password"] = password
+        return credentials
+
 
 class AccountSignupForm(SignupForm):
     def __init__(self, *args, **kwargs):

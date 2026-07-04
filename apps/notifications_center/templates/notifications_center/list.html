@@ -1,0 +1,62 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}消息通知 · {{ site_name }}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'notifications_center/css/list.css' %}">{% endblock %}
+
+{% block content %}
+  <section class="notifications-page site-container">
+    <header class="notifications-page__header">
+      <div>
+        <p class="section-kicker">NOTIFICATIONS</p>
+        <h1>消息通知</h1>
+        <p>查看系统通知并管理已读状态。</p>
+      </div>
+      {% if notification_unread_count %}
+        <form method="post" action="{% url 'notifications_center:mark_all_read' %}">
+          {% csrf_token %}
+          <button class="notifications-button" type="submit">全部标为已读</button>
+        </form>
+      {% endif %}
+    </header>
+
+    <nav class="notifications-tabs" aria-label="消息筛选">
+      <a class="{% if status == 'all' %}is-active{% endif %}" href="?status=all">全部</a>
+      <a class="{% if status == 'unread' %}is-active{% endif %}" href="?status=unread">未读</a>
+      <a class="{% if status == 'read' %}is-active{% endif %}" href="?status=read">已读</a>
+    </nav>
+
+    <div class="notifications-list">
+      {% for notification in page %}
+        <article class="notification-item notification-item--{{ notification.level }}{% if notification.unread %} is-unread{% endif %}">
+          <div class="notification-item__body">
+            <div class="notification-item__meta">
+              <span>{{ notification.get_level_display }}</span>
+              <time datetime="{{ notification.timestamp|date:'c' }}">{{ notification.timestamp|date:"Y-m-d H:i" }}</time>
+            </div>
+            <h2>{{ notification.verb }}</h2>
+            {% if notification.description %}<p>{{ notification.description|linebreaksbr }}</p>{% endif %}
+            {% if notification.data.target_path %}
+              <a class="notification-item__link" href="{{ notification.data.target_path }}">查看相关内容</a>
+            {% endif %}
+          </div>
+          <form method="post" action="{% if notification.unread %}{% url 'notifications_center:mark_read' notification.pk %}{% else %}{% url 'notifications_center:mark_unread' notification.pk %}{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit">{% if notification.unread %}标为已读{% else %}标为未读{% endif %}</button>
+          </form>
+        </article>
+      {% empty %}
+        <div class="notifications-empty">当前筛选条件下没有消息。</div>
+      {% endfor %}
+    </div>
+
+    {% if page.paginator.num_pages > 1 %}
+      <nav class="notifications-pagination" aria-label="消息分页">
+        {% if page.has_previous %}<a href="?status={{ status }}&page={{ page.previous_page_number }}">上一页</a>{% endif %}
+        <span>第 {{ page.number }} / {{ page.paginator.num_pages }} 页</span>
+        {% if page.has_next %}<a href="?status={{ status }}&page={{ page.next_page_number }}">下一页</a>{% endif %}
+      </nav>
+    {% endif %}
+  </section>
+{% endblock %}
