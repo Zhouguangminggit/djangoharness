@@ -1,0 +1,60 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}博客 · {{ site_name }}{% endblock %}
+{% block body_class %}site-page blog-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">{% endblock %}
+
+{% block content %}
+  <div class="site-container blog-layout">
+    <aside class="blog-sidebar">
+      <h2>博客</h2>
+      <nav class="blog-nav" aria-label="博客分类">
+        <a href="{% url 'blog:post_list' %}" {% if not category and not tag %}class="is-active"{% endif %}>全部文章</a>
+        <a href="{% url 'blog:category_list' %}">文章分类</a>
+      </nav>
+      {% if category %}
+        <p class="blog-filter">分类：<strong>{{ category.name }}</strong></p>
+      {% endif %}
+      {% if tag %}
+        <p class="blog-filter">标签：<strong>{{ tag.name }}</strong></p>
+      {% endif %}
+    </aside>
+
+    <section class="blog-main" aria-labelledby="blog-list-title">
+      <h1 id="blog-list-title">
+        {% if category %}{{ category.name }}{% elif tag %}{{ tag.name }}{% else %}全部文章{% endif %}
+      </h1>
+
+      {% if page.object_list %}
+        <div class="blog-grid">
+          {% for post in page.object_list %}
+            <article class="blog-card glass-panel">
+              {% if post.cover %}
+                <a href="{{ post.get_absolute_url }}" class="blog-card__cover">
+                  <img src="{{ post.cover.url }}" alt="" loading="lazy">
+                </a>
+              {% endif %}
+              <div class="blog-card__body">
+                <p class="blog-card__meta">
+                  <span>{{ post.category.name }}</span>
+                  <span>{{ post.published_at|date:"Y-m-d" }}</span>
+                </p>
+                <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+                <p class="blog-card__summary">{{ post.summary|default:post.content_markdown|truncatewords:30 }}</p>
+                <div class="blog-card__footer">
+                  <span>{{ post.author.name }}</span>
+                  <span>{{ post.view_count }} 阅读</span>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        {% include "blog/includes/pagination.html" with page=page %}
+      {% else %}
+        <p class="blog-empty">暂无文章。</p>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}

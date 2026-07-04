@@ -254,6 +254,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-ckeditor-5"
+version = "0.2.20"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "pillow" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/4b/e0/2dbbf2eb59411bf063646ac541753d1cdeacdcd2bb3defb03a456369a2de/django_ckeditor_5-0.2.20.tar.gz", hash = "sha256:7c3d67cc8bbce3564108578b8fafe8e752c6ad4fbf45b1ffee821045ba2c0e96", size = 3049978, upload-time = "2026-02-21T20:40:38.923Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/b0/52/e9ed3f359d06cf7c7476e274059f5318ac81e82e20de9f4fcf714a576dea/django_ckeditor_5-0.2.20-py3-none-any.whl", hash = "sha256:dfff659822fb8d42f55b43265cb51bf8b1e0797dc850e0bf5547644daeaa3fff", size = 3143416, upload-time = "2026-02-21T20:40:37.135Z" },
+]
+
+[[package]]
 name = "django-model-utils"
 version = "5.0.0"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -327,10 +340,12 @@ dependencies = [
     { name = "celery" },
     { name = "django" },
     { name = "django-allauth" },
+    { name = "django-ckeditor-5" },
     { name = "django-notifications-hq" },
     { name = "django-unfold" },
     { name = "gunicorn" },
     { name = "loguru" },
+    { name = "markdown" },
     { name = "mysqlclient" },
     { name = "pillow" },
     { name = "python-dotenv" },
@@ -353,10 +368,12 @@ requires-dist = [
     { name = "celery", specifier = ">=5.3,<6.0" },
     { name = "django", specifier = ">=4.2,<5.0" },
     { name = "django-allauth", specifier = ">=65.18,<66" },
+    { name = "django-ckeditor-5", specifier = ">=0.2.20" },
     { name = "django-notifications-hq", specifier = ">=1.8.3,<2.0" },
     { name = "django-unfold", specifier = ">=0.74,<0.75" },
     { name = "gunicorn", specifier = ">=22.0,<24.0" },
     { name = "loguru", specifier = ">=0.7,<1.0" },
+    { name = "markdown", specifier = ">=3.10.2" },
     { name = "mysqlclient", specifier = ">=2.2,<3.0" },
     { name = "pillow", specifier = ">=10.0,<13.0" },
     { name = "python-dotenv", specifier = ">=1.0,<2.0" },

@@ -1,0 +1,14 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}文章不存在 · 博客 · {{ site_name }}{% endblock %}
+{% block body_class %}site-page blog-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">{% endblock %}
+
+{% block content %}
+  <div class="site-container blog-empty-state">
+    <h1>文章不存在或未发布</h1>
+    <p>您访问的文章尚未发布或已被归档。</p>
+    <a class="action action--primary" href="{% url 'blog:post_list' %}">返回博客首页</a>
+  </div>
+{% endblock %}

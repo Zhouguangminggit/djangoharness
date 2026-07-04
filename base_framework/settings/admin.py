@@ -26,6 +26,14 @@ def can_publish_notifications(request):
     return request.user.has_perm("notifications_center.add_notificationpublication")
 
 
+def can_view_blog_posts(request):
+    return request.user.has_perm("blog.view_post")
+
+
+def can_manage_blog_posts(request):
+    return request.user.has_perm("blog.add_post")
+
+
 UNFOLD = {
     "SITE_TITLE": "DjangoHarness 后台",
     "SITE_HEADER": "DjangoHarness",
@@ -112,6 +120,43 @@ UNFOLD = {
                             "admin:notifications_center_notificationpublication_changelist"
                         ),
                         "permission": can_view_notifications,
+                    },
+                ],
+            },
+            {
+                "title": "博客",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "发布文章",
+                        "icon": "edit_note",
+                        "link": reverse_lazy("admin:blog_post_add"),
+                        "permission": can_manage_blog_posts,
+                    },
+                    {
+                        "title": "文章列表",
+                        "icon": "article",
+                        "link": reverse_lazy("admin:blog_post_changelist"),
+                        "permission": can_view_blog_posts,
+                    },
+                    {
+                        "title": "分类管理",
+                        "icon": "folder",
+                        "link": reverse_lazy("admin:blog_category_changelist"),
+                        "permission": can_view_blog_posts,
+                    },
+                    {
+                        "title": "标签管理",
+                        "icon": "tag",
+                        "link": reverse_lazy("admin:blog_tag_changelist"),
+                        "permission": can_view_blog_posts,
+                    },
+                    {
+                        "title": "作者管理",
+                        "icon": "person",
+                        "link": reverse_lazy("admin:blog_author_changelist"),
+                        "permission": can_view_blog_posts,
                     },
                 ],
             },

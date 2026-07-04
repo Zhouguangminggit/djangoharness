@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     "allauth.account",
     "apps.core",
     "apps.notifications_center.apps.NotificationsCenterConfig",
+    "apps.blog.apps.BlogConfig",
     "notifications",
+    "django_ckeditor_5",
 ]
 
 MIDDLEWARE = [
@@ -118,6 +120,34 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+CKEDITOR_5_UPLOAD_PATH = "blog/ckeditor/"
+CKEDITOR_5_CONFIGS: dict[str, dict] = {
+    "default": {
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "link",
+            "bulletedList",
+            "numberedList",
+            "blockQuote",
+            "imageUpload",
+            "undo",
+            "redo",
+        ],
+        "image": {
+            "toolbar": [
+                "imageTextAlternative",
+                "imageStyle:full",
+                "imageStyle:side",
+            ]
+        },
+        "language": "zh-cn",
+        "height": 400,
+    }
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

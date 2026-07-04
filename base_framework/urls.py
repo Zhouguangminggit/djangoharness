@@ -13,6 +13,8 @@ urlpatterns = [
     path("accounts/", include("apps.accounts.urls")),
     path("accounts/", include("allauth.urls")),
     path("notifications/", include("apps.notifications_center.urls")),
+    path("blog/", include("apps.blog.urls")),
+    path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("", TemplateView.as_view(template_name="core/home.html"), name="home"),
 ]
 

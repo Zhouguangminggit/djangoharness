@@ -1,0 +1,80 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} · 博客 · {{ site_name }}{% endblock %}
+{% block body_class %}site-page blog-page{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-light.min.css">
+{% endblock %}
+
+{% block content %}
+  <article class="site-container blog-post">
+    <header class="blog-post__header">
+      <nav class="blog-post__breadcrumbs" aria-label="面包屑">
+        <a href="{% url 'blog:post_list' %}">博客</a>
+        <span>/</span>
+        <a href="{% url 'blog:category_posts' post.category.slug %}">{{ post.category.name }}</a>
+      </nav>
+      <h1>{{ post.title }}</h1>
+      <div class="blog-post__meta">
+        <span>{{ post.author.name }}</span>
+        <span>{{ post.published_at|date:"Y-m-d H:i" }}</span>
+        <span>{{ post.view_count }} 阅读</span>
+      </div>
+      {% if post.tags.exists %}
+        <div class="blog-post__tags">
+          {% for tag in post.tags.all %}
+            <a href="{% url 'blog:tag_detail' tag.slug %}">{{ tag.name }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </header>
+
+    {% if post.cover %}
+      <figure class="blog-post__cover">
+        <img src="{{ post.cover.url }}" alt="">
+      </figure>
+    {% endif %}
+
+    <div class="blog-post__content">
+      {% if post.content_type == "markdown" %}
+        <div id="markdown-body" class="markdown-body" data-markdown="{{ post.content_markdown|escape }}"></div>
+      {% else %}
+        {{ post.content_html|safe }}
+      {% endif %}
+    </div>
+
+    {% if post.images.exists %}
+      <section class="blog-post__gallery" aria-labelledby="gallery-title">
+        <h2 id="gallery-title">附图</h2>
+        <div class="blog-gallery-grid">
+          {% for image in post.images.all %}
+            <figure>
+              <img src="{{ image.image.url }}" alt="{{ image.caption }}" loading="lazy">
+              {% if image.caption %}<figcaption>{{ image.caption }}</figcaption>{% endif %}
+            </figure>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if related_posts %}
+      <aside class="blog-post__related" aria-labelledby="related-title">
+        <h2 id="related-title">相关文章</h2>
+        <ul>
+          {% for related in related_posts %}
+            <li><a href="{{ related.get_absolute_url }}">{{ related.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </aside>
+    {% endif %}
+  </article>
+{% endblock %}
+
+{% block extra_js %}
+  {% if post.content_type == "markdown" %}
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"></script>
+    <script src="{% static 'blog/js/blog.js' %}"></script>
+  {% endif %}
+{% endblock %}

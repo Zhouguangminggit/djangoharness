@@ -7,6 +7,7 @@
     </a>
     <nav class="site-nav" aria-label="主导航">
       <a href="{% url 'home' %}">首页</a>
+      <a href="{% url 'blog:post_list' %}">博客</a>
       {% if user.is_authenticated %}
         {% if user.is_staff %}<a href="{% url 'admin:index' %}">管理后台</a>{% endif %}
         <a class="site-nav__notifications" href="{% url 'notifications_center:list' %}">

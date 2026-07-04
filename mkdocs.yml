@@ -63,6 +63,7 @@ nav:
       - 概览: framework/index.md
       - 用户认证: authentication.md
       - 消息通知: notifications.md
+      - 博客模块: blog.md
       - Celery: celery/README.md
       - Unfold 后台管理: unfold/README.md
   - 迭代记录:
@@ -74,6 +75,7 @@ nav:
       - 消息通知中心: iterations/23-notifications-center.md
       - Unfold 后台迁移: iterations/24-unfold-admin.md
       - MkDocs + Material 集成: iterations/18-mkdocs-material.md
+      - 博客模块: iterations/25-blog-module.md
 
 extra:
   social:

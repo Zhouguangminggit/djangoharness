@@ -1,0 +1,24 @@
+{% extends "layouts/application.html" %}
+{% load static %}
+
+{% block title %}文章分类 · 博客 · {{ site_name }}{% endblock %}
+{% block body_class %}site-page blog-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">{% endblock %}
+
+{% block content %}
+  <div class="site-container blog-categories">
+    <h1>文章分类</h1>
+    {% if categories %}
+      <div class="blog-category-grid">
+        {% for category in categories %}
+          <a class="glass-panel" href="{% url 'blog:category_posts' category.slug %}">
+            <h2>{{ category.name }}</h2>
+            <p>{{ category.description|truncatewords:20 }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>暂无分类。</p>
+    {% endif %}
+  </div>
+{% endblock %}
