@@ -27,6 +27,7 @@ class User(AbstractUser):
     phone = models.CharField(
         "手机号", max_length=20, unique=True, null=True, blank=True
     )
+    phone_verified = models.BooleanField("手机号已验证", default=False)
 
     objects: ClassVar[UserManager] = UserManager()
 

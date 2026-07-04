@@ -18,6 +18,12 @@
   [模板](../simpleui/template.md) · [菜单](../simpleui/menus.md) ·
   [Action](../simpleui/action.md)
 
+- :material-account-key-outline: **用户认证**
+
+  基于 django-allauth 提供用户名、邮箱和手机号认证，并保留可替换的验证码 Provider。
+
+  [查看用户认证指南](../authentication.md)
+
 - :material-shield-account-outline: **Agent 开发规范**
 
   Agent 规范保存在仓库 `agent-docs/` 中，约束架构、质量与交付流程。

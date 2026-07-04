@@ -34,8 +34,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps.accounts.apps.AccountsConfig",
+    "allauth",
+    "allauth.account",
     "apps.core",
-    "apps.accounts",
 ]
 
 MIDDLEWARE = [
@@ -44,6 +46,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "apps.core.middleware.RequestLoggingMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -117,11 +120,33 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
-AUTHENTICATION_BACKENDS = ["apps.accounts.backends.MultiIdentifierBackend"]
+AUTHENTICATION_BACKENDS = [
+    "apps.accounts.backends.MultiIdentifierBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "accounts:login"
+
+AUTH_REMEMBER_SECONDS = int(os.environ.get("AUTH_REMEMBER_SECONDS", "2592000"))
+AUTH_RESET_GRANT_SECONDS = int(os.environ.get("AUTH_RESET_GRANT_SECONDS", "600"))
+AUTH_CODE_MAX_ATTEMPTS = int(os.environ.get("AUTH_CODE_MAX_ATTEMPTS", "5"))
+SESSION_COOKIE_AGE = AUTH_REMEMBER_SECONDS
+
+ACCOUNT_ADAPTER = "apps.accounts.adapters.AccountAdapter"
+ACCOUNT_FORMS = {"login": "apps.accounts.forms.AllauthLoginForm"}
+ACCOUNT_LOGIN_METHODS = {"username", "email", "phone"}
+ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_PREVENT_ENUMERATION = True
+ACCOUNT_LOGOUT_ON_GET = False
+ACCOUNT_SESSION_REMEMBER = None
+ACCOUNT_USER_DISPLAY = "apps.accounts.adapters.user_display"
+ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
+ACCOUNT_PASSWORD_RESET_BY_CODE_TIMEOUT = AUTH_RESET_GRANT_SECONDS
+ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS = AUTH_CODE_MAX_ATTEMPTS
 
 AUTH_STYLE = os.environ.get("AUTH_STYLE", "picture").lower()
 if AUTH_STYLE == "vedio":
@@ -135,11 +160,8 @@ AUTH_MEDIA = {
         "AUTH_PASSWORD_RESET_MEDIA", "accounts/media/djangoharness.png"
     ),
 }
-AUTH_REMEMBER_SECONDS = int(os.environ.get("AUTH_REMEMBER_SECONDS", "2592000"))
-AUTH_RESET_GRANT_SECONDS = int(os.environ.get("AUTH_RESET_GRANT_SECONDS", "600"))
 AUTH_CODE_TTL = int(os.environ.get("AUTH_CODE_TTL", "300"))
 AUTH_CODE_COOLDOWN = int(os.environ.get("AUTH_CODE_COOLDOWN", "60"))
-AUTH_CODE_MAX_ATTEMPTS = int(os.environ.get("AUTH_CODE_MAX_ATTEMPTS", "5"))
 USE_THIRD_PARTY_SERVICES = get_env_bool(
     "USE_THIRD_PARTY_SERVICES", get_env_bool("USE_THREE_SERIVCE", False)
 )

@@ -1,9 +1,22 @@
 # 用户认证规范
 
+## django-allauth 边界
+
+- 登录、注册、退出和官方密码重置流程基于 `django-allauth` 65.x；项目通过
+  `AccountAdapter`、allauth 表单和视图子类扩展，不复制第三方内部流程。
+- `allauth`、`allauth.account`、`AccountMiddleware` 和认证后端必须同时配置；
+  不得启用当前范围之外的 socialaccount、MFA 或 headless app。
+- 官方 `account_*` 路由与历史 `accounts:*` 路由长期并存。新增内部链接优先使用
+  `account_*`，不得删除历史路由。
+- 真实邮箱同步到 `EmailAddress`；手机号注册生成的
+  `@mobile.djangoharness.invalid` 占位邮箱不得写入 `EmailAddress`。
+- 手机号存储、验证状态和短信发送只能通过项目 Account Adapter 接入。
+
 ## 用户模型
 
 - 始终使用 `get_user_model()` 或 `settings.AUTH_USER_MODEL`，禁止直接导入 Django 内置 `User`。
 - 用户名、邮箱和手机号均可用于密码登录；新增账号必须保证邮箱唯一，手机号有值时唯一。
+- 只有 `phone_verified=True` 的手机号才应被视为已完成验证的登录身份。
 - 页面展示用户身份时统一使用 `user.display_name`，禁止直接展示手机号注册生成的内部随机用户名。展示顺序为昵称、脱敏手机号、用户名。
 - 个人中心允许修改昵称、用户名和邮箱；手机号属于已验证登录标识，未实现验证码换绑前必须只读。
 - 个人中心修改密码必须校验旧密码，成功后调用 `update_session_auth_hash()` 保持当前会话；不得跳转复用忘记密码流程。

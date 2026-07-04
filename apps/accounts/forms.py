@@ -1,8 +1,10 @@
 import re
 import uuid
 
+from allauth.account.forms import LoginForm as AllauthBaseLoginForm
+from allauth.account.forms import SignupForm
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
     PasswordChangeForm,
     SetPasswordForm,
@@ -14,44 +16,31 @@ from .services import VerificationPurpose, verify_code
 User = get_user_model()
 
 
-class LoginForm(forms.Form):
-    identifier = forms.CharField(label="账号", max_length=254)
-    password = forms.CharField(label="密码", widget=forms.PasswordInput)
-    remember_me = forms.BooleanField(label="保持登录", required=False)
+class AllauthLoginForm(AllauthBaseLoginForm):
+    """allauth login form with labels and legacy POST field compatibility."""
 
-    def __init__(self, request=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data:
+            data = data.copy()
+            if "identifier" in data and "login" not in data:
+                data["login"] = data["identifier"]
+            if "remember_me" in data and "remember" not in data:
+                data["remember"] = data["remember_me"]
+            kwargs["data"] = data
         super().__init__(*args, **kwargs)
-        self.request = request
-        self.user_cache = None
-
-    def clean(self):
-        cleaned = super().clean() or {}
-        identifier = cleaned.get("identifier")
-        password = cleaned.get("password")
-        if identifier and password:
-            self.user_cache = authenticate(
-                self.request, username=identifier, password=password
-            )
-            if self.user_cache is None:
-                raise forms.ValidationError("账号或密码错误")
-        return cleaned
-
-    def get_user(self):
-        return self.user_cache
+        self.fields["login"].label = "账号"
+        self.fields["password"].label = "密码"
+        self.fields["remember"].label = "保持登录"
 
 
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField(label="邮箱")
-
-    class Meta:
-        model = User
-        fields = ("username", "email", "password1", "password2")
-
-    def clean_email(self):
-        email = User.objects.normalize_email(self.cleaned_data["email"]).lower()
-        if User.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError("该邮箱已注册")
-        return email
+class AccountSignupForm(SignupForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].label = "用户名"
+        self.fields["email"].label = "邮箱"
+        self.fields["password1"].label = "密码"
+        self.fields["password2"].label = "确认密码"
 
 
 class PhoneRegisterForm(UserCreationForm):
@@ -84,11 +73,19 @@ class PhoneRegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.phone = self.cleaned_data["phone"]
+        user.phone_verified = True
         user.username = f"mobile_{uuid.uuid4().hex[:12]}"
         user.email = f"{uuid.uuid4().hex}@mobile.djangoharness.invalid"
         if commit:
             user.save()
         return user
+
+    @property
+    def by_passkey(self) -> bool:
+        return False
+
+    def try_save(self, request):
+        return self.save(), None
 
 
 class PasswordResetVerifyForm(forms.Form):
@@ -192,6 +189,10 @@ class ProfileForm(forms.ModelForm):
             and self._old_avatar_name != user.avatar.name
         ):
             user.avatar.storage.delete(self._old_avatar_name)
+        if commit:
+            from .signals import sync_primary_email
+
+            sync_primary_email(user)
         return user
 
 

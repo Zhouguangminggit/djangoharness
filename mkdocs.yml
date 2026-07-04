@@ -61,6 +61,7 @@ nav:
       - mdformat: mdformat/README.md
   - 框架能力:
       - 概览: framework/index.md
+      - 用户认证: authentication.md
       - Celery: celery/README.md
       - SimpleUI:
           - 模板: simpleui/template.md
@@ -68,6 +69,10 @@ nav:
           - Action: simpleui/action.md
   - 迭代记录:
       - 概览: iterations/index.md
+      - allauth 基础与迁移: iterations/19-allauth-foundation.md
+      - allauth 登录退出: iterations/20-allauth-login.md
+      - allauth 注册验证: iterations/21-allauth-signup.md
+      - allauth 密码与文档: iterations/22-allauth-password-docs.md
       - MkDocs + Material 集成: iterations/18-mkdocs-material.md
 
 extra:

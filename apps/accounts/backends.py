@@ -7,7 +7,12 @@ class MultiIdentifierBackend(ModelBackend):
     """Authenticate an active user by username, email, or phone."""
 
     def authenticate(self, request, username=None, password=None, **kwargs):
-        identifier = username or kwargs.get("identifier")
+        identifier = (
+            username
+            or kwargs.get("identifier")
+            or kwargs.get("email")
+            or kwargs.get("phone")
+        )
         if not identifier or not password:
             return None
         user_model = get_user_model()

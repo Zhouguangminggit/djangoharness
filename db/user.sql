@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `accounts_user` (
   `avatar` varchar(100) NOT NULL,
   `email` varchar(254) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `phone_verified` tinyint(1) NOT NULL DEFAULT 0,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime(6) NOT NULL,

@@ -1,0 +1,10 @@
+{% extends "accounts/auth_base.html" %}
+
+{% block auth_content %}
+  <p class="eyebrow">账户安全</p>
+  <h2>确认退出登录</h2>
+  <form method="post" class="auth-form">
+    {% csrf_token %}
+    <button class="button button-wide" type="submit">安全退出</button>
+  </form>
+{% endblock %}

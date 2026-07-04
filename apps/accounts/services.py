@@ -44,7 +44,7 @@ def _fixed_code(purpose: VerificationPurpose) -> str:
 
 
 def request_verification_code(
-    purpose: VerificationPurpose, target: str
+    purpose: VerificationPurpose, target: str, code: str | None = None
 ) -> VerificationResult:
     if not settings.USE_THIRD_PARTY_SERVICES:
         return VerificationResult(True, "验证码已生成，请使用当前环境配置的固定验证码")
@@ -54,7 +54,7 @@ def request_verification_code(
     if cache.get(f"{key}:cooldown"):
         raise VerificationRateLimited("发送过于频繁，请稍后重试")
 
-    code = f"{secrets.randbelow(1_000_000):06d}"
+    code = code or f"{secrets.randbelow(1_000_000):06d}"
     cache.set(key, {"code": code, "attempts": 0}, settings.AUTH_CODE_TTL)
     cache.set(f"{key}:cooldown", True, settings.AUTH_CODE_COOLDOWN)
 

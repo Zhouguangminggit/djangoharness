@@ -3,6 +3,7 @@ from typing import Any, cast
 from unittest.mock import patch
 
 import pytest
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -44,7 +45,7 @@ def test_home_page(client: Client) -> None:
     response = client.get(reverse("home"))
     assert response.status_code == 200
     content = response.content.decode()
-    assert "把业务想法，落到可靠的工程底座上" in content
+    assert "DjangoHarness是一个 AI 的底座框架" in content
     assert "Django Template Framework" not in content
 
 
@@ -101,6 +102,13 @@ def test_account_register_success(mock_delay, client: Client) -> None:
     )
     assert response.status_code == 302
     assert User.objects.filter(username="new-user").exists()
+    created = User.objects.get(username="new-user")
+    assert EmailAddress.objects.filter(
+        user=created,
+        email="new-user@example.com",
+        primary=True,
+        verified=False,
+    ).exists()
     mock_delay.assert_called_once_with("new-user")
 
 
@@ -121,6 +129,8 @@ def test_phone_register_with_fixed_code(mock_delay, client: Client) -> None:
     created_user = User.objects.get(phone="13900139000")
     assert created_user.display_name == "139****9000"
     assert created_user.username.startswith("mobile_")
+    assert created_user.phone_verified is True
+    assert not EmailAddress.objects.filter(user=created_user).exists()
     mock_delay.assert_not_called()
 
 
@@ -132,6 +142,12 @@ def test_profile_requires_login(client: Client) -> None:
 
 @pytest.mark.django_db
 def test_profile_updates_display_and_login_information(user, client: Client) -> None:
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        primary=True,
+        verified=True,
+    )
     client.force_login(user)
     response = client.post(
         reverse("accounts:profile"),
@@ -152,6 +168,11 @@ def test_profile_updates_display_and_login_information(user, client: Client) -> 
     assert user.username == "zhou-engineer"
     assert user.email == "zhou@example.com"
     assert user.phone == "13800138000"
+    assert list(
+        EmailAddress.objects.filter(user=user).values_list(
+            "email", "primary", "verified"
+        )
+    ) == [("zhou@example.com", True, True)]
     assert authenticate(username="zhou-engineer", password=PASSWORD) == user
 
 
@@ -383,6 +404,46 @@ def test_auth_page_can_render_video(client: Client) -> None:
     response = client.get(reverse("accounts:login"))
     assert response.status_code == 200
     assert b"<video" in response.content
+
+
+def test_allauth_and_legacy_route_contracts() -> None:
+    assert reverse("account_login") == reverse("accounts:login")
+    assert reverse("account_logout") == reverse("accounts:logout")
+    assert reverse("account_signup") == "/accounts/signup/"
+    assert reverse("accounts:register") == "/accounts/register/"
+    assert reverse("account_reset_password") == "/accounts/password/reset/"
+
+
+@pytest.mark.django_db
+def test_allauth_password_reset_code_flow(user, client: Client) -> None:
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        primary=True,
+        verified=True,
+    )
+    requested = client.post(
+        reverse("account_reset_password"),
+        {"email": user.email},
+    )
+    assert requested["Location"] == reverse("account_confirm_password_reset_code")
+
+    confirmed = client.post(
+        reverse("account_confirm_password_reset_code"),
+        {"code": settings.AUTH_FIXED_EMAIL_CODE},
+    )
+    assert confirmed["Location"] == reverse("account_complete_password_reset")
+
+    changed = client.post(
+        reverse("account_complete_password_reset"),
+        {
+            "password1": "Allauth-changed-password-2026",
+            "password2": "Allauth-changed-password-2026",
+        },
+    )
+    assert changed["Location"] == reverse("account_password_reset_completed")
+    user.refresh_from_db()
+    assert user.check_password("Allauth-changed-password-2026")
 
 
 @patch("apps.accounts.tasks.provider_for")

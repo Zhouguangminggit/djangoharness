@@ -5,6 +5,10 @@
 
 ## 当前文档批次
 
+- [第十九批：allauth 基础与迁移](19-allauth-foundation.md)
+- [第二十批：allauth 登录退出](20-allauth-login.md)
+- [第二十一批：allauth 注册验证](21-allauth-signup.md)
+- [第二十二批：allauth 密码与文档](22-allauth-password-docs.md)
 - [第十八批：MkDocs + Material 文档站](18-mkdocs-material.md)
 
 ## 阅读原则

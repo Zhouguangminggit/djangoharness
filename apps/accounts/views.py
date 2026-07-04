@@ -1,25 +1,23 @@
 import json
 import re
 
+from allauth.account.views import LoginView, LogoutView, SignupView
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login, logout, update_session_auth_hash
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.utils import timezone
-from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import (
-    LoginForm,
+    AccountSignupForm,
     NewPasswordForm,
     PasswordResetVerifyForm,
     PhoneRegisterForm,
     ProfileForm,
     ProfilePasswordChangeForm,
-    RegisterForm,
 )
 from .services import (
     VerificationPurpose,
@@ -32,51 +30,50 @@ User = get_user_model()
 RESET_SESSION_KEY = "password_reset_grant"
 
 
-def _safe_next(request: HttpRequest) -> str:
-    target = request.POST.get("next") or request.GET.get("next") or ""
-    if url_has_allowed_host_and_scheme(
-        target,
-        allowed_hosts={request.get_host()},
-        require_https=request.is_secure(),
-    ):
-        return target
-    return reverse("home")
+class AccountLoginView(LoginView):
+    template_name = "account/login.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["media_page"] = "login"
+        return context
 
 
-def login_view(request: HttpRequest):
-    if request.user.is_authenticated:
-        return redirect("home")
-    form = LoginForm(request, request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        login(request, form.get_user())
-        if form.cleaned_data["remember_me"]:
-            request.session.set_expiry(settings.AUTH_REMEMBER_SECONDS)
-        else:
-            request.session.set_expiry(0)
-        return redirect(_safe_next(request))
-    return render(
-        request,
-        "accounts/login.html",
-        {"form": form, "next": _safe_next(request), "media_page": "login"},
-    )
+class AccountSignupView(SignupView):
+    template_name = "account/signup.html"
+
+    def get_form_class(self):
+        mode = self.request.POST.get("mode") or self.request.GET.get("mode", "account")
+        return PhoneRegisterForm if mode == "phone" else AccountSignupForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["mode"] = self.request.POST.get("mode") or self.request.GET.get(
+            "mode", "account"
+        )
+        context["media_page"] = "register"
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.user and settings.USE_THIRD_PARTY_SERVICES:
+            send_welcome_email.delay(self.user.username)
+        return response
 
 
-def register(request: HttpRequest):
-    mode = request.POST.get("mode") or request.GET.get("mode", "account")
-    form_class = PhoneRegisterForm if mode == "phone" else RegisterForm
-    form = form_class(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        user = form.save()
-        if settings.USE_THIRD_PARTY_SERVICES:
-            send_welcome_email.delay(user.username)
-        login(request, user)
-        messages.success(request, "注册成功")
-        return redirect("home")
-    return render(
-        request,
-        "accounts/register.html",
-        {"form": form, "mode": mode, "media_page": "register"},
-    )
+class AccountLogoutView(LogoutView):
+    template_name = "account/logout.html"
+    http_method_names = ["post", "options"]
+
+    def post(self, *args, **kwargs):
+        response = super().post(*args, **kwargs)
+        messages.success(self.request, "你已安全退出")
+        return response
+
+
+login_view = AccountLoginView.as_view()
+register = AccountSignupView.as_view()
+logout_view = AccountLogoutView.as_view()
 
 
 @login_required
@@ -161,13 +158,6 @@ def password_reset_complete(request: HttpRequest):
         "accounts/password_reset_complete.html",
         {"media_page": "password_reset"},
     )
-
-
-@require_POST
-def logout_view(request: HttpRequest):
-    logout(request)
-    messages.success(request, "你已安全退出")
-    return redirect("accounts:login")
 
 
 def _json_payload(request: HttpRequest) -> dict[str, str]:
