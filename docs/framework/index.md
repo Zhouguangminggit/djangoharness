@@ -23,6 +23,12 @@
 
   [查看用户认证指南](../authentication.md)
 
+- :material-robot-outline: **AI 集成**
+
+  后台配置 AI 模型参数，异步生成视频、语音和 3D 图像等内容。
+
+  [查看 AI 集成指南](../ai-integration.md)
+
 - :material-shield-account-outline: **Agent 开发规范**
 
   Agent 规范保存在仓库 `agent-docs/` 中，约束架构、质量与交付流程。

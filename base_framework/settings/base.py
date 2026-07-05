@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.notifications_center.apps.NotificationsCenterConfig",
     "apps.blog.apps.BlogConfig",
+    "apps.ai_integration.apps.AiIntegrationConfig",
     "notifications",
     "django_ckeditor_5",
 ]
@@ -227,6 +228,24 @@ ALIYUN_EMAIL_ENDPOINT = os.environ.get(
 ALIYUN_EMAIL_ACCOUNT_NAME = os.environ.get("ALIYUN_EMAIL_ACCOUNT_NAME", "")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# AI 集成配置
+AI_ENABLE_REAL_CALLS = get_env_bool("AI_ENABLE_REAL_CALLS", False)
+AI_DEFAULT_PROVIDER = os.environ.get("AI_DEFAULT_PROVIDER", "volcano_ark")
+AI_VOLCANO_API_KEY = os.environ.get("AI_VOLCANO_API_KEY", "")
+AI_VOLCANO_BASE_URL = os.environ.get(
+    "AI_VOLCANO_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3"
+)
+AI_VOLCANO_DEFAULT_MODEL = os.environ.get(
+    "AI_VOLCANO_DEFAULT_MODEL", "doubao-seedance-1-5-pro-251215"
+)
+# 仅用于向第三方公开参考图片；生成结果通过默认文件存储保存，与此配置无关。
+AI_MEDIA_BASE_URL = os.environ.get("AI_MEDIA_BASE_URL", "").rstrip("/")
+AI_TASK_POLL_INTERVAL_SECONDS = int(
+    os.environ.get("AI_TASK_POLL_INTERVAL_SECONDS", "3")
+)
+AI_TASK_MAX_POLL_SECONDS = int(os.environ.get("AI_TASK_MAX_POLL_SECONDS", "600"))
+AI_TASK_RESULT_STORAGE = os.environ.get("AI_TASK_RESULT_STORAGE", "ai_results/")
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get(

@@ -21,6 +21,8 @@ redis-cli ping  # 应返回 PONG
 
 ## 启动 Worker
 
+必须在项目根目录（`manage.py` 所在目录）执行：
+
 ```bash
 # Linux 和 macOS
 uv run celery -A celery_app worker --loglevel=INFO
@@ -33,6 +35,19 @@ uv run celery -A celery_app worker --loglevel=INFO --pool=solo
 ```
 
 Windows 的 solo pool 只用于开发调试，生产 Worker 应运行在 Linux 容器或主机上。
+
+`-A celery_app` 会读取 `celery_app/__init__.py` 导出的 Celery 实例。
+`base_framework` 是 Django 项目包，不负责导出 Celery 实例；保持这个单向依赖可以避免
+Celery 初始化时加载 `base_framework.logging` 产生循环导入。
+
+启动 Worker 前可先执行不连接 broker 的导入检查：
+
+```bash
+uv run python -c \
+  "from celery_app.celery import app; print(app.main)"
+```
+
+输出 `base_framework` 表示 Celery 应用已正确加载。
 
 ## 调用和验证任务
 
@@ -89,6 +104,10 @@ docker compose -f deploy/docker-compose.yml restart worker
 
 ## 常见问题
 
+- `partially initialized module 'celery_app.celery'`：确认
+  `base_framework/__init__.py` 没有反向导入 `celery_app`，并继续使用
+  `-A celery_app` 启动。Celery 配置或日志模块也不应从 Django 项目包入口反向导入
+  Celery 实例。
 - `Connection refused`：检查 Redis 是否启动，以及容器内地址是否使用 `redis` 而非 `localhost`。
 - `Received unregistered task`：确认任务使用 `@shared_task`，app 已注册，并重启 Worker。
 - 任务一直 pending：确认 Worker 在线、监听了正确队列，并检查 Worker 日志。

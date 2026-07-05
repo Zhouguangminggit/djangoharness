@@ -1,0 +1,41 @@
+.ai-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    margin-right: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.ai-action-btn-primary {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.ai-action-btn-primary:hover {
+    background-color: #4338ca;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+}
+
+.ai-action-btn-success {
+    background-color: #10b981;
+    color: #ffffff;
+}
+
+.ai-action-btn-success:hover {
+    background-color: #059669;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+}
+
+.ai-action-btn-disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}

@@ -1,4 +1,6 @@
 import logging
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, cast
@@ -83,6 +85,21 @@ def test_celery_logger_uses_loguru_bridge() -> None:
     assert len(celery_logger.handlers) == 1
     assert isinstance(celery_logger.handlers[0], InterceptHandler)
     assert celery_logger.propagate is False
+
+
+def test_celery_app_imports_in_a_fresh_process() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            ("from celery_app.celery import app; assert app.main == 'base_framework'"),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
 
 
 def test_request_log_contains_safe_user_context(tmp_path: Path) -> None:

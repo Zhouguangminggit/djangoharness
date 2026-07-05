@@ -34,6 +34,14 @@ def can_manage_blog_posts(request):
     return request.user.has_perm("blog.add_post")
 
 
+def can_manage_ai_configs(request):
+    return request.user.has_perm("ai_integration.add_aimodelconfig")
+
+
+def can_view_ai_tasks(request):
+    return request.user.has_perm("ai_integration.view_aigenerationtask")
+
+
 UNFOLD = {
     "SITE_TITLE": "DjangoHarness 后台",
     "SITE_HEADER": "DjangoHarness",
@@ -157,6 +165,29 @@ UNFOLD = {
                         "icon": "person",
                         "link": reverse_lazy("admin:blog_author_changelist"),
                         "permission": can_view_blog_posts,
+                    },
+                ],
+            },
+            {
+                "title": "AI 集成",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "模型配置",
+                        "icon": "model_training",
+                        "link": reverse_lazy(
+                            "admin:ai_integration_aimodelconfig_changelist"
+                        ),
+                        "permission": can_manage_ai_configs,
+                    },
+                    {
+                        "title": "生成任务",
+                        "icon": "auto_awesome",
+                        "link": reverse_lazy(
+                            "admin:ai_integration_aigenerationtask_changelist"
+                        ),
+                        "permission": can_view_ai_tasks,
                     },
                 ],
             },
