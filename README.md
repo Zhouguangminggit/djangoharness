@@ -1,125 +1,64 @@
-<p align="center">
-  <img src="assets/djangoharness.png" alt="DjangoHarness" width="100%">
-</p>
+# DjangoHarness Cookiecutter 模板
 
-<p align="center"><strong>让 AI 按统一规范交付 Django 业务代码</strong></p>
+本仓库用于通过 Cookiecutter 生成人工可继续开发的 DjangoHarness 业务项目。无需提前
+克隆仓库，可以直接指定 GitHub 仓库和模板分支，将生成结果写入当前目录。
 
-<p align="center">
-  <img alt="Python 3.10-3.13" src="https://img.shields.io/badge/Python-3.10--3.13-3776AB">
-  <img alt="Django 4.2" src="https://img.shields.io/badge/Django-4.2-0C4B33">
-  <img alt="Celery 5" src="https://img.shields.io/badge/Celery-5-37814A">
-  <img alt="Redis 6+" src="https://img.shields.io/badge/Redis-6%2B-DC382D">
-  <img alt="MySQL 8" src="https://img.shields.io/badge/MySQL-8-4479A1">
-  <img alt="uv" src="https://img.shields.io/badge/deps-uv-DE5FE9">
-  <img alt="Docker" src="https://img.shields.io/badge/Docker-ready-2496ED">
-  <img alt="Quality CI" src="https://img.shields.io/badge/CI-quality_passed-2088FF">
-  <img alt="macOS" src="https://img.shields.io/badge/macOS-supported-000000">
-  <img alt="Windows" src="https://img.shields.io/badge/Windows-supported-0078D4">
-  <img alt="License MIT" src="https://img.shields.io/badge/license-MIT-blue">
-</p>
+## 直接从 GitHub 分支生成
 
-中文 | [English](README.en.md)
-
-# DjangoHarness
-
-DjangoHarness 可以简单理解为是基于django框架和harness工程规范构建的一套框架，初心是想构建一套面向ai和agent的底座框架能够快速构建不同业务主题系统
-
-## 快速开始
-
-环境要求：Python 3.10～3.13、uv。生产使用 MySQL 8.x 和 Redis 6+；本地默认使用
-SQLite 数据库
+推荐使用 uv 临时运行 Cookiecutter，不会向当前项目安装额外依赖：
 
 ```bash
-# 未安装 uv 时
-查看链接： https://hellowac.github.io/uv-zh-cn/getting-started/installation/
-根据自己电脑型号诸如windows/mac 参考教程安装
+mkdir my-projects
+cd my-projects
 
-# 安装并选择受支持的 Python 版本（3.10、3.11、3.12、3.13 均可），推荐3.10
-uv python install 3.10
-uv python pin 3.10
+uv tool run cookiecutter \
+  https://github.com/Zhouguangminggit/djangoharness.git \
+  --checkout business
+```
 
-# 按锁文件安装运行与开发依赖
+Cookiecutter 会自动克隆 `business` 分支、询问模板参数，并在当前目录生成以
+`project_slug` 命名的项目目录。也可以通过 `--output-dir` 指定输出位置：
+
+```bash
+uv tool run cookiecutter \
+  https://github.com/Zhouguangminggit/djangoharness.git \
+  --checkout business \
+  --output-dir ~/Projects
+```
+
+如果本机已经安装 Cookiecutter，可以使用等价命令：
+
+```bash
+cookiecutter https://github.com/Zhouguangminggit/djangoharness.git \
+  --checkout business
+```
+
+## 从本地模板生成
+
+克隆模板仓库并切换到模板分支后执行：
+
+```bash
+git clone --branch business \
+  https://github.com/Zhouguangminggit/djangoharness.git
+cd djangoharness
+uv tool run cookiecutter .
+```
+
+生成时输入产品展示名称、英文短名、产品副标题和作者姓名。英文短名用于派生
+Python 包名、Docker Compose 项目名、镜像变量和默认数据库名。
+
+## 初始化生成项目
+
+生成完成后进入项目目录并执行：
+
+```bash
+cd <project_slug>
 uv sync --all-groups --locked
-
-# 准备配置与数据库
 cp .env.example .env
-
-# 激活项目环境
-
-mac执行命令： source .venv/bin/activate
-windows执行命令： .venv\Scripts\activate
-
-# 执行数据迁移
 uv run python manage.py migrate
-
-# 创建超级管理员用户
-uv run python manage.py createsuperuser
-
-# 启动开发服务
-uv run python manage.py runserver
-
-# 启动文档服务（独立使用 8001 端口）
-make docs-serve
+uv run python manage.py check
+make test
 ```
 
-访问主页 <http://127.0.0.1:8000/>
-
-后台地址为 <http://127.0.0.1:8000/admin/>。
-
-文档站地址为 <http://127.0.0.1:8001/>。
-
-## 在 Codex 或 Claude Code 中使用项目 Skill
-
-仓库中的 [`skill/`](skill/) 是由 DjangoHarness Agent 规范整理而成的完整项目 Skill。需要让 Codex 或 Claude Code 按本项目规范开发时：
-
-1. 下载或克隆本仓库。
-1. 将完整的 `skill/` 目录上传到 Codex 或 Claude Code 对应的项目、会话或 Skill 导入位置。
-1. 保持目录结构不变，必须同时包含 `SKILL.md`、`references/`、`agents/` 和 `assets/`，不要只上传 `SKILL.md`。
-1. 在任务中明确要求 AI 加载 DjangoHarness Skill，再开始编写或修改业务代码。
-
-Skill 会向 AI 提供项目结构、Django 开发、异步任务、数据库和工程质量规范。不同工具版本的 Skill 导入入口可能不同，请以对应客户端当前界面为准。
-
-## 开发命令
-
-```bash
-make format  # 自动修复并格式化 Python、Markdown
-make lint    # Ruff、mypy、mdformat、Django system check
-make test    # pytest
-make check   # lint + test
-make docs-serve  # 在 127.0.0.1:8001 启动文档开发服务器
-make docs-build  # 严格模式构建静态文档到 site/
-```
-
-## 文档导航
-
-- [Agent 开发规范](agent-docs/AGENTS.md)
-- [MkDocs + Material 使用与部署](docs/mkdocs/guide.md)
-- [macOS 使用说明](docs/macos/README.md)
-- [Windows 使用说明](docs/windows/README.md)
-- [Celery 使用](docs/celery/README.md)
-- [Docker 部署](deploy/README.md)
-- [工具文档](docs/makefile/README.md)
-- [生产配置](docs/deploy.md)
-
-## 贡献
-
-Fork 仓库并从最新主分支创建主题分支。修改前阅读 Agent 规范；提交前运行 `make check`，模型变更同时提交 migration 和 `db/*.sql`，并在 Pull Request 中说明行为变化和验证结果。
-
-## 联系作者与交流群
-
-如果遇到项目使用、环境配置、工具安装或部署问题，请扫码添加作者微信。也可以扫码加入技术交流群，与其他技术爱好者交流 DjangoHarness 的使用经验和问题。
-
-<table align="center">
-  <tr>
-    <th>作者微信</th>
-    <th>技术交流群</th>
-  </tr>
-  <tr>
-    <td align="center"><img src="assets/author.jpg" alt="作者微信二维码" width="280"></td>
-    <td align="center"><img src="assets/group.jpg" alt="技术交流群二维码" width="280"></td>
-  </tr>
-</table>
-
-## License
-
-本项目使用 [MIT License](LICENSE)。
+完整的参数、资源替换和验收说明见模板内的
+`docs/cookiecutter/README.md`。

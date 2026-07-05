@@ -1,0 +1,83 @@
+[project]
+name = "__PROJECT_SLUG__"
+version = "0.1.0"
+description = "__PRODUCT_SUBTITLE__"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+license = { text = "MIT" }
+authors = [{ name = "__AUTHOR_NAME__" }]
+dependencies = [
+    "celery>=5.3,<6.0",
+    "django>=4.2,<5.0",
+    "django-allauth>=65.18,<66",
+    "django-ckeditor-5>=0.2.20",
+    "django-notifications-hq>=1.8.3,<2.0",
+    "django-unfold>=0.74,<0.75",
+    "gunicorn>=22.0,<24.0",
+    "loguru>=0.7,<1.0",
+    "markdown>=3.10.2",
+    "mysqlclient>=2.2,<3.0",
+    "pillow>=10.0,<13.0",
+    "python-dotenv>=1.0,<2.0",
+    "redis>=5.0,<6.0",
+    "volcengine-python-sdk[ark]>=5.0,<6.0",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=5.0,<6.0",
+    "mdformat>=0.7,<1.0",
+    "mkdocs-material>=9.6,<10.0",
+    "mypy>=1.10,<2.0",
+    "pytest>=8.0,<9.0",
+    "pytest-django>=4.8,<5.0",
+    "ruff>=0.11,<1.0",
+]
+
+# Use a mainland China mirror by default. uv records this index in uv.lock, so
+# package metadata and distributions are fetched from the same source.
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+exclude = ["migrations", "staticfiles"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "DJ"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"__PROJECT_PACKAGE__/settings/dev.py" = ["F403", "F405"]
+"__PROJECT_PACKAGE__/settings/prod.py" = ["F403", "F405"]
+"__PROJECT_PACKAGE__/settings/base.py" = ["E402", "F403"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "__PROJECT_PACKAGE__.settings.dev"
+python_files = ["test_*.py", "*_test.py"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.mypy]
+python_version = "3.10"
+plugins = ["mypy_django_plugin.main"]
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["migrations", "staticfiles"]
+
+[tool.django-stubs]
+django_settings_module = "__PROJECT_PACKAGE__.settings.dev"
+
+[tool.mdformat]
+wrap = 88
+number = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["apps", "__PROJECT_PACKAGE__", "celery_app"]

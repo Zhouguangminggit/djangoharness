@@ -1,1 +1,0 @@
-"""DjangoHarness application packages."""

@@ -1,0 +1,107 @@
+site_name: __PRODUCT_NAME__ 文档
+site_description: __PRODUCT_SUBTITLE__
+
+theme:
+  name: material
+  language: zh
+  icon:
+    logo: material/application-braces-outline
+    repo: fontawesome/brands/github
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.path
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+
+nav:
+  - 首页: index.md
+  - 文档站:
+      - 概览: mkdocs/index.md
+      - MkDocs + Material: mkdocs/guide.md
+      - 生产配置: deploy.md
+      - Cookiecutter 模板: cookiecutter/README.md
+  - 开发环境:
+      - 概览: environments/index.md
+      - macOS: macos/README.md
+      - Windows: windows/README.md
+  - 开发工具:
+      - 概览: tools/index.md
+      - uv: uv/README.md
+      - Makefile: makefile/README.md
+      - Ruff: ruff/README.md
+      - mypy: mypy/README.md
+      - pytest: pytest/README.md
+      - mdformat: mdformat/README.md
+  - 框架能力:
+      - 概览: framework/index.md
+      - 用户认证: authentication.md
+      - 消息通知: notifications.md
+      - 博客模块: blog.md
+      - AI 集成: ai-integration.md
+      - Celery: celery/README.md
+      - Unfold 后台管理: unfold/README.md
+  - 迭代记录:
+      - 概览: iterations/index.md
+      - allauth 基础与迁移: iterations/19-allauth-foundation.md
+      - allauth 登录退出: iterations/20-allauth-login.md
+      - allauth 注册验证: iterations/21-allauth-signup.md
+      - allauth 密码与文档: iterations/22-allauth-password-docs.md
+      - 消息通知中心: iterations/23-notifications-center.md
+      - Unfold 后台迁移: iterations/24-unfold-admin.md
+      - MkDocs + Material 集成: iterations/18-mkdocs-material.md
+      - 博客模块: iterations/25-blog-module.md
+      - AI 集成模块: iterations/26-ai-integration.md
+      - Cookiecutter 模板服务: iterations/28-cookiecutter-template.md
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+strict: true
