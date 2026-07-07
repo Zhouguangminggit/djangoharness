@@ -34,6 +34,7 @@ make lint
 make test
 make check
 make docs-build
+make deploy-check
 ```
 
 项目保留 `agent-docs/` 和 `skill/` 中的 DjangoHarness 工程规范。产品 Logo、横幅、
@@ -41,6 +42,7 @@ make docs-build
 
 Cookiecutter 使用及重新生成说明见
 [`docs/cookiecutter/README.md`](docs/cookiecutter/README.md)。
+生产部署说明见 [`docs/deploy.md`](docs/deploy.md)。
 
 ## License
 

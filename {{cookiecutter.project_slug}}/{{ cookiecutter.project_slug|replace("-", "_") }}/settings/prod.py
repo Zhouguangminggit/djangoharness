@@ -15,7 +15,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 USE_THIRD_PARTY_SERVICES = get_env_bool(
-    "USE_THIRD_PARTY_SERVICES", get_env_bool("USE_THREE_SERIVCE", True)
+    "USE_THIRD_PARTY_SERVICES", get_env_bool("USE_THREE_SERIVCE", False)
 )
 if USE_THIRD_PARTY_SERVICES:
     CACHES["verification"] = {  # type: ignore[index]

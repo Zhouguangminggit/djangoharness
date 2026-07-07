@@ -15,7 +15,7 @@
 - `mkdocs.yml`：Material 主题、站点导航、Markdown 扩展和严格构建配置。
 - `site/`：MkDocs 生成的静态站点，属于可重新生成的忽略目录，不提交版本库。
 - `agent-docs/`：只存 Agent 规范，不作为用户业务文档目录。
-- `deploy/`：生产 Dockerfile、Compose 服务和容器部署说明。
+- `deploy/`：生产 Dockerfile 和 Compose 服务文件；用户部署说明统一维护在 `docs/deploy.md`。
 
 ## 配置规则
 

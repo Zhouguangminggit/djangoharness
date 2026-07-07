@@ -11,8 +11,8 @@ from django.test import RequestFactory
 from loguru import logger
 
 from apps.core.middleware import RequestLoggingMiddleware
-from __PROJECT_PACKAGE__.logging import InterceptHandler, configure_logging
 from celery_app.celery import _configure_celery_logger
+from __PROJECT_PACKAGE__.logging import InterceptHandler, configure_logging
 
 
 def test_development_logging_suppresses_debug() -> None:

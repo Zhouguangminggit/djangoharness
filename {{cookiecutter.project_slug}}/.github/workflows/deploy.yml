@@ -1,0 +1,128 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "部署目标 environment"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    environment: {% raw %}${{ github.event.inputs.target || 'production' }}{% endraw %}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log start
+        run: echo "[__PRODUCT_NAME__] 开始 GitHub Actions 部署"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: |
+          echo "[__PRODUCT_NAME__] 安装 Python 3.10"
+          uv python install 3.10
+
+      - name: Install dependencies
+        run: |
+          echo "[__PRODUCT_NAME__] 安装依赖"
+          uv sync --all-groups --locked
+
+      - name: Prepare environment file
+        env:
+          APP_ENV_VARS: {% raw %}${{ secrets.APP_ENV_VARS }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 写入部署环境变量"
+          test -n "$APP_ENV_VARS"
+          printf "%s\n" "$APP_ENV_VARS" > .env
+
+      - name: Deployment configuration check
+        run: |
+          echo "[__PRODUCT_NAME__] 执行部署配置检查"
+          DEPLOY_CHECK_ENV=production make deploy-check
+
+      - name: Quality gate
+        run: |
+          echo "[__PRODUCT_NAME__] 执行质量门禁"
+          make lint
+          make test
+          make docs-build
+          uv lock --check
+
+      - name: Build Docker image
+        env:
+          ACR_REGISTRY: {% raw %}${{ secrets.ACR_REGISTRY }}{% endraw %}
+          ACR_NAMESPACE: {% raw %}${{ secrets.ACR_NAMESPACE }}{% endraw %}
+          ACR_REPO: {% raw %}${{ secrets.ACR_REPO }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 构建 Docker 镜像"
+          IMAGE="$ACR_REGISTRY/$ACR_NAMESPACE/$ACR_REPO:{% raw %}${{ github.sha }}{% endraw %}"
+          docker build -f deploy/Dockerfile -t "$IMAGE" .
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Push Docker image to ACR
+        env:
+          ACR_REGISTRY: {% raw %}${{ secrets.ACR_REGISTRY }}{% endraw %}
+          ACR_USERNAME: {% raw %}${{ secrets.ACR_USERNAME }}{% endraw %}
+          ACR_PASSWORD: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 登录并推送阿里云 ACR"
+          echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" --username "$ACR_USERNAME" --password-stdin
+          docker push "$IMAGE"
+
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_PRIVATE_KEY: {% raw %}${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}{% endraw %}
+          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
+          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 配置 SSH"
+          mkdir -p ~/.ssh
+          printf "%s\n" "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${DEPLOY_PORT:-22}" "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Sync compose and environment
+        env:
+          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
+          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
+          DEPLOY_USER: {% raw %}${{ secrets.DEPLOY_USER }}{% endraw %}
+          DEPLOY_PATH: {% raw %}${{ secrets.DEPLOY_PATH }}{% endraw %}
+          APP_ENV_VARS: {% raw %}${{ secrets.APP_ENV_VARS }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 同步 docker-compose.yml 与 .env"
+          ssh -i ~/.ssh/deploy_key -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH/deploy'"
+          scp -i ~/.ssh/deploy_key -P "${DEPLOY_PORT:-22}" deploy/docker-compose.yml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/deploy/docker-compose.yml"
+          printf "%s\n__DOCKER_IMAGE_ENV__=%s\n" "$APP_ENV_VARS" "$IMAGE" > .env.deploy
+          scp -i ~/.ssh/deploy_key -P "${DEPLOY_PORT:-22}" .env.deploy "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/.env"
+
+      - name: Restart services
+        env:
+          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
+          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
+          DEPLOY_USER: {% raw %}${{ secrets.DEPLOY_USER }}{% endraw %}
+          DEPLOY_PATH: {% raw %}${{ secrets.DEPLOY_PATH }}{% endraw %}
+        run: |
+          echo "[__PRODUCT_NAME__] 拉取镜像并重启服务"
+          ssh -i ~/.ssh/deploy_key -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "\
+            cd '$DEPLOY_PATH' && \
+            docker compose -f deploy/docker-compose.yml pull web worker && \
+            docker compose -f deploy/docker-compose.yml up -d --remove-orphans && \
+            docker compose -f deploy/docker-compose.yml ps"
+
+      - name: Log finish
+        run: echo "[__PRODUCT_NAME__] 部署完成"

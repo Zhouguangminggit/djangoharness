@@ -11,7 +11,7 @@
 - `tests/`：跨模块和验收测试；简单单元测试也可放对应 app 的 `tests/`。
 - `db/`：业务模型对应的 MySQL 8 SQL 参考定义。
 - `docs/`：用户、工具和批次文档；`agent-docs/` 只存 Agent 规范。
-- `deploy/`：生产 Dockerfile、Compose 服务和容器部署说明。
+- `deploy/`：生产 Dockerfile 和 Compose 服务文件；用户部署说明统一维护在 `docs/deploy.md`。
 
 ## 配置规则
 

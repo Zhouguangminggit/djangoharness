@@ -78,7 +78,7 @@ make check   # lint + test
 - [macOS setup (Chinese)](docs/macos/README.md)
 - [Windows setup (Chinese)](docs/windows/README.md)
 - [Celery guide (Chinese)](docs/celery/README.md)
-- [Docker deployment (Chinese)](deploy/README.md)
+- [Deployment guide (Chinese)](docs/deploy.md)
 - [Tooling guide (Chinese)](docs/makefile/README.md)
 - [Production settings (Chinese)](docs/deploy.md)
 

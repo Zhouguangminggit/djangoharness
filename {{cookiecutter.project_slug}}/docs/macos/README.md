@@ -6,7 +6,7 @@
 
 ```bash
 xcode-select --install
-brew install python@3.12 uv mysql redis
+brew install python@3.10 uv mysql redis
 python3 --version
 uv --version
 ```
@@ -47,4 +47,5 @@ redis-cli ping
 docker compose -f deploy/docker-compose.yml up --build
 ```
 
-停止容器使用 `docker compose -f deploy/docker-compose.yml down`；不要添加 `-v`，除非确定要删除本地数据库数据。
+Compose 只启动应用服务，MySQL 和 Redis 需使用本机、宿主机或外部服务。停止容器使用
+`docker compose -f deploy/docker-compose.yml down`；不要添加 `-v`，除非确定要删除静态和媒体数据卷。

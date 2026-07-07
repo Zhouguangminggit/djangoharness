@@ -30,6 +30,10 @@ def test_generates_productized_project(tmp_path: Path) -> None:
 
     assert project.name == "campus-second-platform"
     assert (project / "campus_second_platform" / "settings" / "base.py").is_file()
+    assert not (project / "{{cookiecutter.project_slug}}").exists()
+    assert not (project / "hooks").exists()
+    assert not (project / "template_tests").exists()
+    assert not (project / "cookiecutter.json").exists()
 
     expected = {
         "README.md": ["校园二手交易平台", "校园好物，就来校园二手交易平台"],
@@ -38,6 +42,22 @@ def test_generates_productized_project(tmp_path: Path) -> None:
         "deploy/docker-compose.yml": [
             "name: campus-second-platform",
             "CAMPUS_SECOND_PLATFORM_IMAGE",
+        ],
+        ".github/workflows/deploy.yml": [
+            "校园二手交易平台",
+            "CAMPUS_SECOND_PLATFORM_IMAGE",
+            "make deploy-check",
+        ],
+        ".github/workflows/quality.yml": ["校园二手交易平台", "make docs-build"],
+        ".env.example": [
+            "DJANGO_SUPERUSER_USERNAME",
+            "DJANGO_SUPERUSER_EMAIL",
+            "DJANGO_SUPERUSER_PASSWORD",
+        ],
+        "scripts/check_deploy_env.py": ["校园二手交易平台", "DEPLOY_CHECK_ENV"],
+        "apps/accounts/management/commands/ensure_superuser.py": [
+            "DJANGO_SUPERUSER_USERNAME",
+            "DJANGO_SUPERUSER_PASSWORD",
         ],
         "campus_second_platform/settings/admin.py": ["校园二手交易平台"],
         "apps/core/templates/core/home.html": [
@@ -49,6 +69,14 @@ def test_generates_productized_project(tmp_path: Path) -> None:
         content = (project / relative_path).read_text(encoding="utf-8")
         for value in values:
             assert value in content
+
+    compose = (project / "deploy/docker-compose.yml").read_text(encoding="utf-8")
+    assert "  mysql:" not in compose
+    assert "  redis:" not in compose
+    assert "mysql_data:" not in compose
+    assert "redis_data:" not in compose
+    assert "redis://redis" not in compose
+    assert not (project / "deploy/README.md").exists()
 
     text_extensions = {
         ".css",

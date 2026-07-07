@@ -96,7 +96,7 @@ uv run celery -A celery_app purge  # 危险：永久删除队列中所有待处�
 ## Docker Compose
 
 ```bash
-docker compose -f deploy/docker-compose.yml up -d redis worker
+docker compose -f deploy/docker-compose.yml up -d worker
 docker compose -f deploy/docker-compose.yml logs -f worker
 docker compose -f deploy/docker-compose.yml exec worker celery -A celery_app inspect active
 docker compose -f deploy/docker-compose.yml restart worker
@@ -108,7 +108,8 @@ docker compose -f deploy/docker-compose.yml restart worker
   `__PROJECT_PACKAGE__/__init__.py` 没有反向导入 `celery_app`，并继续使用
   `-A celery_app` 启动。Celery 配置或日志模块也不应从 Django 项目包入口反向导入
   Celery 实例。
-- `Connection refused`：检查 Redis 是否启动，以及容器内地址是否使用 `redis` 而非 `localhost`。
+- `Connection refused`：检查 Redis 是否启动。生产 Compose 不内置 Redis，容器内应使用宿主机、
+  内网域名或托管 Redis 地址。
 - `Received unregistered task`：确认任务使用 `@shared_task`，app 已注册，并重启 Worker。
 - 任务一直 pending：确认 Worker 在线、监听了正确队列，并检查 Worker 日志。
 - 任务重复执行：将业务操作设计为幂等，并为外部写入增加唯一键或状态检查。

@@ -1,6 +1,6 @@
 FROM ghcr.io/astral-sh/uv:0.7.6 AS uv
 
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.10-slim AS builder
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
@@ -25,7 +25,7 @@ RUN uv sync --frozen --no-dev \
        DJANGO_ALLOWED_HOSTS=localhost \
        .venv/bin/python manage.py collectstatic --noinput
 
-FROM python:3.12-slim-bookworm AS runtime
+FROM python:3.10-slim AS runtime
 
 ENV DJANGO_SETTINGS_MODULE=__PROJECT_PACKAGE__.settings.prod \
     PATH="/app/.venv/bin:$PATH" \

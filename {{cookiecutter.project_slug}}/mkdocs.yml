@@ -76,6 +76,8 @@ nav:
       - 博客模块: iterations/25-blog-module.md
       - AI 集成模块: iterations/26-ai-integration.md
       - Cookiecutter 模板服务: iterations/28-cookiecutter-template.md
+      - Cookiecutter 当前目录落地说明: iterations/29-cookiecutter-current-directory.md
+      - 部署优化: iterations/30-deployment-optimization.md
 
 extra_css:
   - stylesheets/extra.css

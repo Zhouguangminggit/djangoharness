@@ -13,6 +13,8 @@
 - [第二十四批：Unfold 后台迁移](24-unfold-admin.md)
 - [第二十七批：Celery 启动循环导入修复](27-celery-import-cycle.md)
 - [第二十八批：Cookiecutter 模板服务](28-cookiecutter-template.md)
+- [第二十九批：Cookiecutter 当前目录落地说明](29-cookiecutter-current-directory.md)
+- [第三十批：部署优化](30-deployment-optimization.md)
 - [第十八批：MkDocs + Material 文档站](18-mkdocs-material.md)
 
 ## 阅读原则
