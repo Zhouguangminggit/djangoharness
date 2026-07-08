@@ -14,115 +14,215 @@ on:
           - production
           - staging
 
+concurrency:
+  group: __PROJECT_SLUG__-__GH_ENV_TARGET__-deploy
+  cancel-in-progress: false
+
 jobs:
-  deploy:
-    name: Build and deploy
+  build-and-push:
+    name: 构建并推送镜像
     runs-on: ubuntu-latest
-    environment: {% raw %}${{ github.event.inputs.target || 'production' }}{% endraw %}
+    timeout-minutes: 15
+    environment: __GH_ENV_TARGET__
+    outputs:
+      image: __GH_STEP_IMAGE_OUTPUT__
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Log start
-        run: echo "[__PRODUCT_NAME__] 开始 GitHub Actions 部署"
+        run: echo "[__PRODUCT_NAME__] 开始构建部署镜像"
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - name: Generate image name
+        id: image
+        env:
+          ACR_REGISTRY: __GH_SECRET_ACR_REGISTRY__
+          ACR_NAMESPACE: __GH_SECRET_ACR_NAMESPACE__
+          ACR_REPO: __GH_SECRET_ACR_REPO__
+        run: |
+          REPO="${ACR_REGISTRY}/${ACR_NAMESPACE}/${ACR_REPO:-backend}"
+          FULL_IMAGE="${REPO}:run-__GH_RUN_NUMBER__"
+          echo "repo=${REPO}" >> "$GITHUB_OUTPUT"
+          echo "full_image=${FULL_IMAGE}" >> "$GITHUB_OUTPUT"
+          echo "[__PRODUCT_NAME__] 镜像: ${FULL_IMAGE}"
+
+      - name: Login to Aliyun ACR
+        uses: docker/login-action@v3
         with:
-          enable-cache: true
+          registry: __GH_SECRET_ACR_REGISTRY__
+          username: __GH_SECRET_ACR_USERNAME__
+          password: __GH_SECRET_ACR_PASSWORD__
 
-      - name: Set up Python
-        run: |
-          echo "[__PRODUCT_NAME__] 安装 Python 3.10"
-          uv python install 3.10
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Install dependencies
-        run: |
-          echo "[__PRODUCT_NAME__] 安装依赖"
-          uv sync --all-groups --locked
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/Dockerfile
+          push: true
+          tags: __GH_STEP_IMAGE_OUTPUT__
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Prepare environment file
-        env:
-          APP_ENV_VARS: {% raw %}${{ secrets.APP_ENV_VARS }}{% endraw %}
-        run: |
-          echo "[__PRODUCT_NAME__] 写入部署环境变量"
-          test -n "$APP_ENV_VARS"
-          printf "%s\n" "$APP_ENV_VARS" > .env
+  prepare-remote:
+    name: 准备远端配置
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build-and-push
+    environment: __GH_ENV_TARGET__
 
-      - name: Deployment configuration check
-        run: |
-          echo "[__PRODUCT_NAME__] 执行部署配置检查"
-          DEPLOY_CHECK_ENV=production make deploy-check
-
-      - name: Quality gate
-        run: |
-          echo "[__PRODUCT_NAME__] 执行质量门禁"
-          make lint
-          make test
-          make docs-build
-          uv lock --check
-
-      - name: Build Docker image
-        env:
-          ACR_REGISTRY: {% raw %}${{ secrets.ACR_REGISTRY }}{% endraw %}
-          ACR_NAMESPACE: {% raw %}${{ secrets.ACR_NAMESPACE }}{% endraw %}
-          ACR_REPO: {% raw %}${{ secrets.ACR_REPO }}{% endraw %}
-        run: |
-          echo "[__PRODUCT_NAME__] 构建 Docker 镜像"
-          IMAGE="$ACR_REGISTRY/$ACR_NAMESPACE/$ACR_REPO:{% raw %}${{ github.sha }}{% endraw %}"
-          docker build -f deploy/Dockerfile -t "$IMAGE" .
-          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
-
-      - name: Push Docker image to ACR
-        env:
-          ACR_REGISTRY: {% raw %}${{ secrets.ACR_REGISTRY }}{% endraw %}
-          ACR_USERNAME: {% raw %}${{ secrets.ACR_USERNAME }}{% endraw %}
-          ACR_PASSWORD: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
-        run: |
-          echo "[__PRODUCT_NAME__] 登录并推送阿里云 ACR"
-          echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" --username "$ACR_USERNAME" --password-stdin
-          docker push "$IMAGE"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure SSH
         env:
-          DEPLOY_SSH_PRIVATE_KEY: {% raw %}${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}{% endraw %}
-          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
-          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
+          DEPLOY_SSH_PRIVATE_KEY: __GH_SECRET_DEPLOY_SSH_PRIVATE_KEY__
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
         run: |
           echo "[__PRODUCT_NAME__] 配置 SSH"
           mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           printf "%s\n" "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${DEPLOY_PORT:-22}" "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan -p "${DEPLOY_PORT:-22}" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Sync compose and environment
         env:
-          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
-          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
-          DEPLOY_USER: {% raw %}${{ secrets.DEPLOY_USER }}{% endraw %}
-          DEPLOY_PATH: {% raw %}${{ secrets.DEPLOY_PATH }}{% endraw %}
-          APP_ENV_VARS: {% raw %}${{ secrets.APP_ENV_VARS }}{% endraw %}
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
+          DEPLOY_USER: __GH_SECRET_DEPLOY_USER__
+          DEPLOY_PATH: __GH_SECRET_DEPLOY_PATH__
+          APP_ENV_VARS: __GH_SECRET_APP_ENV_VARS__
+          IMAGE: __GH_NEEDS_BUILD_IMAGE__
         run: |
           echo "[__PRODUCT_NAME__] 同步 docker-compose.yml 与 .env"
-          ssh -i ~/.ssh/deploy_key -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH/deploy'"
-          scp -i ~/.ssh/deploy_key -P "${DEPLOY_PORT:-22}" deploy/docker-compose.yml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/deploy/docker-compose.yml"
-          printf "%s\n__DOCKER_IMAGE_ENV__=%s\n" "$APP_ENV_VARS" "$IMAGE" > .env.deploy
-          scp -i ~/.ssh/deploy_key -P "${DEPLOY_PORT:-22}" .env.deploy "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/.env"
+          APP_ENV_VARS_B64="$(printf "%s" "$APP_ENV_VARS" | base64 -w 0)"
+          ssh -i ~/.ssh/deploy_key \
+            -p "${DEPLOY_PORT:-22}" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "mkdir -p '$DEPLOY_PATH/deploy'"
+          scp -i ~/.ssh/deploy_key \
+            -P "${DEPLOY_PORT:-22}" \
+            deploy/docker-compose.yml \
+            "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/deploy/docker-compose.yml"
+          ssh -i ~/.ssh/deploy_key \
+            -p "${DEPLOY_PORT:-22}" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" << EOF
+          set -e
+          cd "$DEPLOY_PATH"
+          printf "%s" "$APP_ENV_VARS_B64" | base64 -d > .env
+          printf "\n__DOCKER_IMAGE_ENV__=%s\n" "$IMAGE" >> .env
+          EOF
+
+  restart-services:
+    name: 拉取镜像并重启服务
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - build-and-push
+      - prepare-remote
+    environment: __GH_ENV_TARGET__
+
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_PRIVATE_KEY: __GH_SECRET_DEPLOY_SSH_PRIVATE_KEY__
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
+        run: |
+          echo "[__PRODUCT_NAME__] 配置 SSH"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf "%s\n" "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${DEPLOY_PORT:-22}" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Restart services
         env:
-          DEPLOY_HOST: {% raw %}${{ secrets.DEPLOY_HOST }}{% endraw %}
-          DEPLOY_PORT: {% raw %}${{ secrets.DEPLOY_PORT }}{% endraw %}
-          DEPLOY_USER: {% raw %}${{ secrets.DEPLOY_USER }}{% endraw %}
-          DEPLOY_PATH: {% raw %}${{ secrets.DEPLOY_PATH }}{% endraw %}
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
+          DEPLOY_USER: __GH_SECRET_DEPLOY_USER__
+          DEPLOY_PATH: __GH_SECRET_DEPLOY_PATH__
+          ACR_REGISTRY: __GH_SECRET_ACR_REGISTRY__
+          ACR_USERNAME: __GH_SECRET_ACR_USERNAME__
+          ACR_PASSWORD: __GH_SECRET_ACR_PASSWORD__
+          IMAGE: __GH_NEEDS_BUILD_IMAGE__
         run: |
-          echo "[__PRODUCT_NAME__] 拉取镜像并重启服务"
-          ssh -i ~/.ssh/deploy_key -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "\
-            cd '$DEPLOY_PATH' && \
-            docker compose -f deploy/docker-compose.yml pull web worker && \
-            docker compose -f deploy/docker-compose.yml up -d --remove-orphans && \
-            docker compose -f deploy/docker-compose.yml ps"
+          echo "[__PRODUCT_NAME__] 拉取镜像并重启服务: $IMAGE"
+          ssh -i ~/.ssh/deploy_key \
+            -p "${DEPLOY_PORT:-22}" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" << EOF
+          set -e
+          cd "$DEPLOY_PATH"
+          test -f deploy/docker-compose.yml
+          test -f .env
+          echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" -u "$ACR_USERNAME" --password-stdin
+          docker pull "$IMAGE"
+          docker compose -f deploy/docker-compose.yml pull web worker
+          docker compose -f deploy/docker-compose.yml up -d --remove-orphans
+          docker compose -f deploy/docker-compose.yml ps
+          EOF
 
-      - name: Log finish
-        run: echo "[__PRODUCT_NAME__] 部署完成"
+  health-check:
+    name: 健康检查
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    needs: restart-services
+    environment: __GH_ENV_TARGET__
+
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_PRIVATE_KEY: __GH_SECRET_DEPLOY_SSH_PRIVATE_KEY__
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
+        run: |
+          echo "[__PRODUCT_NAME__] 配置 SSH"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf "%s\n" "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${DEPLOY_PORT:-22}" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Check service health
+        env:
+          DEPLOY_HOST: __GH_SECRET_DEPLOY_HOST__
+          DEPLOY_PORT: __GH_SECRET_DEPLOY_PORT__
+          DEPLOY_USER: __GH_SECRET_DEPLOY_USER__
+          DEPLOY_PATH: __GH_SECRET_DEPLOY_PATH__
+        run: |
+          echo "[__PRODUCT_NAME__] 执行健康检查"
+          ssh -i ~/.ssh/deploy_key \
+            -p "${DEPLOY_PORT:-22}" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" << EOF
+          set -e
+          cd "$DEPLOY_PATH"
+          APP_PORT="\$(grep -E '^APP_PORT=' .env | tail -n 1 | cut -d= -f2- | tr -d '"' || true)"
+          APP_PORT="\${APP_PORT:-8000}"
+          for i in \$(seq 1 24); do
+            if curl -fsS "http://127.0.0.1:\${APP_PORT}/health/" >/dev/null; then
+              echo "[__PRODUCT_NAME__] 健康检查通过"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "[__PRODUCT_NAME__] 健康检查超时"
+          docker compose -f deploy/docker-compose.yml logs --tail=80 web
+          exit 1
+          EOF
