@@ -1,19 +1,21 @@
 from django.contrib import admin
 from django.http import HttpRequest
+from import_export.admin import ImportExportMixin
 from unfold.admin import ModelAdmin
+from unfold.contrib.inlines.admin import TabularInline
 
 from .forms import PostAdminForm
 from .models import Author, Category, Post, PostImage, Tag
 
 
-class PostImageInline(admin.TabularInline):
+class PostImageInline(TabularInline):
     model = PostImage
     extra = 1
     fields = ("image", "caption", "sort_order")
 
 
 @admin.register(Category)
-class CategoryAdmin(ModelAdmin):
+class CategoryAdmin(ImportExportMixin, ModelAdmin):
     list_display = ("name", "slug", "is_enabled", "sort_order", "created_at")
     list_filter = ("is_enabled",)
     search_fields = ("name", "slug", "description")
@@ -22,7 +24,7 @@ class CategoryAdmin(ModelAdmin):
 
 
 @admin.register(Tag)
-class TagAdmin(ModelAdmin):
+class TagAdmin(ImportExportMixin, ModelAdmin):
     list_display = ("name", "slug", "is_enabled", "created_at")
     list_filter = ("is_enabled",)
     search_fields = ("name", "slug")
@@ -31,7 +33,7 @@ class TagAdmin(ModelAdmin):
 
 
 @admin.register(Author)
-class AuthorAdmin(ModelAdmin):
+class AuthorAdmin(ImportExportMixin, ModelAdmin):
     list_display = ("name", "is_enabled", "email", "created_at")
     list_filter = ("is_enabled",)
     search_fields = ("name", "bio", "email")
@@ -39,7 +41,7 @@ class AuthorAdmin(ModelAdmin):
 
 
 @admin.register(Post)
-class PostAdmin(ModelAdmin):
+class PostAdmin(ImportExportMixin, ModelAdmin):
     form = PostAdminForm
     inlines = (PostImageInline,)
     list_display = (

@@ -42,12 +42,25 @@ def user(db):
 
 
 def test_home_page(client: Client) -> None:
-    response = client.get(reverse("home"))
+    response = client.get(reverse("product_introduction"))
     assert response.status_code == 200
     content = response.content.decode()
-    assert "__PRODUCT_NAME__" in content
-    assert "__PRODUCT_SUBTITLE__" in content
-    assert "Django Template Framework" not in content
+    assert "DjangoHarness" in content
+    assert "product-introduction/js/config.js" not in content
+
+
+def test_application_home_requires_login(client: Client) -> None:
+    response = client.get(reverse("app_home"))
+    assert response.status_code == 302
+    assert response.headers["Location"].startswith(reverse("accounts:login"))
+
+
+@pytest.mark.django_db
+def test_application_home_is_available_after_login(user, client: Client) -> None:
+    client.force_login(user)
+    response = client.get(reverse("app_home"))
+    assert response.status_code == 200
+    assert "__PRODUCT_NAME__" in response.content.decode()
 
 
 def test_project_templates_are_namespaced() -> None:
@@ -323,7 +336,7 @@ def test_login_remember_me_and_logout_require_post(user, client: Client) -> None
     assert client.get(reverse("accounts:logout")).status_code == 405
     logout_response = client.post(reverse("accounts:logout"), follow=True)
     assert logout_response.status_code == 200
-    assert 'data-auto-dismiss="3000"' in logout_response.content.decode()
+    assert 'data-auto-dismiss="4000"' in logout_response.content.decode()
     assert "你已安全退出" in logout_response.content.decode()
     assert "_auth_user_id" not in client.session
 
@@ -347,7 +360,7 @@ def test_login_rejects_external_next(user, client: Client) -> None:
         f"{reverse('accounts:login')}?next=https://evil.example/",
         {"identifier": user.username, "password": PASSWORD},
     )
-    assert response["Location"] == reverse("home")
+    assert response["Location"] == reverse("app_home")
 
 
 def test_fixed_verification_codes_do_not_require_redis() -> None:

@@ -7,6 +7,9 @@
 - `unfold` 必须位于 `django.contrib.admin` 之前，项目内模型后台必须继承
   `unfold.admin.ModelAdmin`。自定义用户后台同时继承 Django `UserAdmin`。
 - 禁止在后台配置中写死外部业务地址、密钥或环境相关域名。
+- 默认启用 `unfold.contrib.filters`、`forms`、`inlines` 和 `import_export`。只有业务实际
+  使用 Guardian、History、Constance、Hijack 或 Location Field 时才安装对应依赖并启用
+  contrib，不为占位预装插件。
 - 自定义菜单必须使用稳定的 Admin URL，并保持模块名称与 app 的 `verbose_name`
   一致。菜单使用权限回调控制可见性，后端视图仍必须检查 Django Admin 权限。
 
@@ -19,6 +22,10 @@
 - 列表页应提供必要的搜索、筛选、排序和分页；新增自定义入口时使用 Unfold
   `actions_list`，或使用 `ModelAdmin.get_urls()` 和 `admin_site.admin_view()`，
   不得绕过登录、CSRF 和权限校验。
+- 适合配置和内容维护的模型使用 `ImportExportMixin` 提供导入导出；导入必须先 dry-run
+  校验再提交。包含密码、密钥或不可逆状态的模型不得直接使用默认 Resource。
+- 批量动作使用 `unfold.decorators.action` 提供明确图标、文案和风险等级；危险操作必须
+  保留确认步骤，且 QuerySet 更新不能绕过当前用户保护或业务服务不变量。
 
 ## 用户管理
 

@@ -26,23 +26,46 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key")
 DEBUG = get_env_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 
-INSTALLED_APPS = [
-    "unfold",
+# Django 默认应用：保持官方依赖顺序。
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.accounts.apps.AccountsConfig",
+]
+
+# 第三方插件：Unfold 及 contrib 必须位于 django.contrib.admin 前。
+THIRD_PARTY_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.inlines",
+    "unfold.contrib.import_export",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "import_export",
     "allauth",
     "allauth.account",
+    "notifications",
+    "django_ckeditor_5",
+]
+
+# 项目业务应用。
+LOCAL_APPS = [
+    "apps.accounts.apps.AccountsConfig",
     "apps.core",
     "apps.notifications_center.apps.NotificationsCenterConfig",
     "apps.blog.apps.BlogConfig",
     "apps.ai_integration.apps.AiIntegrationConfig",
-    "notifications",
-    "django_ckeditor_5",
+]
+
+INSTALLED_APPS = [
+    *THIRD_PARTY_APPS[:4],
+    *DJANGO_APPS,
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS[4:],
 ]
 
 MIDDLEWARE = [
@@ -62,7 +85,7 @@ ROOT_URLCONF = "__PROJECT_PACKAGE__.urls"
 TEMPLATES: list[dict[str, object]] = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / "product-introduction"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -117,7 +140,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    ("product-introduction", BASE_DIR / "product-introduction"),
+]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -159,8 +185,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = "accounts:login"
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "app_home"
+LOGOUT_REDIRECT_URL = "product_introduction"
+
+# django-crispy-forms：Bootstrap 5 仅提供结构，项目样式仍由 static 分层维护。
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5",)
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 AUTH_REMEMBER_SECONDS = int(os.environ.get("AUTH_REMEMBER_SECONDS", "2592000"))
 AUTH_RESET_GRANT_SECONDS = int(os.environ.get("AUTH_RESET_GRANT_SECONDS", "600"))

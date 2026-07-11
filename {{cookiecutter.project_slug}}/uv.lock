@@ -310,6 +310,19 @@ wheels = [
 ]
 
 [[package]]
+name = "crispy-bootstrap5"
+version = "2026.3"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-crispy-forms" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/ab/e8/05e1170f6b8fbfe4098392bdca813c2094659853a438919234d4663009b1/crispy_bootstrap5-2026.3.tar.gz", hash = "sha256:e7f5adb36acfbb456444c46e82c436931c796c539e9c620be4fa9dc9c9d6679c", size = 23452, upload-time = "2026-03-01T10:08:00.459Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/9d/2d/93f78072f203aa28d961add6a130b929b47f7aa3fef6905898b4bb9a637d/crispy_bootstrap5-2026.3-py3-none-any.whl", hash = "sha256:e0fff85c0503e9aed610a0ee31368e2191d340657f813669491c288c1c2e2dfa", size = 24770, upload-time = "2026-03-01T10:07:59.058Z" },
+]
+
+[[package]]
 name = "cryptography"
 version = "49.0.0"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -354,6 +367,15 @@ wheels = [
 ]
 
 [[package]]
+name = "diff-match-patch"
+version = "20241021"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/0e/ad/32e1777dd57d8e85fa31e3a243af66c538245b8d64b7265bec9a61f2ca33/diff_match_patch-20241021.tar.gz", hash = "sha256:beae57a99fa48084532935ee2968b8661db861862ec82c6f21f4acdd6d835073", size = 39962, upload-time = "2024-10-21T19:41:21.094Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/f7/bb/2aa9b46a01197398b901e458974c20ed107935c26e44e37ad5b0e5511e44/diff_match_patch-20241021-py3-none-any.whl", hash = "sha256:93cea333fb8b2bc0d181b0de5e16df50dd344ce64828226bda07728818936782", size = 43252, upload-time = "2024-10-21T19:41:19.914Z" },
+]
+
+[[package]]
 name = "django"
 version = "4.2.30"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -391,6 +413,32 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/4b/e0/2dbbf2eb59411bf063646ac541753d1cdeacdcd2bb3defb03a456369a2de/django_ckeditor_5-0.2.20.tar.gz", hash = "sha256:7c3d67cc8bbce3564108578b8fafe8e752c6ad4fbf45b1ffee821045ba2c0e96", size = 3049978, upload-time = "2026-02-21T20:40:38.923Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/b0/52/e9ed3f359d06cf7c7476e274059f5318ac81e82e20de9f4fcf714a576dea/django_ckeditor_5-0.2.20-py3-none-any.whl", hash = "sha256:dfff659822fb8d42f55b43265cb51bf8b1e0797dc850e0bf5547644daeaa3fff", size = 3143416, upload-time = "2026-02-21T20:40:37.135Z" },
+]
+
+[[package]]
+name = "django-crispy-forms"
+version = "2.5"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/79/a1/6a638d13717e4d4f8df169dade0fa51bdc65d9825df39d98ce709a776b49/django_crispy_forms-2.5.tar.gz", hash = "sha256:066e72a8f152a1334f1c811cc37740868efe3265e5a218f79079ef89f848c3d8", size = 1097999, upload-time = "2025-11-06T20:44:01.921Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/2c/58/ac3a11950baaf75c1f3242e3af9dfe45201f6ee10c113dd37a9c000876d2/django_crispy_forms-2.5-py3-none-any.whl", hash = "sha256:adc99d5901baca09479c53bf536b3909e80a9f2bb299438a223de4c106ebf1f9", size = 31464, upload-time = "2025-11-06T20:44:00.795Z" },
+]
+
+[[package]]
+name = "django-import-export"
+version = "4.4.1"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "diff-match-patch" },
+    { name = "django" },
+    { name = "tablib" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/92/32/5b83cc46a70ac94c1d17144097bf8aee7d9bb401d0863652c8d5ce1d2e50/django_import_export-4.4.1.tar.gz", hash = "sha256:165dc7fdcd56a6356342eef3f88f3f3682b64b6f67e9a259a137e8b57aeff10c", size = 2238690, upload-time = "2026-05-05T12:42:44.295Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/91/d1/110aeb2acffea56d4222861b5678c2643f0bda00081e40d687077348bb7c/django_import_export-4.4.1-py3-none-any.whl", hash = "sha256:8be2782e505ae303ccb02070a1b4c528995922126fca9ee449eb28666835dd4b", size = 157691, upload-time = "2026-05-05T12:42:42.554Z" },
 ]
 
 [[package]]
@@ -457,67 +505,6 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/78/88/d98c21ed315e5cb025f45aaea1e95d35c0fd11fb9123cb4c1278c33e70ad/django_unfold-0.74.1.tar.gz", hash = "sha256:573f793f975b9dbe324859121a179ae3f4d600d580e28e038736d7a2696e86dc", size = 1103394, upload-time = "2025-12-15T17:06:36Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/2d/21/1c5482019bf2b454ac3e67cf0de456eb3dccc2f478a865a2f8a4fba28ef7/django_unfold-0.74.1-py3-none-any.whl", hash = "sha256:0b0a4b13c568309f3bb0a14d5bd7353b47b676d97695954d9631245df84e18f3", size = 1217338, upload-time = "2025-12-15T17:06:34.418Z" },
-]
-
-[[package]]
-name = "__PROJECT_SLUG__"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "celery" },
-    { name = "django" },
-    { name = "django-allauth" },
-    { name = "django-ckeditor-5" },
-    { name = "django-notifications-hq" },
-    { name = "django-unfold" },
-    { name = "gunicorn" },
-    { name = "loguru" },
-    { name = "markdown" },
-    { name = "mysqlclient" },
-    { name = "pillow" },
-    { name = "python-dotenv" },
-    { name = "redis" },
-    { name = "volcengine-python-sdk", extra = ["ark"] },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "django-stubs" },
-    { name = "mdformat" },
-    { name = "mkdocs-material" },
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-django" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "celery", specifier = ">=5.3,<6.0" },
-    { name = "django", specifier = ">=4.2,<5.0" },
-    { name = "django-allauth", specifier = ">=65.18,<66" },
-    { name = "django-ckeditor-5", specifier = ">=0.2.20" },
-    { name = "django-notifications-hq", specifier = ">=1.8.3,<2.0" },
-    { name = "django-unfold", specifier = ">=0.74,<0.75" },
-    { name = "gunicorn", specifier = ">=22.0,<24.0" },
-    { name = "loguru", specifier = ">=0.7,<1.0" },
-    { name = "markdown", specifier = ">=3.10.2" },
-    { name = "mysqlclient", specifier = ">=2.2,<3.0" },
-    { name = "pillow", specifier = ">=10.0,<13.0" },
-    { name = "python-dotenv", specifier = ">=1.0,<2.0" },
-    { name = "redis", specifier = ">=5.0,<6.0" },
-    { name = "volcengine-python-sdk", extras = ["ark"], specifier = ">=5.0,<6.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "django-stubs", specifier = ">=5.0,<6.0" },
-    { name = "mdformat", specifier = ">=0.7,<1.0" },
-    { name = "mkdocs-material", specifier = ">=9.6,<10.0" },
-    { name = "mypy", specifier = ">=1.10,<2.0" },
-    { name = "pytest", specifier = ">=8.0,<9.0" },
-    { name = "pytest-django", specifier = ">=4.8,<5.0" },
-    { name = "ruff", specifier = ">=0.11,<1.0" },
 ]
 
 [[package]]
@@ -999,6 +986,73 @@ wheels = [
 ]
 
 [[package]]
+name = "__PROJECT_SLUG__"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "celery" },
+    { name = "crispy-bootstrap5" },
+    { name = "django" },
+    { name = "django-allauth" },
+    { name = "django-ckeditor-5" },
+    { name = "django-crispy-forms" },
+    { name = "django-import-export" },
+    { name = "django-notifications-hq" },
+    { name = "django-unfold" },
+    { name = "gunicorn" },
+    { name = "loguru" },
+    { name = "markdown" },
+    { name = "mysqlclient" },
+    { name = "pillow" },
+    { name = "python-dotenv" },
+    { name = "redis" },
+    { name = "volcengine-python-sdk", extra = ["ark"] },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "django-stubs" },
+    { name = "mdformat" },
+    { name = "mkdocs-material" },
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-django" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "celery", specifier = ">=5.3,<6.0" },
+    { name = "crispy-bootstrap5", specifier = ">=2025.4,<2027" },
+    { name = "django", specifier = ">=4.2,<5.0" },
+    { name = "django-allauth", specifier = ">=65.18,<66" },
+    { name = "django-ckeditor-5", specifier = ">=0.2.20" },
+    { name = "django-crispy-forms", specifier = ">=2.4,<3.0" },
+    { name = "django-import-export", specifier = ">=4.3,<5.0" },
+    { name = "django-notifications-hq", specifier = ">=1.8.3,<2.0" },
+    { name = "django-unfold", specifier = ">=0.74,<0.75" },
+    { name = "gunicorn", specifier = ">=22.0,<24.0" },
+    { name = "loguru", specifier = ">=0.7,<1.0" },
+    { name = "markdown", specifier = ">=3.10.2" },
+    { name = "mysqlclient", specifier = ">=2.2,<3.0" },
+    { name = "pillow", specifier = ">=10.0,<13.0" },
+    { name = "python-dotenv", specifier = ">=1.0,<2.0" },
+    { name = "redis", specifier = ">=5.0,<6.0" },
+    { name = "volcengine-python-sdk", extras = ["ark"], specifier = ">=5.0,<6.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "django-stubs", specifier = ">=5.0,<6.0" },
+    { name = "mdformat", specifier = ">=0.7,<1.0" },
+    { name = "mkdocs-material", specifier = ">=9.6,<10.0" },
+    { name = "mypy", specifier = ">=1.10,<2.0" },
+    { name = "pytest", specifier = ">=8.0,<9.0" },
+    { name = "pytest-django", specifier = ">=4.8,<5.0" },
+    { name = "ruff", specifier = ">=0.11,<1.0" },
+]
+
+[[package]]
 name = "pillow"
 version = "12.2.0"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -1441,6 +1495,15 @@ source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/9b/3b/98ea1cfc04dc9805d58c5a96dd006f5d88a5a32b7b05e1f5a1c00363bb9a/swapper-1.4.0.tar.gz", hash = "sha256:9e083af114ee0593241a7b877e3e0e7d3a580454f5d59016c667a5563306f8fe", size = 12668, upload-time = "2024-08-14T19:36:07.539Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/e9/53/c59363308ef97507a680372471e25e1ebab2e706a45a7c416eea6474c928/swapper-1.4.0-py2.py3-none-any.whl", hash = "sha256:57b8378aad234242542fe32dc6e8cff0ed24b63493d20b3c88ee01f894b9345e", size = 7106, upload-time = "2024-08-14T19:36:06.247Z" },
+]
+
+[[package]]
+name = "tablib"
+version = "3.9.0"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/11/00/416d2ba54d7d58a7f7c61bf62dfeb48fd553cf49614daf83312f2d2c156e/tablib-3.9.0.tar.gz", hash = "sha256:1b6abd8edb0f35601e04c6161d79660fdcde4abb4a54f66cc9f9054bd55d5fe2", size = 125565, upload-time = "2025-10-15T18:21:56.263Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/66/6b/32e51d847148b299088fc42d3d896845fd09c5247190133ea69dbe71ba51/tablib-3.9.0-py3-none-any.whl", hash = "sha256:eda17cd0d4dda614efc0e710227654c60ddbeb1ca92cdcfc5c3bd1fc5f5a6e4a", size = 49580, upload-time = "2025-10-15T18:21:44.185Z" },
 ]
 
 [[package]]

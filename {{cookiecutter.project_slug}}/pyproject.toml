@@ -8,9 +8,12 @@ license = { text = "MIT" }
 authors = [{ name = "__AUTHOR_NAME__" }]
 dependencies = [
     "celery>=5.3,<6.0",
+    "crispy-bootstrap5>=2025.4,<2027",
     "django>=4.2,<5.0",
     "django-allauth>=65.18,<66",
     "django-ckeditor-5>=0.2.20",
+    "django-crispy-forms>=2.4,<3.0",
+    "django-import-export>=4.3,<5.0",
     "django-notifications-hq>=1.8.3,<2.0",
     "django-unfold>=0.74,<0.75",
     "gunicorn>=22.0,<24.0",

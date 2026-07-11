@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DjangoHarness — 面向 AI 协作开发的工程级 Django 业务脚手架。">
+  <meta name="keywords" content="DjangoHarness, Django, AI Agent, Cookiecutter, 工程脚手架">
+  <meta name="author" content="__AUTHOR_NAME__">
+
+  <meta property="og:title" content="DjangoHarness — AI 协作的 Django 工程底座">
+  <meta property="og:description" content="让 AI Agent 按照统一工程规范快速交付 Django 业务系统。">
+  <meta property="og:type" content="website">
+
+  <title>DjangoHarness — AI 协作的 Django 工程底座</title>
+  <base href="/static/product-introduction/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  {% include "components/messages.html" %}
+
+  <!-- ════════════════════════════════════════
+       导航栏
+  ════════════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo" id="nav-logo"></div>
+      <div class="nav-links" id="nav-links"></div>
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       Section 1 · Hero
+  ════════════════════════════════════════ -->
+  <section class="section-title-hero">
+    <div class="hero-badge" id="hero-badge"></div>
+
+    <h1 class="hero-title" id="hero-title"></h1>
+    <p  class="hero-subline" id="hero-subline"></p>
+    <p  class="hero-desc"    id="hero-desc"></p>
+
+    <div class="hero-actions">
+      <a id="btn-start" class="btn btn-dark btn-lg" href="#">
+        <span>开始使用</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <a id="btn-docs" class="btn btn-outline btn-lg" href="https://github.com/Zhouguangminggit/Pisces-business" target="_blank" rel="noopener">
+        <span>Github</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       Section 2 · Design / 多端预览
+  ════════════════════════════════════════ -->
+  <section id="design" class="section-design">
+
+    <div class="section-header center anim">
+      <span class="section-label" id="design-label"></span>
+      <h2 class="section-title"   id="design-title"></h2>
+      <p  class="section-subtitle" id="design-subtitle"></p>
+    </div>
+
+    <div class="design-body">
+      <div class="design-tabs" id="design-tabs"></div>
+
+      <div class="design-preview anim d2">
+        <div class="design-img-container" id="design-img-container"></div>
+        <p class="design-desc" id="design-desc"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════
+       Section 3 · Video / 功能演示
+  ════════════════════════════════════════ -->
+  <section id="video" class="section-video">
+
+    <div class="video-body">
+
+      <!-- 左侧：标题 + 视频播放器 -->
+      <div class="video-left anim d1">
+        <div class="video-left-title" id="video-left-title"></div>
+
+        <div class="video-player-wrapper" id="video-player-wrapper">
+          <video id="video-player" controls preload="none">
+            <source id="video-source" src="" type="video/mp4">
+            您的浏览器不支持 HTML5 视频。
+          </video>
+          <div class="video-placeholder" id="video-placeholder">
+            <div class="play-icon">▶</div>
+            <span>演示视频加载中...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：文字说明 -->
+      <div class="video-right anim d2">
+        <h2 id="video-title"></h2>
+        <p  id="video-brief"></p>
+        <div class="video-details" id="video-details"></div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════
+       Section 4 · Modules / 功能模块
+  ════════════════════════════════════════ -->
+  <section id="modules" class="section-modules">
+
+    <div class="modules-header left anim">
+      <span class="section-label" id="modules-label"></span>
+      <h2 class="section-title"   id="modules-title"></h2>
+      <p  class="section-subtitle" id="modules-subtitle"></p>
+    </div>
+
+    <div class="modules-grid" id="modules-grid"></div>
+
+  </section>
+
+  <!-- ════════════════════════════════════════
+       Section 5 · Footer
+  ════════════════════════════════════════ -->
+  <footer class="section-footer">
+
+    <div class="footer-top">
+      <div class="footer-brand anim">
+        <div class="footer-logo" id="footer-logo"></div>
+        <p class="footer-slogan" id="footer-slogan"></p>
+        <div class="footer-links" id="footer-links"></div>
+      </div>
+
+      <div class="footer-qrcodes anim d2" id="footer-qrcodes"></div>
+    </div>
+
+    <div class="footer-bottom">
+      <span id="footer-license"></span>
+      <span id="footer-author"></span>
+    </div>
+
+  </footer>
+
+  <aside class="contact-rail" aria-label="联系入口">
+    <button type="button" data-contact="service">客服</button>
+    <button type="button" data-contact="author">联系作者</button>
+  </aside>
+  <div class="qr-modal" data-qr-modal hidden>
+    <button class="qr-modal__backdrop" type="button" data-qr-close aria-label="关闭二维码"></button>
+    <section class="qr-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <button class="qr-modal__close" type="button" data-qr-close aria-label="关闭">×</button>
+      <h2 id="qr-modal-title" data-qr-title>扫码联系</h2>
+      <img data-qr-image src="" alt="">
+      <p data-qr-description></p>
+    </section>
+  </div>
+
+  <!-- Logo 路径注入（供 JS 使用） -->
+  <script>
+    window.STATIC_BASE = "/static/product-introduction/";
+    window.SITE_LOGO = "assets/logo.png";
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="/static/js/core.js"></script>
+
+</body>
+</html>

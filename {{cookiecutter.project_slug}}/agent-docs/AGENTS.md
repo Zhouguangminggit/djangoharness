@@ -5,12 +5,16 @@ DjangoHarness 是面向 AI 辅助开发的 Django 前后端不分离脚手架。
 ## 必读顺序
 
 1. 阅读[项目结构与配置](project-structure.md)。
+1. 涉及业务功能时阅读[架构与设计准则](architecture.md)。
 1. 按任务选择下方规范。
+1. 开发前先追踪现有模型、服务、路由、测试和跨 App 依赖，写出最小变更设计。
 1. 开发结束执行“完成定义”。
 
 ## 任务入口
 
 - Django 应用、模型、视图、表单、模板或静态资源：阅读 [Django 开发规范](django-development.md)。
+- 新业务域、跨 App 交互、状态机、大文件拆分或重构：阅读
+  [架构与设计准则](architecture.md)。
 - 测试、依赖、格式、类型或协作流程：阅读[工程质量规范](engineering-quality.md)。
 - MkDocs 配置、业务文档或文档站部署：阅读[项目结构与配置](project-structure.md)和
   [工程质量规范](engineering-quality.md)。
@@ -31,10 +35,17 @@ make format
 make lint
 make test
 make docs-build
+uv lock --check
+uv run python manage.py makemigrations --check --dry-run
 ```
 
-涉及业务模型时，同时提交 Django migration 和对应的 `db/*.sql`。在 `docs/iterations/` 新增或更新本批产出记录，写明变更、验证结果和遗留项。
+默认完成门禁是 `make check`，上述命令的真实结果都必须记录；不得将因环境、
+数据库或网络失败的检查写成通过。涉及业务模型时，同时提交 Django migration 和对应的
+`db/*.sql`。在 `docs/iterations/` 新增或更新本批产出记录，写明变更、验证结果和遗留项。
 涉及用户文档时，还必须维护 `mkdocs.yml` 导航并通过严格构建。
+
+`agent-docs/` 是 Agent 规范唯一编辑源。修改后必须同步生成 `skill/references/`，并确认
+`skill/SKILL.md` 已路由到所有新增规范；不得手工维护两份内容不同的规范。
 
 ## 当前批次
 

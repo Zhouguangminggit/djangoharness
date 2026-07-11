@@ -58,6 +58,7 @@ nav:
       - mdformat: mdformat/README.md
   - 框架能力:
       - 概览: framework/index.md
+      - 二期能力: framework/phase-two.md
       - 用户认证: authentication.md
       - 消息通知: notifications.md
       - 博客模块: blog.md
@@ -78,6 +79,12 @@ nav:
       - Cookiecutter 模板服务: iterations/28-cookiecutter-template.md
       - Cookiecutter 当前目录落地说明: iterations/29-cookiecutter-current-directory.md
       - 部署优化: iterations/30-deployment-optimization.md
+      - 二期依赖与配置: iterations/31-phase-two-foundation.md
+      - 二期 Unfold 后台: iterations/32-phase-two-admin.md
+      - 二期 Crispy Forms: iterations/33-phase-two-forms.md
+      - 二期产品介绍: iterations/34-phase-two-introduction.md
+      - 二期导航与消息: iterations/35-phase-two-shell.md
+      - 二期验收收口: iterations/36-phase-two-release.md
 
 extra_css:
   - stylesheets/extra.css

@@ -209,8 +209,11 @@ def test_admin_post_form_validates_content_by_type(
 
 
 @pytest.mark.django_db
-def test_header_has_blog_link_for_anonymous_user(client: Client) -> None:
-    response = client.get(reverse("home"))
+def test_header_has_blog_link_for_authenticated_user(
+    client: Client, admin_user
+) -> None:
+    client.force_login(admin_user)
+    response = client.get(reverse("app_home"))
     assert response.status_code == 200
     assert reverse("blog:post_list") in response.content.decode()
 

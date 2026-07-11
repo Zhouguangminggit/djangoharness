@@ -46,7 +46,7 @@ def test_generates_productized_project(tmp_path: Path) -> None:
         ".github/workflows/deploy.yml": [
             "校园二手交易平台",
             "CAMPUS_SECOND_PLATFORM_IMAGE",
-            "make deploy-check",
+            "docker compose -f deploy/docker-compose.yml up -d --remove-orphans",
         ],
         ".github/workflows/quality.yml": ["校园二手交易平台", "make docs-build"],
         ".env.example": [

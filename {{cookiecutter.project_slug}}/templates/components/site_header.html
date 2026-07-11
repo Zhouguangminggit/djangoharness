@@ -1,31 +1,32 @@
 {% load static %}
 <header class="site-header">
   <div class="site-container site-header__inner">
-    <a class="site-brand" href="{% url 'home' %}" aria-label="返回 __PRODUCT_NAME__ 首页">
+    <a class="site-brand" href="{% url 'app_home' %}" aria-label="返回 __PRODUCT_NAME__ 首页">
       <img src="{% static 'accounts/brand/logo.png' %}" alt="" width="40" height="40">
       <span>{{ site_name }}</span>
     </a>
-    <nav class="site-nav" aria-label="主导航">
-      <a href="{% url 'home' %}">首页</a>
+    <button class="site-nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-navigation">菜单</button>
+    <nav class="site-nav" id="site-navigation" aria-label="主导航" data-site-nav>
+      <div class="site-nav__links">
+      <a href="{% url 'app_home' %}">首页</a>
       <a href="{% url 'blog:post_list' %}">博客</a>
+      </div>
       {% if user.is_authenticated %}
-        {% if user.is_staff %}<a href="{% url 'admin:index' %}">管理后台</a>{% endif %}
-        <a class="site-nav__notifications" href="{% url 'notifications_center:list' %}">
-          消息
-          {% if notification_unread_count %}
-            <span class="site-nav__badge" aria-label="{{ notification_unread_count }} 条未读消息">{{ notification_unread_count }}</span>
-          {% endif %}
-        </a>
-        <a class="site-nav__user" href="{% url 'accounts:profile' %}" aria-label="进入个人中心">
+        <div class="site-user-menu" data-user-menu>
+        <button class="site-nav__user" type="button" data-user-menu-toggle aria-expanded="false" aria-haspopup="menu">
           <span class="site-nav__avatar" aria-hidden="true">
             {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1"|upper }}{% endif %}
           </span>
           <span>{{ user.display_name }}</span>
-        </a>
-        <form method="post" action="{% url 'accounts:logout' %}">
-          {% csrf_token %}
-          <button type="submit">退出</button>
-        </form>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="site-user-menu__panel" role="menu" data-user-menu-panel hidden>
+          <a role="menuitem" href="{% url 'accounts:profile' %}"><span aria-hidden="true">👤</span>个人信息</a>
+          <a role="menuitem" href="{% url 'notifications_center:list' %}"><span aria-hidden="true">🔔</span>消息通知{% if notification_unread_count %}<span class="site-nav__badge" aria-label="{{ notification_unread_count }} 条未读消息">{{ notification_unread_count }}</span>{% endif %}</a>
+          {% if user.is_staff %}<a role="menuitem" href="{% url 'admin:index' %}"><span aria-hidden="true">⚙</span>管理后台</a>{% endif %}
+          <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button role="menuitem" type="submit"><span aria-hidden="true">↪</span>退出登录</button></form>
+        </div>
+        </div>
       {% else %}
         <a href="{% url 'accounts:login' %}">登录</a>
         <a class="site-nav__primary" href="{% url 'accounts:register' %}">开始使用</a>

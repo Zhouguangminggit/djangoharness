@@ -39,9 +39,8 @@ def test_admin_dashboard_shows_user_metrics(admin_user, client: Client) -> None:
     assert response.status_code == 200
     content = response.content.decode()
     assert "用户数据概览" in content
-    assert "user-growth-chart" in content
-    assert '"total": 2' in content
-    assert '"inactive": 1' in content
+    assert "最近六个月新增用户" in content
+    assert "账号状态" in content
     assert reverse("admin:accounts_user_bulk_add") in content
     assert "__PRODUCT_NAME__" in content
     assert "__PRODUCT_SUBTITLE__" in content

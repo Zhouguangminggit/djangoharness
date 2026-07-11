@@ -15,3 +15,11 @@
 - 页面通过 `extra_css`、`extra_js` 按需加载业务资源，类名使用页面或组件前缀。
 
 新增模块时必须测试关键页面内容；涉及模板优先级时，使用 `get_template()` 断言模板 `origin`。
+
+## Crispy Forms、导航与消息
+
+- 使用 `apps.core.forms.BaseFormHelper` 或 `as_crispy_field` 统一表单结构；Helper 只负责布局，不改变字段、POST、CSRF 或验证。
+- 默认使用 Bootstrap 5 模板包，产品样式由分层 CSS 提供，业务主题通过 Helper `css_class` 覆盖。
+- 左侧品牌和右侧用户菜单固定，中间导航按业务替换；后台入口只对 staff 展示且后端继续鉴权。
+- 菜单维护 `aria-expanded`，支持点击外部与 Esc 关闭；退出使用带 CSRF 的 POST。
+- Django Messages 使用共享悬浮组件；success/info 可自动关闭，warning/error 默认保留。

@@ -38,8 +38,9 @@ def get_dashboard_data() -> dict[str, object]:
             ).count(),
         },
         "monthly": {
-            "labels": labels,
-            "values": [monthly.get(label, 0) for label in labels],
+            "items": [
+                {"label": label, "value": monthly.get(label, 0)} for label in labels
+            ],
         },
         "status": {"active": active, "inactive": total - active},
     }
