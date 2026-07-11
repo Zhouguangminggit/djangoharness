@@ -119,6 +119,26 @@ def test_generates_productized_project(tmp_path: Path) -> None:
     assert "DjangoHarness" in (project / "skill/SKILL.md").read_text(encoding="utf-8")
 
 
+def test_agent_docs_and_skill_references_stay_synchronized(tmp_path: Path) -> None:
+    project = generate_project(tmp_path)
+    agent_docs = project / "agent-docs"
+    references = project / "skill" / "references"
+    skill_text = (project / "skill" / "SKILL.md").read_text(encoding="utf-8")
+
+    navigated_references = set(
+        re.findall(r"\]\(([-a-z0-9]+\.md)\)", (agent_docs / "AGENTS.md").read_text())
+    )
+    assert navigated_references
+    for filename in navigated_references:
+        assert (references / filename).read_bytes() == (agent_docs / filename).read_bytes()
+        assert f"references/{filename}" in skill_text
+
+    assert "name: djangoharness-business" in skill_text
+    assert "$djangoharness-business" in (
+        project / "skill" / "agents" / "openai.yaml"
+    ).read_text(encoding="utf-8")
+
+
 @pytest.mark.parametrize(
     "project_slug",
     [

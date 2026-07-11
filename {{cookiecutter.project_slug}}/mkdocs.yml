@@ -85,6 +85,7 @@ nav:
       - 二期产品介绍: iterations/34-phase-two-introduction.md
       - 二期导航与消息: iterations/35-phase-two-shell.md
       - 二期验收收口: iterations/36-phase-two-release.md
+      - 认证与个人中心 UI: iterations/37-auth-profile-ui.md
 
 extra_css:
   - stylesheets/extra.css

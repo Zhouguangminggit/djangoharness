@@ -46,7 +46,8 @@ def test_home_page(client: Client) -> None:
     assert response.status_code == 200
     content = response.content.decode()
     assert "DjangoHarness" in content
-    assert "product-introduction/js/config.js" not in content
+    assert 'src="/static/product-introduction/js/config.js"' in content
+    assert "<base " not in content
 
 
 def test_application_home_requires_login(client: Client) -> None:
@@ -72,6 +73,14 @@ def test_project_templates_are_namespaced() -> None:
     assert "unfold/templates/admin/base.html" in admin_base.origin.name
     with pytest.raises(TemplateDoesNotExist):
         get_template("base.html")
+
+
+def test_auth_and_profile_templates_expose_full_width_layouts(client: Client) -> None:
+    login = client.get(reverse("accounts:login")).content.decode()
+    register = client.get(reverse("accounts:register")).content.decode()
+    assert "auth-step" in login
+    assert "auth-media-frame" in login
+    assert "auth-form--registration" in register
 
 
 @pytest.mark.django_db

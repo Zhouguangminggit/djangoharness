@@ -7,7 +7,7 @@
     <a class="{% if mode != 'phone' %}active{% endif %}" href="{% url 'accounts:register' %}?mode=account">账号注册</a>
     <a class="{% if mode == 'phone' %}active{% endif %}" href="{% url 'accounts:register' %}?mode=phone">手机注册</a>
   </div>
-  <form method="post" class="auth-form">
+  <form method="post" class="auth-form auth-form--registration">
     {% csrf_token %}
     <input type="hidden" name="mode" value="{{ mode }}">
     {% include "accounts/form_fields.html" %}

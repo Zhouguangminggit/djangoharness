@@ -6,24 +6,27 @@
 {% block extra_css %}<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">{% endblock %}
 
 {% block content %}
-  <section class="site-container profile-shell">
-    <aside class="profile-summary">
-      <p class="section-kicker">PERSONAL SPACE</p>
+  <section class="profile-shell">
+    <header class="profile-summary">
       <div class="profile-avatar" aria-hidden="true">
         {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.display_name|slice:":1"|upper }}{% endif %}
       </div>
-      <h1>{{ user.display_name }}</h1>
-      <p>维护你的头像、公开称呼与登录资料。昵称会显示在导航栏和欢迎信息中。</p>
+      <div class="profile-summary__identity">
+        <p class="section-kicker">PERSONAL WORKSPACE</p>
+        <h1>{{ user.display_name }}</h1>
+        <p>集中维护公开身份、登录资料和账号安全。</p>
+      </div>
       <dl>
         <div><dt>账号状态</dt><dd>{% if user.is_active %}正常{% else %}已停用{% endif %}</dd></div>
         <div><dt>加入时间</dt><dd>{{ user.date_joined|date:"Y-m-d" }}</dd></div>
         <div><dt>最近登录</dt><dd>{{ user.last_login|date:"Y-m-d H:i"|default:"首次登录" }}</dd></div>
       </dl>
-    </aside>
+    </header>
 
     <div class="profile-content">
       <section class="profile-editor" aria-labelledby="profile-details-title">
         <header>
+          <div class="profile-section-number">01</div>
           <p class="section-kicker">PROFILE DETAILS</p>
           <h2 id="profile-details-title">个人信息</h2>
           <p>修改后立即用于导航显示和后续登录。</p>
@@ -38,7 +41,7 @@
             {{ profile_form.avatar.errors }}
           </div>
           {% include "accounts/form_fields.html" with form=profile_form exclude_field="avatar" %}
-          <div class="profile-actions">
+          <div class="profile-actions profile-actions--wide">
             <button class="profile-save" type="submit">保存个人信息</button>
           </div>
         </form>
@@ -46,6 +49,7 @@
 
       <section class="password-editor" aria-labelledby="password-change-title">
         <header>
+          <div class="profile-section-number">02</div>
           <p class="section-kicker">ACCOUNT SECURITY</p>
           <h2 id="password-change-title">修改登录密码</h2>
           <p>必须先验证当前旧密码。修改成功后本设备保持登录。</p>

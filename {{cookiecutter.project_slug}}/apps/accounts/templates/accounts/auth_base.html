@@ -11,16 +11,23 @@
 {% block content %}
   <section class="auth-shell">
     <div class="auth-visual" aria-label="__PRODUCT_NAME__ 品牌展示">
-      {% if media_page == "register" %}
-        {% with media_path=auth_media.register %}{% include "accounts/media.html" %}{% endwith %}
-      {% elif media_page == "password_reset" %}
-        {% with media_path=auth_media.password_reset %}{% include "accounts/media.html" %}{% endwith %}
-      {% else %}
-        {% with media_path=auth_media.login %}{% include "accounts/media.html" %}{% endwith %}
-      {% endif %}
-      <div class="auth-visual-copy">
+      <a class="auth-visual-brand" href="{% url 'product_introduction' %}">
+        <span class="auth-visual-mark">DH</span>
         <span>__PRODUCT_NAME__</span>
-        <h1>让每一次构建，都有可靠的工程底座。</h1>
+      </a>
+      <div class="auth-media-frame">
+        {% if media_page == "register" %}
+          {% with media_path=auth_media.register %}{% include "accounts/media.html" %}{% endwith %}
+        {% elif media_page == "password_reset" %}
+          {% with media_path=auth_media.password_reset %}{% include "accounts/media.html" %}{% endwith %}
+        {% else %}
+          {% with media_path=auth_media.login %}{% include "accounts/media.html" %}{% endwith %}
+        {% endif %}
+      </div>
+      <div class="auth-visual-copy">
+        <span>AI-NATIVE DJANGO HARNESS</span>
+        <h1>从身份验证开始，保持每一步清晰可靠。</h1>
+        <p>统一认证、权限、通知和工程规范，让业务开发专注真正重要的流程。</p>
       </div>
     </div>
     <div class="auth-panel">
@@ -28,7 +35,10 @@
         <img src="{% static 'accounts/brand/logo.png' %}" alt="__PRODUCT_NAME__">
         <span>__PRODUCT_NAME__</span>
       </a>
-      <div class="auth-form-wrap">{% block auth_content %}{% endblock %}</div>
+      <div class="auth-form-wrap">
+        <div class="auth-step" aria-hidden="true"><span></span><b>SECURE ACCESS</b></div>
+        {% block auth_content %}{% endblock %}
+      </div>
     </div>
   </section>
 {% endblock %}
